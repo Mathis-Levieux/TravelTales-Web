@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { Session } from './types'
-import { redirect } from 'next/navigation'
+
 /*
 Vaaarial2@gmail.com
 123456789123aA$
@@ -43,17 +43,6 @@ export async function handleLogIn(formData: FormData): Promise<Session> {
     }
 }
 
-// export async function fetchUser() {
-//     const response = await fetch('http://localhost:3001/users/', {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     })
-
-//     return response
-// }
-
 export async function saveRefreshToken(refreshToken: string) {
     cookies().set('refreshToken', refreshToken, {
         maxAge: 60 * 60 * 24 * 30,
@@ -80,29 +69,6 @@ export async function getRefreshToken() {
     return refreshToken
 }
 
-export async function customFetch(url: string, options: RequestInit | undefined) {
-    const res = await fetch(url, options);
-    if (res.status === 401) {
-        // const refreshToken = await getRefreshToken();
-        // const refreshRes = await fetch('http://localhost:3001/auth/refresh-tokens-cookies', {
-        //     method: 'POST',
-        //     headers: {
-        //         Authorization: `Bearer ${refreshToken}`,
-        //     },
-        //     credentials: 'include',
-        // });
-        const path = window.location.pathname;
-        redirect(path);
-
-        // if (refreshRes.ok) {
-        //     const retryRes = await fetch(url, options);
-        //     const fullres = await retryRes.json();
-        //     console.log(fullres);
-        //     return retryRes;
-        // }
-    }
-    return res;
-}
 /*
 Vaaarial2@gmail.com
 123456789123aA$

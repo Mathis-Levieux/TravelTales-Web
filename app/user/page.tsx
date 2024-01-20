@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Profil from "../ui/profil";
-import { Suspense, useEffect } from "react";
-import { saveRefreshToken } from "../lib/actions";
-import { getUsers } from "../lib/data";
+import { Suspense } from "react";
 
 export default async function Home() {
 

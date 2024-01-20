@@ -40,12 +40,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 const payload = decodeJwt(jwt);
                 setSession({ ...payload } as Session);
             } catch (error) {
-                console.log(error);
+                setSession(null);
             }
         }
         setLoading(false)
     }, []);
-    // bonne voie pour update la session avec le jwt
 
     return (
         <AuthContext.Provider value={{ loading, session, setSession, login, logout }}>

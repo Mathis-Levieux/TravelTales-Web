@@ -1,8 +1,6 @@
 "use server"
 import { revalidatePath } from 'next/cache';
 import { getAccessToken } from './actions';
-import { customFetch } from './actions'
-import { redirect } from 'next/navigation';
 
 export async function getUsers() {
     const accessToken = await getAccessToken()

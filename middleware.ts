@@ -1,11 +1,8 @@
 import { ResponseCookies, RequestCookies } from 'next/dist/server/web/spec-extension/cookies';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import { getAccessToken, getRefreshToken, saveAccessToken, saveRefreshToken } from './app/lib/actions';
+import { getAccessToken, getRefreshToken } from './app/lib/actions';
 import { verifyToken } from './app/lib/utils';
-import { cookies } from 'next/headers';
-import next from 'next';
-import { redirect } from 'next/dist/server/api-utils';
 
 
 
@@ -14,7 +11,10 @@ export async function middleware(req: NextRequest) {
     const refreshToken = await getRefreshToken();
 
     if (!accessToken || !refreshToken) {
-        return NextResponse.redirect('http://localhost:3000/login')
+        const response = NextResponse.redirect('http://localhost:3000/login')
+        response.cookies.delete('access_token')
+        response.cookies.delete('refresh_token')
+        return response
     }
 
     try {
@@ -36,7 +36,10 @@ export async function middleware(req: NextRequest) {
             applySetCookie(req, response)
             return response
         }
-        return NextResponse.redirect('http://localhost:3000/login')
+        const response = NextResponse.redirect('http://localhost:3000/login')
+        response.cookies.delete('access_token')
+        response.cookies.delete('refresh_token')
+        return response
     }
 }
 
