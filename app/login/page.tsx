@@ -5,7 +5,7 @@ export default async function Home() {
 Vaaarial2@gmail.com
 123456789123aA$
     */
-    const test = await fetch('http://localhost:3001')
+
     return (
         <div className="container">
             <main>

@@ -2,12 +2,15 @@
 
 import { cookies } from 'next/headers'
 import { Session } from './types'
+import { get } from 'http'
+import { redirect } from 'next/navigation'
 
 /*
 Vaaarial2@gmail.com
 123456789123aA$
 */
 export async function handleLogIn(formData: FormData): Promise<Session> {
+
     const email = formData.get('email')
     const password = formData.get('password')
 
@@ -15,11 +18,10 @@ export async function handleLogIn(formData: FormData): Promise<Session> {
         const response = await fetch('http://localhost:3001/auth/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password })
         })
-
         if (!response.ok) {
             console.error(response.statusText, response.status)
         }
@@ -35,29 +37,31 @@ export async function handleLogIn(formData: FormData): Promise<Session> {
             ...user,
             accessToken,
         }
-
         return session;
     } catch (error) {
         console.error(error)
         throw error
     }
 }
-
-export async function saveRefreshToken(refreshToken: string) {
-    cookies().set('refreshToken', refreshToken, {
-        maxAge: 60 * 60 * 24 * 30,
-        path: '/',
-        sameSite: 'lax',
-    })
-}
-
 export async function saveAccessToken(accessToken: string) {
     cookies().set('accessToken', accessToken, {
         maxAge: 60 * 60 * 24 * 30,
         path: '/',
         sameSite: 'none',
+        secure: true,
     })
 }
+
+export async function saveRefreshToken(refreshToken: string) {
+    cookies().set('refreshToken', refreshToken, {
+        maxAge: 60 * 60 * 24 * 30,
+        path: '/',
+        sameSite: 'none',
+        secure: true,
+        httpOnly: true,
+    })
+}
+
 
 export async function getAccessToken() {
     const accessToken = cookies().get('access_token')?.value
@@ -69,6 +73,22 @@ export async function getRefreshToken() {
     return refreshToken
 }
 
+export async function logOut() {
+    const refreshToken = await getRefreshToken()
+
+    const response = await fetch('http://localhost:3001/auth/logout', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${refreshToken}`,
+        }
+    })
+    if (!response.ok) {
+        console.error(response.statusText, response.status)
+    }
+    cookies().delete('access_token')
+    cookies().delete('refresh_token')
+    redirect('/login')
+}
 /*
 Vaaarial2@gmail.com
 123456789123aA$

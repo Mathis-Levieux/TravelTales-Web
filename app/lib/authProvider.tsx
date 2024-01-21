@@ -4,6 +4,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 import { handleLogIn } from "./actions";
 import { Session } from "./types";
 import { decodeJwt } from "jose";
+import { redirect } from "next/navigation";
 type AuthProviderProps = {
     children: React.ReactNode
 }
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const login = async (formData: FormData) => {
         const data = await handleLogIn(formData);
         setSession(data);
+        redirect('/user');
     }
 
     const logout = () => {
@@ -38,7 +40,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
             const jwt = accessToken.split('=')[1];
             try {
                 const payload = decodeJwt(jwt);
-                setSession({ ...payload } as Session);
+                // @ts-expect-error
+                setSession({ ...payload, id: payload.sub } as Session);
             } catch (error) {
                 setSession(null);
             }

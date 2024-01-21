@@ -1,5 +1,5 @@
 import { ResponseCookies, RequestCookies } from 'next/dist/server/web/spec-extension/cookies';
-import { NextResponse } from 'next/server';
+import { NextResponse, userAgent } from 'next/server';
 import { NextRequest } from 'next/server';
 import { getAccessToken, getRefreshToken } from './app/lib/actions';
 import { verifyToken } from './app/lib/utils';
@@ -10,37 +10,57 @@ export async function middleware(req: NextRequest) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
 
-    if (!accessToken || !refreshToken) {
-        const response = NextResponse.redirect('http://localhost:3000/login')
-        response.cookies.delete('access_token')
-        response.cookies.delete('refresh_token')
-        return response
+    if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/signup') && accessToken && refreshToken) {
+        return NextResponse.redirect('http://localhost:3000/user');
     }
 
-    try {
-        const decoded = await verifyToken(accessToken as string);
-        return NextResponse.next();
-    } catch (error) {
-        const res = await fetch('http://localhost:3001/auth/refresh-tokens', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${refreshToken}`,
-            },
-            credentials: 'include',
-        })
-        if (res.ok) {
-            const { access_token: newAccessToken, refresh_token: newRefreshToken } = await res.json();
-            const response = NextResponse.next()
-            response.cookies.set('access_token', newAccessToken)
-            response.cookies.set('refresh_token', newRefreshToken)
-            applySetCookie(req, response)
+    if (req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/signup') {
+        if (!accessToken || !refreshToken) {
+            const response = NextResponse.redirect('http://localhost:3000/login')
+            response.cookies.delete('access_token')
+            response.cookies.delete('refresh_token')
             return response
         }
-        const response = NextResponse.redirect('http://localhost:3000/login')
-        response.cookies.delete('access_token')
-        response.cookies.delete('refresh_token')
-        return response
+
+        try {
+            const decoded = await verifyToken(accessToken as string);
+            return NextResponse.next();
+        } catch (error) {
+            const res = await fetch('http://localhost:3001/auth/refresh-tokens', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${refreshToken}`,
+                    'User-Agent': req.headers.get('user-agent') || 'NextJS Middleware'
+                },
+                credentials: 'include',
+            })
+            if (res.ok) {
+                const { access_token: newAccessToken, refresh_token: newRefreshToken } = await res.json();
+                const response = NextResponse.next()
+                response.cookies.set('access_token', newAccessToken, {
+                    maxAge: 60 * 60 * 24 * 30,
+                    path: '/',
+                    sameSite: 'strict',
+                    secure: true,
+                })
+                response.cookies.set('refresh_token', newRefreshToken, {
+                    maxAge: 60 * 60 * 24 * 30,
+                    path: '/',
+                    sameSite: 'strict',
+                    secure: true,
+                    httpOnly: true,
+                })
+                applySetCookie(req, response)
+                return response
+            }
+            const response = NextResponse.redirect('http://localhost:3000/login')
+            response.cookies.delete('access_token')
+            response.cookies.delete('refresh_token')
+            return response
+        }
+
     }
+
 }
 
 function applySetCookie(req: NextRequest, res: NextResponse): void {
@@ -63,8 +83,21 @@ function applySetCookie(req: NextRequest, res: NextResponse): void {
     });
 }
 
+// export const config = {
+//     matcher: [
+//         '/user',
+//     ],
+// }
+
 export const config = {
     matcher: [
-        '/user',
+        /*
+         * Match all request paths except for the ones starting with:
+         * - api (API routes)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         */
+        '/((?!api|_next/static|_next/image|favicon.ico).*)',
     ],
 }

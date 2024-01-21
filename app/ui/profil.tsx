@@ -1,16 +1,19 @@
-import { getUsers } from "../lib/data"
+import { User } from "../lib/types"
 
-export default async function Profil() {
+export default async function Profil({ users }: { users: User[] }) {
 
     /*
 Vaaarial2@gmail.com
 123456789123aA$
     */
-    const users = await getUsers()
     return (
         <>
             <h1>Profil</h1>
-            <p>{users && users || "could not fetch users"}</p>
+            <ul>
+                {users && users.map((user: User) => (
+                    <li key={user.id}>{user.username}</li>
+                )) || "Aucun utilisateur"}
+            </ul>
         </>
     )
 }

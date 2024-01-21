@@ -1,7 +1,12 @@
 export type User = {
   // Define the properties of the User type here
-  id: string;
+  id: number
+  username: string;
   email: string;
+  themePreference: string;
+  bio: string | null,
+  avatar: string | null,
+  roleId: number;
   // Add more properties as needed
 };
 
