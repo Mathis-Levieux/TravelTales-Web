@@ -1,5 +1,5 @@
 import { ResponseCookies, RequestCookies } from 'next/dist/server/web/spec-extension/cookies';
-import { NextResponse, userAgent } from 'next/server';
+import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 import { getAccessToken, getRefreshToken } from './app/lib/actions';
 import { verifyToken } from './app/lib/utils';
@@ -14,7 +14,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect('http://localhost:3000/user');
     }
 
-    if (req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/signup') {
+    if (req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/signup' && req.nextUrl.pathname !== '/') {
         if (!accessToken || !refreshToken) {
             const response = NextResponse.redirect('http://localhost:3000/login')
             response.cookies.delete('access_token')
@@ -30,7 +30,6 @@ export async function middleware(req: NextRequest) {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${refreshToken}`,
-                    'User-Agent': req.headers.get('user-agent') || 'NextJS Middleware'
                 },
                 credentials: 'include',
             })

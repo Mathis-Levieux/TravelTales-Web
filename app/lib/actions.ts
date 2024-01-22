@@ -14,6 +14,7 @@ export async function handleLogIn(formData: FormData): Promise<Session> {
     const email = formData.get('email')
     const password = formData.get('password')
 
+
     try {
         const response = await fetch('http://localhost:3001/auth/login', {
             method: 'POST',
@@ -22,8 +23,10 @@ export async function handleLogIn(formData: FormData): Promise<Session> {
             },
             body: JSON.stringify({ email, password })
         })
-        if (!response.ok) {
-            console.error(response.statusText, response.status)
+        console.log(response)
+        if (response.status !== 200) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Login failed');
         }
 
         const data = await response.json()
