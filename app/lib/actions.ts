@@ -9,12 +9,14 @@ import { redirect } from 'next/navigation'
 Vaaarial2@gmail.com
 123456789123aA$
 */
-export async function handleLogIn(formData: FormData): Promise<Session> {
+export async function handleLogIn(prevState: { message: string }, formData: FormData) {
 
     const email = formData.get('email')
     const password = formData.get('password')
 
-
+    if (!email || !password) {
+        return { message: 'Email and password are required' }
+    }
     try {
         const response = await fetch('http://localhost:3001/auth/login', {
             method: 'POST',
@@ -23,10 +25,11 @@ export async function handleLogIn(formData: FormData): Promise<Session> {
             },
             body: JSON.stringify({ email, password })
         })
-        console.log(response)
         if (response.status !== 200) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Login failed');
+            // const errorData = await response.json();
+            // throw new Error(errorData.message || 'Login failed');
+            console.log(response)
+            return { message: 'Login failed' }
         }
 
         const data = await response.json()
@@ -35,17 +38,20 @@ export async function handleLogIn(formData: FormData): Promise<Session> {
         cookies().set('access_token', accessToken)
         cookies().set('refresh_token', refreshToken)
 
-        const { user } = data;
-        const session: Session = {
-            ...user,
-            accessToken,
-        }
-        return session;
+        redirect('/user')
+        // const { user } = data;
+        // const session: Session = {
+        //     ...user,
+        //     accessToken,
+        // }
+        // return session;
     } catch (error) {
-        console.error(error)
-        throw error
+        return {
+            message: "Login failed"
+        }
     }
 }
+
 export async function saveAccessToken(accessToken: string) {
     cookies().set('accessToken', accessToken, {
         maxAge: 60 * 60 * 24 * 30,
