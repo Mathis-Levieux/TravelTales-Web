@@ -10,11 +10,11 @@ export async function middleware(req: NextRequest) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
 
-    if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/signup') && accessToken && refreshToken) {
+    if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register') && accessToken && refreshToken) {
         return NextResponse.redirect('http://localhost:3000/user');
     }
 
-    if (req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/signup' && req.nextUrl.pathname !== '/') {
+    if (req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/register' && req.nextUrl.pathname !== '/') {
         if (!accessToken || !refreshToken) {
             const response = NextResponse.redirect('http://localhost:3000/login')
             response.cookies.delete('access_token')

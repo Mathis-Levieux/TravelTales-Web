@@ -1,15 +1,79 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { Session } from './types'
-import { get } from 'http'
 import { redirect } from 'next/navigation'
-
+import { z } from 'zod'
+import { passwordRegex } from './constants'
 /*
 Vaaarial2@gmail.com
 123456789123aA$
 */
-export async function handleLogIn(prevState: { message: string }, formData: FormData) {
+
+export type State = {
+    errors?: {
+        email?: string[];
+        username?: string[];
+        password?: string[];
+    };
+    message?: string;
+};
+
+export async function handleRegister(prevState: State, formData: FormData) {
+    const FormSchema = z.object({
+        email: z.string().email({
+            message: 'Please enter a valid email'
+        }),
+        username: z.string().min(3, {
+            message: 'Username must be at least 3 characters long'
+        }),
+        password: z.string().regex(passwordRegex, {
+            message: 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character'
+        }),
+    })
+
+    const validatedFields = FormSchema.safeParse({
+        email: formData.get('email'),
+        username: formData.get('username'),
+        password: formData.get('password'),
+    })
+
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+        }
+    }
+
+    const { email, username, password } = validatedFields.data
+
+    try {
+        const response = await fetch('http://localhost:3001/auth/signup', {
+            method: 'POST',
+            cache: 'no-store',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, username, password })
+        })
+
+        if (response.status !== 201) {
+            console.log(response)
+            return { message: 'Invalid credential' }
+        }
+    } catch (error) {
+        console.error(error)
+        return {
+            message: "Registration failed"
+        }
+    }
+    return (
+        {
+            message: 'Un email de confirmation vous a été envoyé'
+        }
+    )
+}
+
+
+export async function handleLogIn(prevState: { message?: string } | undefined, formData: FormData) {
 
     const email = formData.get('email')
     const password = formData.get('password')
@@ -20,16 +84,15 @@ export async function handleLogIn(prevState: { message: string }, formData: Form
     try {
         const response = await fetch('http://localhost:3001/auth/login', {
             method: 'POST',
+            cache: 'no-store',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password })
         })
+
         if (response.status !== 200) {
-            // const errorData = await response.json();
-            // throw new Error(errorData.message || 'Login failed');
-            console.log(response)
-            return { message: 'Login failed' }
+            return { message: 'Invalid credential' }
         }
 
         const data = await response.json()
@@ -37,19 +100,14 @@ export async function handleLogIn(prevState: { message: string }, formData: Form
         const refreshToken = data.tokens.refreshToken
         cookies().set('access_token', accessToken)
         cookies().set('refresh_token', refreshToken)
-
-        redirect('/user')
-        // const { user } = data;
-        // const session: Session = {
-        //     ...user,
-        //     accessToken,
-        // }
-        // return session;
     } catch (error) {
+        console.error(error)
         return {
             message: "Login failed"
         }
     }
+
+    redirect('/user')
 }
 
 export async function saveAccessToken(accessToken: string) {

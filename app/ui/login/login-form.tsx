@@ -1,22 +1,24 @@
 'use client'
-import { Button } from "@/components/ui/button"
-import { useAuth } from "@/app/lib/authProvider";
 import { useFormState, useFormStatus } from "react-dom";
 import { handleLogIn } from "@/app/lib/actions";
+import SubmitButton from "@/app/ui/submit-button"
+import { useState } from "react";
+
+
 const initialState = {
     message: "",
 }
-function SubmitButton() {
-    const { pending } = useFormStatus()
 
-    return (
-        <Button type="submit" aria-disabled={pending}>
-            Connexion
-        </Button>
-    )
-}
 export default function LoginForm() {
     const [state, formAction] = useFormState(handleLogIn, initialState)
+    // const [isLoading, setLoading] = useState(true)
+    // if (isLoading) {
+    //     return (
+    //         <div>
+    //             <p>Chargement...</p>
+    //         </div>
+    //     )
+    // }
 
     return (
         <form action={formAction}>
@@ -24,8 +26,13 @@ export default function LoginForm() {
             <input type="email" id="email" name="email" />
             <label htmlFor="password">Mot de passe</label>
             <input type="password" id="password" name="password" />
-            <SubmitButton />
-            <p aria-live="polite" role="status" >{state.message}</p>
+            <SubmitButton>
+                Se connecter
+            </SubmitButton>
+            {
+                state?.message &&
+                <p aria-live="polite" role="status" >{state.message}</p>
+            }
         </form>
     )
 }
