@@ -4,30 +4,23 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { passwordRegex } from './constants'
+import { isEmailTaken } from './utils'
+import { RegisterState } from './types'
 /*
 Vaaarial2@gmail.com
 123456789123aA$
 */
 
-export type State = {
-    errors?: {
-        email?: string[];
-        username?: string[];
-        password?: string[];
-    };
-    message?: string;
-};
-
-export async function handleRegister(prevState: State, formData: FormData) {
+export async function handleRegister(prevState: RegisterState, formData: FormData) {
     const FormSchema = z.object({
         email: z.string().email({
-            message: 'Please enter a valid email'
+            message: "L'email est invalide"
         }),
         username: z.string().min(3, {
-            message: 'Username must be at least 3 characters long'
+            message: "Le nom d'utilisateur doit contenir au moins 3 caractères"
         }),
         password: z.string().regex(passwordRegex, {
-            message: 'Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character'
+            message: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
         }),
     })
 
@@ -36,6 +29,28 @@ export async function handleRegister(prevState: State, formData: FormData) {
         username: formData.get('username'),
         password: formData.get('password'),
     })
+
+    let errors = {};
+
+    if (!validatedFields.success) {
+        errors = {
+            ...errors,
+            ...validatedFields.error.flatten().fieldErrors,
+        };
+    }
+
+    const isEmailAlreadyTaken = await isEmailTaken(formData.get('email') as string);
+    if (isEmailAlreadyTaken) {
+        errors = {
+            ...errors,
+            email: ['Cet email est déjà utilisé'],
+        };
+    }
+
+    if (Object.keys(errors).length > 0) {
+        console.log(errors)
+        return { errors };
+    }
 
     if (!validatedFields.success) {
         return {
@@ -56,8 +71,7 @@ export async function handleRegister(prevState: State, formData: FormData) {
         })
 
         if (response.status !== 201) {
-            console.log(response)
-            return { message: 'Invalid credential' }
+            return { message: 'Registration failed' }
         }
     } catch (error) {
         console.error(error)
@@ -160,3 +174,7 @@ export async function logOut() {
 Vaaarial2@gmail.com
 123456789123aA$
 */
+
+export async function handleTripForm() {
+    // TO DO : FORMULAIRE DE CREATION DE TRAJET
+}

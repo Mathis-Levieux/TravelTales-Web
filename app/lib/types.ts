@@ -19,3 +19,12 @@ export type Session = {
   avatar: string | null,
   roleId: number;
 }
+
+export type RegisterState = {
+  errors?: {
+    email?: string[];
+    username?: string[];
+    password?: string[];
+  };
+  message?: string;
+};

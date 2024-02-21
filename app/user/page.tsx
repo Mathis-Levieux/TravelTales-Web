@@ -5,7 +5,7 @@ import { getUsers } from "../lib/data"
 import { User } from "../lib/types";
 import { logOut } from "../lib/actions";
 
-export default async function Home() {
+export default async function Page() {
 
     const users: User[] = await getUsers()
     return (

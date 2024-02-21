@@ -1,10 +1,11 @@
 'use client'
-import { State, handleRegister } from "@/app/lib/actions"
+import { handleRegister } from "@/app/lib/actions"
 import { useFormState } from "react-dom"
 import SubmitButton from "@/app/ui/submit-button"
 
 export default function RegisterForm() {
-    const initialState: State = {
+
+    const initialState: any = {
         errors: {},
         message: '',
     }
@@ -12,10 +13,10 @@ export default function RegisterForm() {
 
     return (
         <>
-            <form action={formAction}>
+            <form action={formAction} >
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" />
-                <div id="username-error" aria-live="polite" aria-atomic="true">
+                <div id="email-error" aria-live="polite" aria-atomic="true">
                     {state.errors?.email &&
                         <p className="mt-2 text-sm text-red-500">
                             {state.errors.email}
@@ -27,7 +28,7 @@ export default function RegisterForm() {
                 <input type="text" id="username" name="username" />
                 <div id="username-error" aria-live="polite" aria-atomic="true">
                     {state.errors?.username &&
-                        <p className="mt-2 text-sm text-red-500" >
+                        <p className="mt-2 text-sm text-red-500">
                             {state.errors.username}
                         </p>
                     }
@@ -35,7 +36,7 @@ export default function RegisterForm() {
                 <br />
                 <label htmlFor="password">Mot de passe</label>
                 <input type="password" id="password" name="password" />
-                <div id="username-error" aria-live="polite" aria-atomic="true">
+                <div id="password-error" aria-live="polite" aria-atomic="true">
                     {state.errors?.password &&
                         <p className="mt-2 text-sm text-red-500">
                             {state.errors.password}

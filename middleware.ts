@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
     const refreshToken = await getRefreshToken();
 
     if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register') && accessToken && refreshToken) {
-        return NextResponse.redirect('http://localhost:3000/user');
+        return NextResponse.redirect('http://localhost:3000/dashboard');
     }
 
     if (req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/register' && req.nextUrl.pathname !== '/') {

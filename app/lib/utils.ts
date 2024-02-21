@@ -8,3 +8,22 @@ export async function verifyToken(token: string) {
         throw new Error('Invalid token or expired token');
     }
 }
+
+export async function isEmailTaken(email: string) {
+    if (!email) {
+        return;
+    }
+    const response = await fetch(`http://localhost:3001/auth/${email}`, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    const isEmailTaken = await response.json();
+    if (isEmailTaken) {
+        return true
+    } else {
+        return false
+    }
+}
