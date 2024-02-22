@@ -174,46 +174,29 @@ Vaaarial2@gmail.com
 123456789123aA$
 */
 
-export async function handleTripForm(data: any) {
-
-    const FormSchema = z.object({
-        username: z.string().min(2, {
-            message: "Username must be at least 5 characters.",
-        }),
+export async function handleTripForm(data: {
+    tripName: string,
+    dateRange: {
+        from: Date,
+        to: Date
+    }
+}) {
+    const formSchema = z.object({
+        tripName: z.string().min(2),
         dateRange: z.object({
             from: z.date(),
             to: z.date(),
         })
     })
 
-    const validatedFields = FormSchema.safeParse({
-        username: data.username,
-        dateRange: {
-            from: data.dateRange.from,
-            to: data.dateRange.to
+    const result = formSchema.safeParse(data)
+    if (!result.success) {
+        return {
+            error: "Invalid data"
         }
-    })
-
-    if (!validatedFields.success) {
-        console.error(validatedFields.error.flatten().fieldErrors)
-        return validatedFields.error.flatten().fieldErrors;
     }
 
-    const { username, dateRange } = validatedFields.data
-
-
-    const formattedDate = {
-        from: new Date(dateRange.from).toLocaleDateString(),
-        to: new Date(dateRange.to).toLocaleDateString()
+    return {
+        message: 'Voyage créé'
     }
-
-    const tripData = {
-        username,
-        dateRange: formattedDate
-    }
-
-    console.log(tripData)
-
-
-    // TO DO : FORMULAIRE DE CREATION DE TRAJET
 }

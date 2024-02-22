@@ -1,14 +1,9 @@
 "use client"
 
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { IoCalendarOutline } from "react-icons/io5";
-import { format } from "date-fns"
-import { useForm, useFormState } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import {
     Form,
     FormControl,
@@ -18,156 +13,91 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
 import { Input } from "@/components/ui/input"
+import { DatePickerWithRange } from "./date-picker-with-range"
+import React from "react"
 import { handleTripForm } from "@/app/lib/actions"
 
-
-
-// const FormSchema = z.object({
-//     username: z.string().min(2, {
-//         message: "Username must be at least 2 characters.",
-//     }),
-//     dateRange: z.object({
-//         from: z.date(),
-//         to: z.date(),
-//     })
-// })
+const formSchema = z.object({
+    tripName: z.string().min(2, {
+        message: "Le nom du voyage doit contenir au moins 2 caractères"
+    }),
+    dateRange: z.object({
+        from: z.date(),
+        to: z.date(),
+    })
+})
 
 export default function TripForm() {
 
-    const form = useForm({
-        // resolver: zodResolver(FormSchema),
+    const [message, setMessage] = React.useState("")
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            tripName: "",
             dateRange: {
-                from: null,
-                to: null
-            },
+                from: new Date(),
+                to: new Date(),
+            }
         },
     })
 
-    const onSubmit = async (data: any) => {
-        handleTripForm(data)
-    }
+    // 2. Define a submit handler.
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        // Do something with the form values.
+        // ✅ This will be type-safe and validated.
+        const response = await handleTripForm(values)
+        if (response.error) setMessage(response.error)
+        else if (response.message) setMessage(response.message)
 
+    }
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="tripName"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Nom du voyage</FormLabel>
                             <FormControl>
                                 <Input placeholder="shadcn" {...field} />
                             </FormControl>
                             <FormDescription>
-                                This is your public display name.
+                                Enter the name of your trip.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-
                 <FormField
                     control={form.control}
                     name="dateRange"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Date Range</FormLabel>
+                            <FormLabel>Date du voyage</FormLabel>
                             <FormControl>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            id="date"
-                                            variant={"outline"}
-                                            className={cn(
-                                                "w-[300px] justify-start text-left font-normal",
-                                                !field.value && "text-muted-foreground"
-                                            )}
-                                        >
-                                            <IoCalendarOutline className="mr-2 h-4 w-4" />
-                                            {field.value?.from ? (
-                                                field.value.to ? (
-                                                    <>
-                                                        {format(field.value.from, "LLL dd, y")} -{" "}
-                                                        {format(field.value.to, "LLL dd, y")}
-                                                    </>
-                                                ) : (
-                                                    format(field.value.from, "LLL dd, y")
-                                                )
-                                            ) : (
-                                                <span>Choisis une date</span>
-                                            )}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0" align="start">
-                                        <Calendar
-                                            initialFocus
-                                            mode="range"
-                                            defaultMonth={field.value?.from || new Date()}
-                                            //@ts-expect-error
-                                            selected={field.value}
-                                            onSelect={(date) => field.onChange(date)}
-                                            numberOfMonths={2}
-                                        />
-                                    </PopoverContent>
-                                </Popover>
+                                <Controller
+                                    control={form.control}
+                                    name="dateRange"
+                                    render={({ field }) => (
+                                        <DatePickerWithRange date={field.value} setDate={field.onChange} />
+                                    )}
+                                />
+
                             </FormControl>
                             <FormDescription>
-                                This is the date range for your trip.
+                                Choose the start and end date of your trip.
                             </FormDescription>
+                            <FormMessage />
                         </FormItem>
                     )}
                 />
-
+                <FormMessage>{message}</FormMessage>
                 <Button type="submit">Submit</Button>
             </form>
         </Form>
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export default async function TripForm() {
-
-//     const initialState: any = {
-//         errors: {},
-//         message: '',
-//     }
-
-//     const [state, formAction] = useFormState(handleTripForm, initialState)
-
-//     return (
-//         <form className="w-2/5" action={formAction}>
-//             <Input className="mb-2" type="text" name="tripName" placeholder="Nom du voyage" />
-//             <Input className="mb-2" type="text" name="tripDescription" placeholder="Description du voyage (optionnelle)" />
-//             <DatePickerWithRange className="mb-2" />
-//             <SubmitButton>
-//                 Créer un voyage
-//             </SubmitButton>
-//         </form>
-//     )
-// }
