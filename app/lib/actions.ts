@@ -2,10 +2,10 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
+import { date, z } from 'zod'
 import { passwordRegex } from './constants'
 import { isEmailTaken } from './utils'
-import { RegisterState } from './types'
+import { RegisterState, TripState } from './types'
 /*
 Vaaarial2@gmail.com
 123456789123aA$
@@ -48,7 +48,6 @@ export async function handleRegister(prevState: RegisterState, formData: FormDat
     }
 
     if (Object.keys(errors).length > 0) {
-        console.log(errors)
         return { errors };
     }
 
@@ -175,6 +174,46 @@ Vaaarial2@gmail.com
 123456789123aA$
 */
 
-export async function handleTripForm() {
+export async function handleTripForm(data: any) {
+
+    const FormSchema = z.object({
+        username: z.string().min(2, {
+            message: "Username must be at least 5 characters.",
+        }),
+        dateRange: z.object({
+            from: z.date(),
+            to: z.date(),
+        })
+    })
+
+    const validatedFields = FormSchema.safeParse({
+        username: data.username,
+        dateRange: {
+            from: data.dateRange.from,
+            to: data.dateRange.to
+        }
+    })
+
+    if (!validatedFields.success) {
+        console.error(validatedFields.error.flatten().fieldErrors)
+        return validatedFields.error.flatten().fieldErrors;
+    }
+
+    const { username, dateRange } = validatedFields.data
+
+
+    const formattedDate = {
+        from: new Date(dateRange.from).toLocaleDateString(),
+        to: new Date(dateRange.to).toLocaleDateString()
+    }
+
+    const tripData = {
+        username,
+        dateRange: formattedDate
+    }
+
+    console.log(tripData)
+
+
     // TO DO : FORMULAIRE DE CREATION DE TRAJET
 }

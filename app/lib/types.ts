@@ -28,3 +28,12 @@ export type RegisterState = {
   };
   message?: string;
 };
+
+export type TripState = {
+  errors?: {
+    tripName?: string[];
+    tripDescription?: string[];
+    date?: string[];
+  };
+  message?: string;
+};
