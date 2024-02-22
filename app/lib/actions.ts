@@ -197,6 +197,6 @@ export async function handleTripForm(data: {
     }
 
     return {
-        message: 'Voyage créé'
+        message: 'Voyage créé du ' + data.dateRange.from.toDateString() + ' au ' + data.dateRange.to.toDateString()
     }
 }
