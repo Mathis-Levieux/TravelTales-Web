@@ -19,21 +19,21 @@ import { handleTripForm } from "@/app/lib/actions"
 import { useState } from "react"
 
 const FormSchema = z.object({
-    tripName: z.string().min(2, {
-        message: "Le nom du voyage doit contenir au moins 2 caractères"
+    tripName: z.string().min(1, {
+        message: "Le nom du voyage ne peut pas être vide"
     }),
     dateRange: z.object({
         from: z.date(),
         to: z.date(),
     })
 })
-
 export default function TripForm() {
 
     const [message, setMessage] = useState<string>("")
 
 
     const form = useForm<z.infer<typeof FormSchema>>({
+        mode: "all",
         resolver: zodResolver(FormSchema),
         defaultValues: {
             tripName: "",
@@ -45,8 +45,6 @@ export default function TripForm() {
     })
 
     async function onSubmit(values: z.infer<typeof FormSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
         const response = await handleTripForm(values)
         if (response.error) setMessage(response.error)
         else if (response.message) setMessage(response.message)
@@ -55,18 +53,18 @@ export default function TripForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center w-full space-y-8">
                 <FormField
                     control={form.control}
                     name="tripName"
                     render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
+                        <FormItem className="w-96">
+                            <FormLabel>Nom du voyage</FormLabel>
                             <FormControl>
-                                <Input placeholder="Nom du voyage" {...field} />
+                                <Input className="border-none focus-visible:ring-2" placeholder="Nom du voyage" {...field} />
                             </FormControl>
                             <FormDescription>
-                                The name of your trip.
+                                Le nom de votre voyage.
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -77,20 +75,25 @@ export default function TripForm() {
                     control={form.control}
                     name="dateRange"
                     render={({ field }) => (
-                        <FormItem className="flex flex-col">
+                        <FormItem className="flex flex-col w-96">
                             <FormLabel>Date Range</FormLabel>
                             <DatePickerWithRange
+                                className=""
                                 value={field.value}
                                 onChange={field.onChange}
                             />
                             <FormDescription>
                                 The date range of your trip.
                             </FormDescription>
-                            <FormMessage />
+                            {form.formState.errors.dateRange && (
+                                <p className="mt-2 text-sm text-red-500">
+                                    {form.formState.errors.dateRange.to ? "Veuillez choisir une date de début et une date de fin" : 'Veuillez choisir une date de début et une date de fin'}
+                                </p>
+                            )}
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Envoyer</Button>
+                <Button type="submit" disabled={!form.formState.isValid}>Envoyer</Button>
                 <FormMessage>{message}</FormMessage>
             </form>
         </Form>

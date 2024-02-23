@@ -5,6 +5,8 @@ import SubmitButton from "@/app/ui/submit-button"
 
 export default function RegisterForm() {
 
+    // TO DO: REFAIRE LE FORMULAIRE COMME CELUI DE TRIP-FORM
+
     const initialState: any = {
         errors: {},
         message: '',

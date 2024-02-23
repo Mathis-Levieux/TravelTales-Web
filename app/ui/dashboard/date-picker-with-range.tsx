@@ -13,6 +13,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { fr } from "date-fns/locale"
 
 export default function DatePickerWithRange({
     className,
@@ -28,7 +29,7 @@ export default function DatePickerWithRange({
                         id="date"
                         variant={"outline"}
                         className={cn(
-                            "w-[300px] justify-start text-left font-normal",
+                            "w-full justify-start text-left font-normal",
                             !value && "text-muted-foreground"
                         )}
                     >
@@ -36,11 +37,11 @@ export default function DatePickerWithRange({
                         {value?.from ? (
                             value.to ? (
                                 <>
-                                    {format(value.from, "LLL dd, y")} -{" "}
-                                    {format(value.to, "LLL dd, y")}
+                                    {format(value.from, "dd/LL/yyyy", { locale: fr })} -{" "}
+                                    {format(value.to, "dd/LL/yyyy", { locale: fr })}
                                 </>
                             ) : (
-                                format(value.from, "LLL dd, y")
+                                format(value.from, "dd/LL/yyyy", { locale: fr })
                             )
                         ) : (
                             <span>Pick a date</span>
@@ -55,6 +56,7 @@ export default function DatePickerWithRange({
                         selected={value}
                         onSelect={onChange}
                         numberOfMonths={2}
+                        locale={fr}
                     />
                 </PopoverContent>
             </Popover>

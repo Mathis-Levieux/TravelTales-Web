@@ -181,22 +181,31 @@ export async function handleTripForm(data: {
         to: Date
     }
 }) {
-    const formSchema = z.object({
-        tripName: z.string().min(2),
+
+
+    const FormSchema = z.object({
+        tripName: z.string().min(1, {
+            message: "Le nom du voyage ne peut pas être vide"
+        }),
         dateRange: z.object({
             from: z.date(),
             to: z.date(),
         })
     })
 
-    const result = formSchema.safeParse(data)
+    const result = FormSchema.safeParse(data)
     if (!result.success) {
         return {
             error: "Invalid data"
         }
     }
 
+    const formattedDate = {
+        from: data.dateRange.from.toLocaleDateString(),
+        to: data.dateRange.to.toLocaleDateString()
+    }
+
     return {
-        message: 'Voyage créé du ' + data.dateRange.from.toDateString() + ' au ' + data.dateRange.to.toDateString()
+        message: 'Voyage créé du ' + formattedDate.from + ' au ' + formattedDate.to
     }
 }

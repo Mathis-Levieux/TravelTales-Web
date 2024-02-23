@@ -1,10 +1,10 @@
-import TripForm from "@/app/ui/dashboard/trip-form"
+import TripForm from "@/app/ui/dashboard/trip-form";
 
-
+// Page component
 export default async function Page() {
     return (
-        <main className="flex justify-center">
-            <TripForm />
+        <main className="">
+                <TripForm />
         </main>
     )
 }
