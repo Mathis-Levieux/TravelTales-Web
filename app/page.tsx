@@ -9,6 +9,7 @@ export default function Home() {
       <Link href={'/login'}>Login</Link>
       <Link href={'/user'}>Route privée</Link>
       {/* <Session /> */}
+
     </>
   )
 }

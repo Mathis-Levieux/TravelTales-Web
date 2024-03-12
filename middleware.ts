@@ -7,14 +7,19 @@ import { verifyToken } from './app/lib/utils';
 
 
 export async function middleware(req: NextRequest) {
-    const accessToken = await getAccessToken();
-    const refreshToken = await getRefreshToken();
 
-    if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register') && accessToken && refreshToken) {
-        return NextResponse.redirect('http://localhost:3000/dashboard');
+    if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register')) {
+        const accessToken = await getAccessToken();
+        const refreshToken = await getRefreshToken();
+        if (accessToken && refreshToken) {
+            return NextResponse.redirect('http://localhost:3000/dashboard');
+        }
+        return NextResponse.next();
     }
 
     if (req.nextUrl.pathname !== '/login' && req.nextUrl.pathname !== '/register' && req.nextUrl.pathname !== '/') {
+        const accessToken = await getAccessToken();
+        const refreshToken = await getRefreshToken();
         if (!accessToken || !refreshToken) {
             const response = NextResponse.redirect('http://localhost:3000/login')
             response.cookies.delete('access_token')
