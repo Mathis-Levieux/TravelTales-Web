@@ -4,9 +4,9 @@ import { CgProfile } from "react-icons/cg";
 
 export default async function Header() {
     return (
-        <header className="h-40 bg-header flex items-center">
+        <header className="h-24 bg-header flex items-center">
 
-            <CgProfile className="ml-12" size={120} color="white" />
+            <CgProfile className="ml-12" size={80} color="white" />
             <Link className="ml-12" href={'/'}>
                 <h1 className="raemoon text-7xl text-white font-bold">
                     TravelTales

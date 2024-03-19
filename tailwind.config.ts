@@ -58,6 +58,12 @@ const config = {
         bluetext: {
           DEFAULT: "hsl(var(--bluetext))",
         },
+        jaune: {
+          DEFAULT: "hsl(var(--jaune))",
+        },
+        marron: {
+          DEFAULT: "hsl(var(--marron))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

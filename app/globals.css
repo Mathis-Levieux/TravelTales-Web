@@ -39,6 +39,10 @@
 
     --header: 188 60 72;
 
+    --jaune: 46 78 87;
+
+    --marron: 28 58 44;
+
     --bluetext: 187 66 41;
 
     --radius: 0.5rem;
@@ -80,9 +84,15 @@
     @apply border-border;
   }
 
+  /* html,
+  body {
+    height: 100%;
+  } */
+
   body {
     background-image: url('../public/cloud.svg');
-    background-size: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
     @apply bg-background text-foreground;
   }
 }
