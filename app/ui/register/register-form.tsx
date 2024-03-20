@@ -18,10 +18,10 @@ export default function RegisterForm() {
 
     return (
         <>
-            <form action={formAction} className="rounded-2xl w-6/12 bg-white/50 flex flex-col items-center pt-10">
+            <form action={formAction} className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center">
                 <div className="w-10/12">
 
-                    <div className="pb-3">
+                    <div className="py-3">
                         <Input type="file" id="avatar" name="avatar" className="hidden" />
                         <label htmlFor="avatar" className="cursor-pointer w-fit m-auto block">
                             <FaUser className="bg-white rounded-full m-auto text-marron pt-7 pb-7" size={100} />
@@ -55,12 +55,21 @@ export default function RegisterForm() {
                         }
                     </div>
 
+                    <Input className="rounded-full" type="password" id="passwordConfirmation" name="passwordConfirmation" placeholder="Confirmer le mot de passe" />
+                    <div className="pb-3" id="passwordConfirmation-error" aria-live="polite" aria-atomic="true">
+                        {state.errors?.passwordConfirmation &&
+                            <p className="mt-2 text-sm text-red-500">
+                                {state.errors.passwordConfirmation}
+                            </p>
+                        }
+                    </div>
+
                     {
                         state.message &&
                         <p aria-live="polite" role="status" >{state.message}</p>
                     }
                 </div>
-                <SubmitButton className="rounded-b-2xl rounded-t-none w-full bg-jaune text-marron">
+                <SubmitButton className="mt-10 rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16">
                     Créer un compte
                 </SubmitButton>
             </form>

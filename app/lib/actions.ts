@@ -22,12 +22,16 @@ export async function handleRegister(prevState: RegisterState, formData: FormDat
         password: z.string().regex(passwordRegex, {
             message: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
         }),
+        passwordConfirmation: z.string().refine((value) => value === formData.get('password'), {
+            message: "Les mots de passe ne correspondent pas"
+        })
     })
 
     const validatedFields = FormSchema.safeParse({
         email: formData.get('email'),
         username: formData.get('username'),
         password: formData.get('password'),
+        passwordConfirmation: formData.get('passwordConfirmation'),
     })
 
     let errors = {};
@@ -39,11 +43,19 @@ export async function handleRegister(prevState: RegisterState, formData: FormDat
         };
     }
 
-    const isEmailAlreadyTaken = await isEmailTaken(formData.get('email') as string);
-    if (isEmailAlreadyTaken) {
-        errors = {
-            ...errors,
-            email: ['Cet email est déjà utilisé'],
+    try {
+        const isEmailAlreadyTaken = await isEmailTaken(formData.get('email') as string);
+
+        if (isEmailAlreadyTaken) {
+            errors = {
+                ...errors,
+                email: ['Cet email est déjà utilisé'],
+            };
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            message: "Registration failed",
         };
     }
 

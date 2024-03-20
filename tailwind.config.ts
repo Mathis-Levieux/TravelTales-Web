@@ -64,6 +64,9 @@ const config = {
         marron: {
           DEFAULT: "hsl(var(--marron))",
         },
+        bleufooter: {
+          DEFAULT: "hsl(var(--bleufooter))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
