@@ -11,8 +11,19 @@ Vaaarial2@gmail.com
 123456789123aA$
 */
 
-export async function handleRegister(prevState: RegisterState, formData: FormData) {
+export async function handleRegister(data: {
+    email: string,
+    username: string,
+    password: string,
+    passwordConfirmation: string
+}) {
+
+
     const FormSchema = z.object({
+        avatar: z.any()
+            .refine(value => value[0].type === "image/jpeg" || value[0].type === "image/png", {
+                message: "Le fichier doit être une image jpeg ou png"
+            }),
         email: z.string().email({
             message: "L'email est invalide"
         }),
@@ -22,54 +33,34 @@ export async function handleRegister(prevState: RegisterState, formData: FormDat
         password: z.string().regex(passwordRegex, {
             message: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
         }),
-        passwordConfirmation: z.string().refine((value) => value === formData.get('password'), {
-            message: "Les mots de passe ne correspondent pas"
-        })
+        passwordConfirmation: z.string().regex(passwordRegex, {
+            message: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
+        }),
     })
 
-    const validatedFields = FormSchema.safeParse({
-        email: formData.get('email'),
-        username: formData.get('username'),
-        password: formData.get('password'),
-        passwordConfirmation: formData.get('passwordConfirmation'),
-    })
-
-    let errors = {};
-
-    if (!validatedFields.success) {
-        errors = {
-            ...errors,
-            ...validatedFields.error.flatten().fieldErrors,
-        };
+    const result = FormSchema.safeParse(data)
+    if (!result.success) {
+        return {
+            error: "Invalid data"
+        }
     }
 
+    const { email, username, password } = data
+
     try {
-        const isEmailAlreadyTaken = await isEmailTaken(formData.get('email') as string);
+        const isEmailAlreadyTaken = await isEmailTaken(email);
 
         if (isEmailAlreadyTaken) {
-            errors = {
-                ...errors,
-                email: ['Cet email est déjà utilisé'],
-            };
+            return {
+                error: "Email already taken"
+            }
         }
     } catch (error) {
         console.error(error);
         return {
-            message: "Registration failed",
+            error: "Registration failed"
         };
     }
-
-    if (Object.keys(errors).length > 0) {
-        return { errors };
-    }
-
-    if (!validatedFields.success) {
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-        }
-    }
-
-    const { email, username, password } = validatedFields.data
 
     try {
         const response = await fetch('http://localhost:3001/auth/signup', {
@@ -82,20 +73,105 @@ export async function handleRegister(prevState: RegisterState, formData: FormDat
         })
 
         if (response.status !== 201) {
-            return { message: 'Registration failed' }
+            return { error: 'Registration failed' }
         }
     } catch (error) {
         console.error(error)
         return {
-            message: "Registration failed"
+            error: "Registration failed"
         }
     }
-    return (
-        {
-            message: 'Un email de confirmation vous a été envoyé'
-        }
-    )
+
+    return {
+        message: 'Un email de confirmation vous a été envoyé'
+    }
 }
+
+// export async function handleRegister(prevState: RegisterState, formData: FormData) {
+//     const FormSchema = z.object({
+//         email: z.string().email({
+//             message: "L'email est invalide"
+//         }),
+//         username: z.string().min(3, {
+//             message: "Le nom d'utilisateur doit contenir au moins 3 caractères"
+//         }),
+//         password: z.string().regex(passwordRegex, {
+//             message: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
+//         }),
+//         passwordConfirmation: z.string().refine((value) => value === formData.get('password'), {
+//             message: "Les mots de passe ne correspondent pas"
+//         })
+//     })
+
+//     const validatedFields = FormSchema.safeParse({
+//         email: formData.get('email'),
+//         username: formData.get('username'),
+//         password: formData.get('password'),
+//         passwordConfirmation: formData.get('passwordConfirmation'),
+//     })
+
+//     let errors = {};
+
+//     if (!validatedFields.success) {
+//         errors = {
+//             ...errors,
+//             ...validatedFields.error.flatten().fieldErrors,
+//         };
+//     }
+
+//     try {
+//         const isEmailAlreadyTaken = await isEmailTaken(formData.get('email') as string);
+
+//         if (isEmailAlreadyTaken) {
+//             errors = {
+//                 ...errors,
+//                 email: ['Cet email est déjà utilisé'],
+//             };
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         return {
+//             message: "Registration failed",
+//         };
+//     }
+
+//     if (Object.keys(errors).length > 0) {
+//         return { errors };
+//     }
+
+//     if (!validatedFields.success) {
+//         return {
+//             errors: validatedFields.error.flatten().fieldErrors,
+//         }
+//     }
+
+//     const { email, username, password } = validatedFields.data
+
+//     try {
+//         const response = await fetch('http://localhost:3001/auth/signup', {
+//             method: 'POST',
+//             cache: 'no-store',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ email, username, password })
+//         })
+
+//         if (response.status !== 201) {
+//             return { message: 'Registration failed' }
+//         }
+//     } catch (error) {
+//         console.error(error)
+//         return {
+//             message: "Registration failed"
+//         }
+//     }
+//     return (
+//         {
+//             message: 'Un email de confirmation vous a été envoyé'
+//         }
+//     )
+// }
 
 
 export async function handleLogIn(prevState: { message?: string } | undefined, formData: FormData) {

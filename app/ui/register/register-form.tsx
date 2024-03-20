@@ -1,78 +1,166 @@
 'use client'
 import { handleRegister } from "@/app/lib/actions"
-import { useFormState } from "react-dom"
-import SubmitButton from "@/app/ui/submit-button"
-import { Input } from "@/components/ui/input"
-import { CgProfile } from "react-icons/cg"
 import { FaUser } from "react-icons/fa";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { passwordRegex } from "@/app/lib/constants"
+import { Label } from "@/components/ui/label"
+
+const MAX_FILE_SIZE = 1024 * 1024 * 5;
+const ACCEPTED_IMAGE_MIME_TYPES = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+];
+const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
+
+const FormSchema = z.object({
+    avatar: z
+        .any()
+        .optional()
+        .refine(value => value[0]?.size <= MAX_FILE_SIZE, {
+            message: "Le fichier ne doit pas dépasser 5Mo"
+        })
+        .refine(value => ACCEPTED_IMAGE_MIME_TYPES.includes(value[0]?.type), {
+            message: "Le fichier doit être une image jpeg ou png"
+        })
+        .refine(value => ACCEPTED_IMAGE_TYPES.includes(value[0]?.type.split("/")[1]), {
+            message: "Le fichier doit être une image jpeg ou png"
+        }),
+    email: z.string().email({
+        message: "L'email est invalide"
+    }),
+    username: z.string().min(3, {
+        message: "Le nom d'utilisateur doit contenir au moins 3 caractères"
+    }),
+    password: z.string().regex(passwordRegex, {
+        message: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
+    }),
+    passwordConfirmation: z.string(),
+}).refine(data => data.password === data.passwordConfirmation, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["passwordConfirmation"]
+})
 
 export default function RegisterForm() {
 
-    // TO DO: REFAIRE LE FORMULAIRE COMME CELUI DE TRIP-FORM
+    const [message, setMessage] = useState<string>("")
 
-    const initialState: any = {
-        errors: {},
-        message: '',
+    const form = useForm<z.infer<typeof FormSchema>>({
+        mode: "all",
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+            avatar: undefined,
+            email: "",
+            username: "",
+            password: "",
+            passwordConfirmation: "",
+        },
+    })
+
+    const fileRef = form.register('avatar');
+
+    async function onSubmit(values: z.infer<typeof FormSchema>) {
+        const response = await handleRegister(values)
+        if (response.error) setMessage(response.error)
+        else if (response.message) setMessage(response.message)
+
     }
-    const [state, formAction] = useFormState(handleRegister, initialState)
-
     return (
         <>
-            <form action={formAction} className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center">
-                <div className="w-10/12">
+            <Form {...form}>
 
-                    <div className="py-3">
-                        <Input type="file" id="avatar" name="avatar" className="hidden" />
-                        <label htmlFor="avatar" className="cursor-pointer w-fit m-auto block">
-                            <FaUser className="bg-white rounded-full m-auto text-marron pt-7 pb-7" size={100} />
-                        </label>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center">
+                    <div className="w-10/12">
+
+                        <FormField
+                            control={form.control}
+                            name="avatar"
+                            render={({ field }) => (
+                                <FormItem className="pb-3">
+                                    <Label htmlFor="avatar" className="cursor-pointer w-fit m-auto block">
+                                        <FaUser className="bg-white rounded-full m-auto text-marron py-7 my-3" size={100} />
+                                    </Label>
+                                    <FormControl>
+                                        <Input id="avatar" type="file" className="hidden"
+                                            {...fileRef}
+                                        />
+                                    </FormControl>
+                                    <FormMessage className="text-sm text-red-500" />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem className="pb-3">
+                                    <FormControl>
+                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Pseudo" {...field} />
+                                    </FormControl>
+                                    <FormMessage className="text-sm text-red-500" />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem className="pb-3">
+                                    <FormControl>
+                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Email" {...field} />
+                                    </FormControl>
+                                    <FormMessage className="text-sm text-red-500" />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem className="pb-3">
+
+                                    <FormControl>
+                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Mot de passe" {...field} />
+                                    </FormControl>
+                                    <FormMessage className="text-sm text-red-500" />
+
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="passwordConfirmation"
+                            render={({ field }) => (
+                                <FormItem className="pb-3">
+                                    <FormControl>
+                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Confirmer le mot de passe" {...field} />
+                                    </FormControl>
+                                    <FormMessage className="text-sm text-red-500" />
+                                </FormItem>
+                            )}
+                        />
                     </div>
 
-                    <Input className="rounded-full" type="text" id="username" name="username" placeholder="Pseudo" />
-                    <div className="pb-3" id="username-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.username &&
-                            <p className="mt-2 text-sm text-red-500">
-                                {state.errors.username}
-                            </p>
-                        }
-                    </div>
-
-                    <Input className="rounded-full" type="email" id="email" name="email" placeholder="Email" />
-                    <div className="pb-3" id="email-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.email &&
-                            <p className="mt-2 text-sm text-red-500">
-                                {state.errors.email}
-                            </p>
-                        }
-                    </div>
-
-                    <Input className="rounded-full" type="password" id="password" name="password" placeholder="Mot de passe" />
-                    <div className="pb-3" id="password-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.password &&
-                            <p className="mt-2 text-sm text-red-500">
-                                {state.errors.password}
-                            </p>
-                        }
-                    </div>
-
-                    <Input className="rounded-full" type="password" id="passwordConfirmation" name="passwordConfirmation" placeholder="Confirmer le mot de passe" />
-                    <div className="pb-3" id="passwordConfirmation-error" aria-live="polite" aria-atomic="true">
-                        {state.errors?.passwordConfirmation &&
-                            <p className="mt-2 text-sm text-red-500">
-                                {state.errors.passwordConfirmation}
-                            </p>
-                        }
-                    </div>
-
-                    {
-                        state.message &&
-                        <p aria-live="polite" role="status" >{state.message}</p>
-                    }
-                </div>
-                <SubmitButton className="mt-10 rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16">
-                    Créer un compte
-                </SubmitButton>
-            </form>
+                    <FormMessage aria-live="polite" role="status">{message}</FormMessage>
+                    <Button className="mt-10 rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16" type="submit" disabled={!form.formState.isValid}>Créer un compte</Button>
+                </form>
+            </Form>
         </>
     )
 }
