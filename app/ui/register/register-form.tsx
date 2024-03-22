@@ -21,6 +21,9 @@ import { passwordRegex } from "@/app/lib/constants"
 
 
 // TO DO : INTEGRER LE RENARD DANS LE FORMULAIRE AVEC LES ERREURS DE VALIDATION
+// TO DO : AVOIR UNE ERREUR SI L'EMAIL EST DEJA UTILISE
+// TO DO : TESTER LA PAGE AVEC L'API
+// TO DO : FAIRE LES HOVER SUR LES BOUTONS
 
 const FormSchema = z.object({
     email: z.string().email({

@@ -87,101 +87,28 @@ export async function handleRegister(data: {
     }
 }
 
-// export async function handleRegister(prevState: RegisterState, formData: FormData) {
-//     const FormSchema = z.object({
-//         email: z.string().email({
-//             message: "L'email est invalide"
-//         }),
-//         username: z.string().min(3, {
-//             message: "Le nom d'utilisateur doit contenir au moins 3 caractères"
-//         }),
-//         password: z.string().regex(passwordRegex, {
-//             message: "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"
-//         }),
-//         passwordConfirmation: z.string().refine((value) => value === formData.get('password'), {
-//             message: "Les mots de passe ne correspondent pas"
-//         })
-//     })
 
-//     const validatedFields = FormSchema.safeParse({
-//         email: formData.get('email'),
-//         username: formData.get('username'),
-//         password: formData.get('password'),
-//         passwordConfirmation: formData.get('passwordConfirmation'),
-//     })
+export async function handleLogIn(data: {
+    email: string,
+    password: string
+}) {
 
-//     let errors = {};
+    const FormSchema = z.object({
+        email: z.string().email({
+            message: "L'email est invalide"
+        }),
+        password: z.string().regex(passwordRegex),
+    })
 
-//     if (!validatedFields.success) {
-//         errors = {
-//             ...errors,
-//             ...validatedFields.error.flatten().fieldErrors,
-//         };
-//     }
-
-//     try {
-//         const isEmailAlreadyTaken = await isEmailTaken(formData.get('email') as string);
-
-//         if (isEmailAlreadyTaken) {
-//             errors = {
-//                 ...errors,
-//                 email: ['Cet email est déjà utilisé'],
-//             };
-//         }
-//     } catch (error) {
-//         console.error(error);
-//         return {
-//             message: "Registration failed",
-//         };
-//     }
-
-//     if (Object.keys(errors).length > 0) {
-//         return { errors };
-//     }
-
-//     if (!validatedFields.success) {
-//         return {
-//             errors: validatedFields.error.flatten().fieldErrors,
-//         }
-//     }
-
-//     const { email, username, password } = validatedFields.data
-
-//     try {
-//         const response = await fetch('http://localhost:3001/auth/signup', {
-//             method: 'POST',
-//             cache: 'no-store',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({ email, username, password })
-//         })
-
-//         if (response.status !== 201) {
-//             return { message: 'Registration failed' }
-//         }
-//     } catch (error) {
-//         console.error(error)
-//         return {
-//             message: "Registration failed"
-//         }
-//     }
-//     return (
-//         {
-//             message: 'Un email de confirmation vous a été envoyé'
-//         }
-//     )
-// }
-
-
-export async function handleLogIn(prevState: { message?: string } | undefined, formData: FormData) {
-
-    const email = formData.get('email')
-    const password = formData.get('password')
-
-    if (!email || !password) {
-        return { message: 'Email and password are required' }
+    const result = FormSchema.safeParse(data)
+    if (!result.success) {
+        return {
+            error: "Email ou mot de passe incorrect"
+        }
     }
+
+    const { email, password } = data
+
     try {
         const response = await fetch('http://localhost:3001/auth/login', {
             method: 'POST',
@@ -192,23 +119,27 @@ export async function handleLogIn(prevState: { message?: string } | undefined, f
             body: JSON.stringify({ email, password })
         })
 
-        if (response.status !== 200) {
-            return { message: 'Invalid credential' }
+        if (!response.ok) {
+            return {
+                error: 'Email ou mot de passe incorrect'
+            }
         }
 
-        const data = await response.json()
-        const accessToken = data.tokens.accessToken
-        const refreshToken = data.tokens.refreshToken
-        cookies().set('access_token', accessToken)
-        cookies().set('refresh_token', refreshToken)
+        const { accessToken, refreshToken } = await response.json()
+        await saveAccessToken(accessToken)
+        await saveRefreshToken(refreshToken)
+
     } catch (error) {
         console.error(error)
         return {
-            message: "Login failed"
+            error: "Erreur lors de la connexion, veuillez réessayer ultérieurement"
         }
     }
 
-    redirect('/user')
+    return {
+        message: "Connexion réussie, redirection en cours..."
+    }
+
 }
 
 export async function saveAccessToken(accessToken: string) {

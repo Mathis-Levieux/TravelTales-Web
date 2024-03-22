@@ -7,15 +7,8 @@ Vaaarial2@gmail.com
     */
 
     return (
-        <div className="container">
-            <main>
-                <h1>
-                    Connexion
-                </h1>
-                <Link href="/">Retour</Link>
-                <LoginForm />
-                <Link href="user">Profil</Link>
-            </main>
-        </div>
+        <main className="m-auto w-full flex justify-center">
+            <LoginForm />
+        </main>
     )
 }

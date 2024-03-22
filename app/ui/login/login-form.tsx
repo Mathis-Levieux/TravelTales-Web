@@ -1,38 +1,102 @@
 'use client'
-import { useFormState, useFormStatus } from "react-dom";
-import { handleLogIn } from "@/app/lib/actions";
-import SubmitButton from "@/app/ui/submit-button"
-import { useState } from "react";
+
+import { handleLogIn } from "@/app/lib/actions"
+import { IoMdMail } from "react-icons/io";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { Button } from "@/components/ui/button"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { redirect } from 'next/navigation'
 
 
-const initialState = {
-    message: "",
-}
+
+// TO DO : INTEGRER LE RENARD DANS LE FORMULAIRE AVEC LES ERREURS DE VALIDATION
+// TO DO : TESTER LA PAGE AVEC L'API
+// TO DO : FAIRE LES HOVER SUR LES BOUTONS
+
+const FormSchema = z.object({
+    email: z.string().email({
+        message: "L'email est invalide"
+    }),
+    password: z.string().min(1, {
+    }),
+})
 
 export default function LoginForm() {
-    const [state, formAction] = useFormState(handleLogIn, initialState)
-    // const [isLoading, setLoading] = useState(true)
-    // if (isLoading) {
-    //     return (
-    //         <div>
-    //             <p>Chargement...</p>
-    //         </div>
-    //     )
-    // }
 
+    const [message, setMessage] = useState<string>("")
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+        mode: "onBlur",
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    })
+
+
+    async function onSubmit(values: z.infer<typeof FormSchema>) {
+        const response = await handleLogIn(values)
+
+        if (response.error) {
+            setMessage(response.error)
+        } else if (response.message) {
+            setMessage(response.message)
+            redirect('/dashboard')
+        }
+    }
     return (
-        <form action={formAction}>
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" />
-            <label htmlFor="password">Mot de passe</label>
-            <input type="password" id="password" name="password" />
-            <SubmitButton>
-                Se connecter
-            </SubmitButton>
-            {
-                state?.message &&
-                <p aria-live="polite" role="status" >{state.message}</p>
-            }
-        </form>
+        <>
+            <Form {...form}>
+
+                <form onSubmit={form.handleSubmit(onSubmit)} className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center">
+                    <div className="w-10/12 my-20">
+
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem className="pb-3 relative">
+                                    <IoMdMail className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
+                                    <FormControl>
+                                        <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold " placeholder="Email" {...field} />
+                                    </FormControl>
+                                    <FormMessage className="text-sm text-red-500" />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem className="pb-3 relative">
+                                    <RiLockPasswordFill className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
+                                    <FormControl>
+                                        <Input type="password" className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold" placeholder="Mot de passe" {...field} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
+
+
+                    </div>
+
+                    <FormMessage aria-live="polite" role="status">{message}</FormMessage>
+                    <Button className="rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16" type="submit">Se connecter</Button>
+                </form>
+            </Form>
+        </>
     )
 }
