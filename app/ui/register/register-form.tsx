@@ -1,6 +1,9 @@
 'use client'
 import { handleRegister } from "@/app/lib/actions"
 import { FaUser } from "react-icons/fa";
+import { IoMdMail } from "react-icons/io";
+import { RiLockPasswordLine, RiLockPasswordFill } from "react-icons/ri";
+
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -15,30 +18,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { passwordRegex } from "@/app/lib/constants"
-import { Label } from "@/components/ui/label"
 
-const MAX_FILE_SIZE = 1024 * 1024 * 5;
-const ACCEPTED_IMAGE_MIME_TYPES = [
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "image/webp",
-];
-const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
+
+// TO DO : INTEGRER LE RENARD DANS LE FORMULAIRE AVEC LES ERREURS DE VALIDATION
 
 const FormSchema = z.object({
-    avatar: z
-        .any()
-        .optional()
-        .refine(value => value[0]?.size <= MAX_FILE_SIZE, {
-            message: "Le fichier ne doit pas dépasser 5Mo"
-        })
-        .refine(value => ACCEPTED_IMAGE_MIME_TYPES.includes(value[0]?.type), {
-            message: "Le fichier doit être une image jpeg ou png"
-        })
-        .refine(value => ACCEPTED_IMAGE_TYPES.includes(value[0]?.type.split("/")[1]), {
-            message: "Le fichier doit être une image jpeg ou png"
-        }),
     email: z.string().email({
         message: "L'email est invalide"
     }),
@@ -59,10 +43,9 @@ export default function RegisterForm() {
     const [message, setMessage] = useState<string>("")
 
     const form = useForm<z.infer<typeof FormSchema>>({
-        mode: "all",
+        mode: "onBlur",
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            avatar: undefined,
             email: "",
             username: "",
             password: "",
@@ -70,7 +53,6 @@ export default function RegisterForm() {
         },
     })
 
-    const fileRef = form.register('avatar');
 
     async function onSubmit(values: z.infer<typeof FormSchema>) {
         const response = await handleRegister(values)
@@ -83,32 +65,16 @@ export default function RegisterForm() {
             <Form {...form}>
 
                 <form onSubmit={form.handleSubmit(onSubmit)} className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center">
-                    <div className="w-10/12">
+                    <div className="w-10/12 my-20">
 
-                        <FormField
-                            control={form.control}
-                            name="avatar"
-                            render={({ field }) => (
-                                <FormItem className="pb-3">
-                                    <Label htmlFor="avatar" className="cursor-pointer w-fit m-auto block">
-                                        <FaUser className="bg-white rounded-full m-auto text-marron py-7 my-3" size={100} />
-                                    </Label>
-                                    <FormControl>
-                                        <Input id="avatar" type="file" className="hidden"
-                                            {...fileRef}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className="text-sm text-red-500" />
-                                </FormItem>
-                            )}
-                        />
                         <FormField
                             control={form.control}
                             name="username"
                             render={({ field }) => (
-                                <FormItem className="pb-3">
+                                <FormItem className="pb-3 relative">
+                                    <FaUser className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                                     <FormControl>
-                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Pseudo" {...field} />
+                                        <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold" placeholder="Pseudo" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-sm text-red-500" />
                                 </FormItem>
@@ -119,9 +85,10 @@ export default function RegisterForm() {
                             control={form.control}
                             name="email"
                             render={({ field }) => (
-                                <FormItem className="pb-3">
+                                <FormItem className="pb-3 relative">
+                                    <IoMdMail className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                                     <FormControl>
-                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Email" {...field} />
+                                        <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold " placeholder="Email" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-sm text-red-500" />
                                 </FormItem>
@@ -132,10 +99,10 @@ export default function RegisterForm() {
                             control={form.control}
                             name="password"
                             render={({ field }) => (
-                                <FormItem className="pb-3">
-
+                                <FormItem className="pb-3 relative">
+                                    <RiLockPasswordLine className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                                     <FormControl>
-                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Mot de passe" {...field} />
+                                        <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold" placeholder="Mot de passe" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-sm text-red-500" />
 
@@ -147,9 +114,10 @@ export default function RegisterForm() {
                             control={form.control}
                             name="passwordConfirmation"
                             render={({ field }) => (
-                                <FormItem className="pb-3">
+                                <FormItem className="relative">
+                                    <RiLockPasswordFill className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                                     <FormControl>
-                                        <Input className="rounded-full border-none focus-visible:ring-2" placeholder="Confirmer le mot de passe" {...field} />
+                                        <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold" placeholder="Confirmer le mot de passe" {...field} />
                                     </FormControl>
                                     <FormMessage className="text-sm text-red-500" />
                                 </FormItem>
@@ -158,7 +126,7 @@ export default function RegisterForm() {
                     </div>
 
                     <FormMessage aria-live="polite" role="status">{message}</FormMessage>
-                    <Button className="mt-10 rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16" type="submit" disabled={!form.formState.isValid}>Créer un compte</Button>
+                    <Button className="rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16" type="submit" disabled={!form.formState.isValid}>Créer un compte</Button>
                 </form>
             </Form>
         </>
