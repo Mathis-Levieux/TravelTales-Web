@@ -1,5 +1,6 @@
 import LoginForm from "@/app/ui/login/login-form";
 import Link from "next/link";
+import Header from "../ui/header";
 export default async function Page() {
     /*
 Vaaarial2@gmail.com
@@ -7,8 +8,15 @@ Vaaarial2@gmail.com
     */
 
     return (
-        <main className="m-auto w-full flex justify-center">
-            <LoginForm />
-        </main>
+        <>
+            <Header
+                button={true}
+                buttonText="Créer un compte"
+                link="/register"
+            />
+            <main className="m-auto w-full flex justify-center">
+                <LoginForm />
+            </main>
+        </>
     )
 }

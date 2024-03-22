@@ -24,7 +24,6 @@ export default function RootLayout({
       {/* <AuthProvider> */}
       <body className={inter.className}>
         <div className='min-h-screen flex flex-col'>
-          <Header />
           {children}
           <Footer />
         </div>
