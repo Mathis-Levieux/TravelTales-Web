@@ -39,7 +39,9 @@ export async function middleware(req: NextRequest) {
                 credentials: 'include',
             })
             if (res.ok) {
-                const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await res.json();
+                const data = await res.json()
+                const newAccessToken = data.access_token
+                const newRefreshToken = data.refresh_token
                 const response = NextResponse.next()
                 response.cookies.set('accessToken', newAccessToken, {
                     maxAge: 60 * 60 * 24 * 30,
