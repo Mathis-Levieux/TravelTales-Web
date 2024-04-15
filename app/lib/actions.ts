@@ -125,7 +125,8 @@ export async function handleLogIn(data: {
             }
         }
 
-        const { accessToken, refreshToken } = await response.json()
+        const { tokens } = await response.json()
+        const { accessToken, refreshToken } = tokens
         await saveAccessToken(accessToken)
         await saveRefreshToken(refreshToken)
 
@@ -136,9 +137,7 @@ export async function handleLogIn(data: {
         }
     }
 
-    return {
-        message: "Connexion réussie, redirection en cours..."
-    }
+    redirect('/dashboard')
 
 }
 
@@ -163,12 +162,12 @@ export async function saveRefreshToken(refreshToken: string) {
 
 
 export async function getAccessToken() {
-    const accessToken = cookies().get('access_token')?.value
+    const accessToken = cookies().get('accessToken')?.value
     return accessToken
 }
 
 export async function getRefreshToken() {
-    const refreshToken = cookies().get('refresh_token')?.value
+    const refreshToken = cookies().get('refreshToken')?.value
     return refreshToken
 }
 
@@ -184,8 +183,8 @@ export async function logOut() {
     if (!response.ok) {
         console.error(response.statusText, response.status)
     }
-    cookies().delete('access_token')
-    cookies().delete('refresh_token')
+    cookies().delete('accessToken')
+    cookies().delete('refreshToken')
     redirect('/login')
 }
 /*

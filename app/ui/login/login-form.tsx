@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 
 
@@ -33,7 +33,6 @@ const FormSchema = z.object({
 })
 
 export default function LoginForm() {
-
     const [message, setMessage] = useState<string>("")
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -49,12 +48,10 @@ export default function LoginForm() {
     async function onSubmit(values: z.infer<typeof FormSchema>) {
         const response = await handleLogIn(values)
 
-        if (response.error) {
+        if (response && response.error) {
             setMessage(response.error)
-        } else if (response.message) {
-            setMessage(response.message)
-            redirect('/dashboard')
         }
+
     }
     return (
         <>
@@ -94,7 +91,7 @@ export default function LoginForm() {
                     </div>
 
                     <FormMessage aria-live="polite" role="status">{message}</FormMessage>
-                    <Button className="rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16" type="submit">Se connecter</Button>
+                    <Button className="rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16" type="submit" disabled={!form.formState.isValid}>Se connecter</Button>
                 </form>
             </Form>
         </>

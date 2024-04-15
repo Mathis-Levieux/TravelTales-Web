@@ -22,8 +22,8 @@ export async function middleware(req: NextRequest) {
         const refreshToken = await getRefreshToken();
         if (!accessToken || !refreshToken) {
             const response = NextResponse.redirect('http://localhost:3000/login')
-            response.cookies.delete('access_token')
-            response.cookies.delete('refresh_token')
+            response.cookies.delete('accessToken')
+            response.cookies.delete('refreshToken')
             return response
         }
 
@@ -39,15 +39,15 @@ export async function middleware(req: NextRequest) {
                 credentials: 'include',
             })
             if (res.ok) {
-                const { access_token: newAccessToken, refresh_token: newRefreshToken } = await res.json();
+                const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await res.json();
                 const response = NextResponse.next()
-                response.cookies.set('access_token', newAccessToken, {
+                response.cookies.set('accessToken', newAccessToken, {
                     maxAge: 60 * 60 * 24 * 30,
                     path: '/',
                     sameSite: 'strict',
                     secure: true,
                 })
-                response.cookies.set('refresh_token', newRefreshToken, {
+                response.cookies.set('refreshToken', newRefreshToken, {
                     maxAge: 60 * 60 * 24 * 30,
                     path: '/',
                     sameSite: 'strict',
@@ -58,8 +58,8 @@ export async function middleware(req: NextRequest) {
                 return response
             }
             const response = NextResponse.redirect('http://localhost:3000/login')
-            response.cookies.delete('access_token')
-            response.cookies.delete('refresh_token')
+            response.cookies.delete('accessToken')
+            response.cookies.delete('refreshToken')
             return response
         }
 
