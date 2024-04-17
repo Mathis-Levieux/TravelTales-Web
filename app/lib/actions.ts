@@ -20,10 +20,10 @@ export async function handleRegister(data: {
 
 
     const FormSchema = z.object({
-        avatar: z.any()
-            .refine(value => value[0].type === "image/jpeg" || value[0].type === "image/png", {
-                message: "Le fichier doit être une image jpeg ou png"
-            }),
+        // avatar: z.any()
+        //     .refine(value => value[0].type === "image/jpeg" || value[0].type === "image/png", {
+        //         message: "Le fichier doit être une image jpeg ou png"
+        //     }),
         email: z.string().email({
             message: "L'email est invalide"
         }),
@@ -197,7 +197,9 @@ export async function handleTripForm(data: {
     dateRange: {
         from: Date,
         to: Date
-    }
+    },
+    tripDescription?: string,
+    tripCity: string,
 }) {
 
 
@@ -208,7 +210,14 @@ export async function handleTripForm(data: {
         dateRange: z.object({
             from: z.date(),
             to: z.date(),
-        })
+        }),
+        tripDescription: z.string().optional(),
+        tripDestination: z.string().min(1, {
+            message: "La destination ne peut pas être vide"
+        }),
+        tripCity: z.string().min(1, {
+            message: "La ville ne peut pas être vide"
+        }),
     })
 
     const result = FormSchema.safeParse(data)
@@ -218,12 +227,17 @@ export async function handleTripForm(data: {
         }
     }
 
-    const formattedDate = {
-        from: data.dateRange.from.toLocaleDateString(),
-        to: data.dateRange.to.toLocaleDateString()
-    }
-
+    const dateStart = data.dateRange.from
+    const dateEnd = data.dateRange.to
+    const formattedDateStart = dateStart.toLocaleDateString()
+    const formattedDateEnd = dateEnd.toLocaleDateString()
+    // const { tripName, tripDescription, tripCity, tripCountry } = data
+    // console.log(tripName, tripDescription, tripCity, tripCountry, formattedDateStart, formattedDateEnd)
+    console.log(data)
+    /*
+    123456789123aA$
+    */
     return {
-        message: 'Voyage créé du ' + formattedDate.from + ' au ' + formattedDate.to
+        message: 'Voyage créé du ' + formattedDateStart + ' au ' + formattedDateEnd
     }
 }
