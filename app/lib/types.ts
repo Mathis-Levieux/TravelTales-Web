@@ -31,8 +31,8 @@ export type RegisterState = {
 
 export type TripState = {
   errors?: {
-    tripName?: string[];
-    tripDescription?: string[];
+    title?: string[];
+    description?: string[];
     date?: string[];
   };
   message?: string;

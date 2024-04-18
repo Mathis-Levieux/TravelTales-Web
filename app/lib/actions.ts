@@ -193,31 +193,28 @@ Vaaarial2@gmail.com
 */
 
 export async function handleTripForm(data: {
-    tripName: string,
+    title: string,
     dateRange: {
         from: Date,
         to: Date
     },
-    tripDescription?: string,
-    tripCity: string,
+    description?: string,
+    destination: string
 }) {
 
 
     const FormSchema = z.object({
-        tripName: z.string().min(1, {
+        title: z.string().min(1, {
             message: "Le nom du voyage ne peut pas être vide"
         }),
         dateRange: z.object({
             from: z.date(),
             to: z.date(),
         }),
-        tripDescription: z.string().optional(),
-        tripDestination: z.string().min(1, {
+        description: z.string().optional(),
+        destination: z.string().min(1, {
             message: "La destination ne peut pas être vide"
-        }),
-        tripCity: z.string().min(1, {
-            message: "La ville ne peut pas être vide"
-        }),
+        })
     })
 
     const result = FormSchema.safeParse(data)
@@ -229,14 +226,38 @@ export async function handleTripForm(data: {
 
     const dateStart = data.dateRange.from
     const dateEnd = data.dateRange.to
+    console.log(dateStart, dateEnd)
+
     const formattedDateStart = dateStart.toLocaleDateString()
     const formattedDateEnd = dateEnd.toLocaleDateString()
-    // const { tripName, tripDescription, tripCity, tripCountry } = data
-    // console.log(tripName, tripDescription, tripCity, tripCountry, formattedDateStart, formattedDateEnd)
-    console.log(data)
+    const { title, description, destination } = data
+    console.log(title, description, destination, formattedDateStart, formattedDateEnd)
     /*
     123456789123aA$
     */
+    const res = await fetch('http://localhost:3001/trips', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${await getAccessToken()}`
+        },
+        body: JSON.stringify({
+            title,
+            description,
+            destination,
+            dateStart,
+            dateEnd
+        })
+    })
+
+    const response = await res.json()
+    console.log(response)
+
+    if (!res.ok) {
+        return {
+            error: 'Erreur lors de la création du voyage'
+        }
+    }
     return {
         message: 'Voyage créé du ' + formattedDateStart + ' au ' + formattedDateEnd
     }

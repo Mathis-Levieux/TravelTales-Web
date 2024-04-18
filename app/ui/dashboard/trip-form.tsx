@@ -19,20 +19,17 @@ import { handleTripForm } from "@/app/lib/actions"
 import { useEffect, useState } from "react"
 
 const FormSchema = z.object({
-    tripName: z.string().min(1, {
+    title: z.string().min(1, {
         message: "Le nom du voyage ne peut pas être vide"
     }),
     dateRange: z.object({
         from: z.date(),
         to: z.date(),
     }),
-    tripDescription: z.string().optional(),
-    tripDestination: z.string().min(1, {
+    description: z.string().optional(),
+    destination: z.string().min(1, {
         message: "La destination ne peut pas être vide"
-    }),
-    tripCity: z.string().min(1, {
-        message: "La ville ne peut pas être vide"
-    }),
+    })
 })
 export default function TripForm() {
 
@@ -42,13 +39,13 @@ export default function TripForm() {
         mode: "all",
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            tripName: "",
+            title: "",
             dateRange: {
                 from: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
                 to: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7 * 2),
             },
-            tripDescription: "",
-            tripDestination: "",
+            description: "",
+            destination: "",
         },
     })
 
@@ -56,25 +53,17 @@ export default function TripForm() {
         const response = await handleTripForm(values)
         if (response && response.error) setMessage(response.error)
         else if (response && response.message) setMessage(response.message)
-
     }
 
     const { ref, autocompleteRef } = usePlacesWidget({
         options: {
             types: ["(regions)"],
-            // fields: ["formatted_address"]
+            fields: ["formatted_address"]
         },
         apiKey: process.env.NEXT_PUBLIC_API_KEY_PLACES,
         onPlaceSelected: (place) => {
             console.log(place)
-            const components = place.address_components;
-            const cityComponent = components.find(component => component.types.includes('locality'));
-            // const countryComponent = components.find(component => component.types.includes('country'));
-            // console.log(cityComponent, countryComponent)
-            const city = cityComponent ? cityComponent.long_name : '';
-            // const country = countryComponent ? countryComponent.long_name : '';
-            form.setValue("tripCity", city);
-            form.setValue("tripDestination", place.formatted_address);
+            form.setValue("destination", place.formatted_address);
         }
     });
 
@@ -85,7 +74,7 @@ export default function TripForm() {
 
                 <FormField
                     control={form.control}
-                    name="tripName"
+                    name="title"
                     render={({ field }) => (
                         <FormItem className="w-96">
                             <FormLabel>Nom du voyage</FormLabel>
@@ -100,7 +89,7 @@ export default function TripForm() {
 
                 <FormField
                     control={form.control}
-                    name="tripDescription"
+                    name="description"
                     render={({ field }) => (
                         <FormItem className="w-96">
                             <FormLabel>Description du voyage</FormLabel>
@@ -117,7 +106,7 @@ export default function TripForm() {
 
                 <FormField
                     control={form.control}
-                    name="tripDestination"
+                    name="destination"
                     render={({ field }) => (
                         <FormItem className="w-96">
                             <FormLabel>Destination du voyage</FormLabel>
