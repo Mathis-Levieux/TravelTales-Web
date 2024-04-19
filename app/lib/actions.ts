@@ -226,14 +226,12 @@ export async function handleTripForm(data: {
 
     const dateStart = data.dateRange.from
     const dateEnd = data.dateRange.to
-    console.log(dateStart, dateEnd)
 
     const formattedDateStart = dateStart.toLocaleDateString()
     const formattedDateEnd = dateEnd.toLocaleDateString()
     const { title, description, destination } = data
-    console.log(title, description, destination, formattedDateStart, formattedDateEnd)
     /*
-    123456789123aA$
+123456789123aA$
     */
     const res = await fetch('http://localhost:3001/trips', {
         method: 'POST',
@@ -251,7 +249,6 @@ export async function handleTripForm(data: {
     })
 
     const response = await res.json()
-    console.log(response)
 
     if (!res.ok) {
         return {

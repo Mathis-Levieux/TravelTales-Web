@@ -17,6 +17,8 @@ import DatePickerWithRange from "./date-picker-with-range"
 import { Input } from "@/components/ui/input"
 import { handleTripForm } from "@/app/lib/actions"
 import { useEffect, useState } from "react"
+import { IoEarthSharp } from "react-icons/io5";
+
 
 const FormSchema = z.object({
     title: z.string().min(1, {
@@ -70,73 +72,74 @@ export default function TripForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col items-center w-full space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center">
+                <div className="w-10/12 my-20">
 
-                <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                        <FormItem className="w-96">
-                            <FormLabel>Nom du voyage</FormLabel>
-                            <FormControl>
-                                <Input className="border-none focus-visible:ring-2" placeholder="Nom du voyage" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem className="pb-3 relative">
+                                <IoEarthSharp className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
+                                <FormControl>
+                                    <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold " placeholder="Nom du voyage" {...field} />
+                                </FormControl>
+                                <FormMessage className="text-sm text-red-500" />
+                            </FormItem>
+                        )}
+                    />
 
 
-                <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                        <FormItem className="w-96">
-                            <FormLabel>Description du voyage</FormLabel>
-                            <FormControl>
-                                <Input className="border-none focus-visible:ring-2" placeholder="Description" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Optionnelle.
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem className="pb-3 relative">
+                                <FormControl>
+                                    <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold " placeholder="Description" {...field} />
+                                </FormControl>
+                                <FormDescription>
+                                    Optionnelle.
+                                </FormDescription>
+                                <FormMessage className="text-sm text-red-500" />
+                            </FormItem>
+                        )}
+                    />
 
-                <FormField
-                    control={form.control}
-                    name="destination"
-                    render={({ field }) => (
-                        <FormItem className="w-96">
-                            <FormLabel>Destination du voyage</FormLabel>
-                            <FormControl ref={ref as never}>
-                                <Input className="border-none focus-visible:ring-2" placeholder="Destination" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="destination"
+                        render={({ field }) => (
+                            <FormItem className="pb-3 relative">
+                                <FormControl ref={ref as never}>
+                                    <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold " placeholder="Destination" {...field} />
+                                </FormControl>
+                                <FormMessage className="text-sm text-red-500" />
+                            </FormItem>
+                        )}
+                    />
 
-                <FormField
-                    control={form.control}
-                    name="dateRange"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-col w-96">
-                            <FormLabel>Date de votre voyage</FormLabel>
-                            <DatePickerWithRange
-                                className=""
-                                value={field.value}
-                                onChange={field.onChange}
-                            />
-                            {form.formState.errors.dateRange && (
-                                <p className="mt-2 text-sm text-red-500">
-                                    {form.formState.errors.dateRange.to ? "Veuillez choisir une date de début et une date de fin" : 'Veuillez choisir une date de début et une date de fin'}
-                                </p>
-                            )}
-                        </FormItem>
-                    )}
-                />
+                    <FormField
+                        control={form.control}
+                        name="dateRange"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col w-96">
+                                <FormLabel>Date de votre voyage</FormLabel>
+                                <DatePickerWithRange
+                                    className=""
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                />
+                                {form.formState.errors.dateRange && (
+                                    <p className="mt-2 text-sm text-red-500">
+                                        {form.formState.errors.dateRange.to ? "Veuillez choisir une date de début et une date de fin" : 'Veuillez choisir une date de début et une date de fin'}
+                                    </p>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+
+                </div>
 
                 <Button type="submit" disabled={!form.formState.isValid}>Envoyer</Button>
                 <FormMessage>{message}</FormMessage>
@@ -144,43 +147,3 @@ export default function TripForm() {
         </Form>
     )
 }
-
-// import React from "react";
-// import { useForm, useFieldArray, Controller } from "react-hook-form";
-
-// export default function TripForm() {
-//     const { register, control, handleSubmit, reset, trigger, setError } = useForm({
-//         defaultValues: {
-//             test: [{ firstName: "", lastName: "" }]
-//         }
-//     });
-//     const { fields, append, remove } = useFieldArray({
-//         control,
-//         name: "test"
-//     });
-
-//     return (
-//         <form onSubmit={handleSubmit(data => console.log(data))}>
-//             <ul>
-//                 {fields.map((item, index) => (
-//                     <li key={item.id}>
-//                         <input {...register(`test.${index}.firstName`)} placeholder="Destination" />
-//                         <Controller
-//                             render={({ field }) => <input {...field} />}
-//                             name={`test.${index}.lastName`}
-//                             control={control}
-//                         />
-//                         <button type="button" onClick={() => remove(index)}>Delete</button>
-//                     </li>
-//                 ))}
-//             </ul>
-//             <button
-//                 type="button"
-//                 onClick={() => append({ firstName: "", lastName: "" })}
-//             >
-//                 append
-//             </button>
-//             <input type="submit" />
-//         </form>
-//     );
-// }
