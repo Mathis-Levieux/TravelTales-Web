@@ -18,6 +18,9 @@ import { Input } from "@/components/ui/input"
 import { handleTripForm } from "@/app/lib/actions"
 import { useEffect, useState } from "react"
 import { IoEarthSharp } from "react-icons/io5";
+import { FaMapMarkerAlt, FaPencilAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+
 
 
 const FormSchema = z.object({
@@ -35,8 +38,9 @@ const FormSchema = z.object({
 })
 export default function TripForm() {
 
-    const [message, setMessage] = useState<string>("")
+    const router = useRouter()
 
+    const [message, setMessage] = useState<string>("")
     const form = useForm<z.infer<typeof FormSchema>>({
         mode: "all",
         resolver: zodResolver(FormSchema),
@@ -54,7 +58,12 @@ export default function TripForm() {
     async function onSubmit(values: z.infer<typeof FormSchema>) {
         const response = await handleTripForm(values)
         if (response && response.error) setMessage(response.error)
-        else if (response && response.message) setMessage(response.message)
+        else if (response && response.message) {
+            setMessage(response.message);
+            setTimeout(() => {
+                router.push("/dashboard")
+            }, 1500)
+        }
     }
 
     const { ref, autocompleteRef } = usePlacesWidget({
@@ -72,8 +81,8 @@ export default function TripForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center">
-                <div className="w-10/12 my-20">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="my-7 rounded-2xl sm:w-6/12 w-full bg-white/50 flex flex-col items-center">
+                <div className="sm:w-10/12 w-11/12 my-20">
 
                     <FormField
                         control={form.control}
@@ -95,8 +104,9 @@ export default function TripForm() {
                         name="description"
                         render={({ field }) => (
                             <FormItem className="pb-3 relative">
+                                <FaPencilAlt className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                                 <FormControl>
-                                    <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold " placeholder="Description" {...field} />
+                                    <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold" placeholder="Description" {...field} />
                                 </FormControl>
                                 <FormDescription>
                                     Optionnelle.
@@ -111,6 +121,7 @@ export default function TripForm() {
                         name="destination"
                         render={({ field }) => (
                             <FormItem className="pb-3 relative">
+                                <FaMapMarkerAlt className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                                 <FormControl ref={ref as never}>
                                     <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold " placeholder="Destination" {...field} />
                                 </FormControl>
@@ -123,10 +134,8 @@ export default function TripForm() {
                         control={form.control}
                         name="dateRange"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col w-96">
-                                <FormLabel>Date de votre voyage</FormLabel>
+                            <FormItem className="pb-3 relative mt-1.5">
                                 <DatePickerWithRange
-                                    className=""
                                     value={field.value}
                                     onChange={field.onChange}
                                 />
@@ -139,10 +148,10 @@ export default function TripForm() {
                         )}
                     />
 
+                    <FormMessage className="">{message}</FormMessage>
                 </div>
 
-                <Button type="submit" disabled={!form.formState.isValid}>Envoyer</Button>
-                <FormMessage>{message}</FormMessage>
+                <Button className="rounded-b-2xl rounded-t-none w-full bg-jaune text-marron font-bold h-16" type="submit" disabled={!form.formState.isValid}>Envoyer</Button>
             </form>
         </Form>
     )

@@ -2,10 +2,9 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { date, z } from 'zod'
+import { z } from 'zod'
 import { passwordRegex } from './constants'
 import { isEmailTaken } from './utils'
-import { RegisterState, TripState } from './types'
 /*
 Vaaarial2@gmail.com
 123456789123aA$
@@ -256,6 +255,6 @@ export async function handleTripForm(data: {
         }
     }
     return {
-        message: 'Voyage créé du ' + formattedDateStart + ' au ' + formattedDateEnd
+        message: "Voyage créé, redirection en cours..."
     }
 }

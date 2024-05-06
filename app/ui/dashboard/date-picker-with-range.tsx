@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
 import { DateRange } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
@@ -14,6 +13,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { fr } from "date-fns/locale"
+import { FaCalendar } from "react-icons/fa"
 
 export default function DatePickerWithRange({
     className,
@@ -29,11 +29,11 @@ export default function DatePickerWithRange({
                         id="date"
                         variant={"outline"}
                         className={cn(
-                            "w-full justify-start text-left font-normal",
+                            "justify-start rounded-full border-none focus-visible:ring-2 font-semibold text-sm",
                             !value && "text-muted-foreground"
                         )}
                     >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        <FaCalendar className="mr-2 text-marron"/>
                         {value?.from ? (
                             value.to ? (
                                 <>
