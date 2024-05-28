@@ -5,9 +5,6 @@ import Header from "@/app/ui/header";
 export default async function Page() {
     return (
         <>
-            <Header
-                dashboardIcons={true}
-            />
             <main className="m-auto w-full flex justify-center">
                 <TripForm />
             </main>

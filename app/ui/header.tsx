@@ -21,20 +21,22 @@ export default async function Header({ button, buttonText, link, tripIcons, dash
     return (
         <header className="h-24 bg-header flex items-center">
 
-            <CgProfile className="ml-12" size={80} color="white" />
-            <Link className="ml-12" href={'/'}>
+            <CgProfile className="ml-12 cursor-pointer" size={50} color="white" />
+            <Link className="ml-12" href={'/dashboard'}>
                 <h1 className="raemoon text-7xl text-white font-bold pt-3">
                     TravelTales
                 </h1>
+            </Link>
+            <Link href={'/dashboard/createTrip'}>créer voyage
             </Link>
 
             {
                 dashboardIcons &&
                 <>
                     <Link className="ml-auto mr-12" href={'/achievements'}>
-                        <IoMdTrophy className="" size={30} color="white" />
+                        <IoMdTrophy className="" size={20} color="white" />
                     </Link>
-                    <IoMdNotifications className="mr-12" size={30} color="white" />
+                    <IoMdNotifications className="mr-12" size={20} color="white" />
                 </>
             }
 
