@@ -106,11 +106,11 @@ export default function TripForm() {
                             <FormItem className="pb-3 relative">
                                 <FaPencilAlt className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                                 <FormControl>
-                                    <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold" placeholder="Description" {...field} />
+                                    <Input className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold" placeholder="Description (optionnelle)" {...field} />
                                 </FormControl>
-                                <FormDescription>
+                                {/* <FormDescription>
                                     Optionnelle.
-                                </FormDescription>
+                                </FormDescription> */}
                                 <FormMessage className="text-sm text-red-500" />
                             </FormItem>
                         )}

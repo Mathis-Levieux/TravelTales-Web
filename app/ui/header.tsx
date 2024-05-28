@@ -23,7 +23,7 @@ export default async function Header({ button, buttonText, link, tripIcons, dash
 
             <CgProfile className="ml-12" size={80} color="white" />
             <Link className="ml-12" href={'/'}>
-                <h1 className="raemoon text-7xl text-white font-bold">
+                <h1 className="raemoon text-7xl text-white font-bold pt-3">
                     TravelTales
                 </h1>
             </Link>
