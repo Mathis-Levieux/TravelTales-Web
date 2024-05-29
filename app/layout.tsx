@@ -2,8 +2,6 @@ export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { AuthProvider } from '@/app/lib/authProvider'
-import Header from './ui/header'
 import Footer from './ui/footer'
 
 
@@ -21,15 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* <AuthProvider> */}
       <body className={inter.className}>
         <div className='min-h-screen flex flex-col'>
           {children}
           <Footer />
         </div>
       </body>
-      {/* </AuthProvider> */}
-
     </html>
   )
 }

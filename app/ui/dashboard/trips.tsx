@@ -1,24 +1,39 @@
-"use client";
 import { getTrips } from "@/app/lib/data";
-import { useEffect, useState } from "react";
+import { FaCalendar, FaMapMarkerAlt, FaRegTrashAlt } from "react-icons/fa";
 
-export default function Trips({ trips }: { trips: any }) {
 
-    console.log(trips)
+export default async function Trips() {
+
+
+    const trips = await getTrips();
 
     return (
         <>
-            {trips.map((trip: any) => (
-                <div key={trip.id} className="flex m-2 items-center justify-between p-4 bg-white shadow-md rounded-lg">
-                    <div>
-                        <h2 className="text-xl font-semibold">TripName: {trip.title}</h2>
-                        <p className="text-sm text-gray-500">TripDescription: {trip.description}</p>
+            {trips.map((trip: any) => {
+                const dateStart = new Date(trip.dateStart).toLocaleDateString('fr-FR')
+                const dateEnd = new Date(trip.dateEnd).toLocaleDateString('fr-FR')
+
+                return (
+                    <div key={trip.id} className="w-4/5 container flex flex-col justify-evenly bg-white/50 my-2 rounded-2xl h-24">
+                        <div className="flex justify-between items-center h-3/5">
+                            <h2 className="text-xl font-semibold">{trip.title}</h2>
+                            <FaRegTrashAlt className="text-red-600" />
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <div className="flex">
+                                <FaMapMarkerAlt />
+                                <p>{trip.destination[0].name}</p>
+                            </div>
+                            <div className="flex items-center">
+                                <FaCalendar />
+                                <p>{dateStart} - {dateEnd}</p>
+                            </div>
+
+                        </div>
                     </div>
-                    <div>
-                        <p className="text-sm text-gray-500">TripDate: {trip.dateStart} to {trip.dateEnd}</p>
-                    </div>
-                </div>
-            ))}
+                )
+            }
+            )}
         </>
     )
 }

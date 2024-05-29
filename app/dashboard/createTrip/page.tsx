@@ -5,7 +5,7 @@ import Header from "@/app/ui/header";
 export default async function Page() {
     return (
         <>
-            <main className="m-auto w-full flex justify-center">
+            <main className="container m-auto w-full flex justify-center">
                 <TripForm />
             </main>
         </>

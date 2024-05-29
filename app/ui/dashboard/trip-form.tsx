@@ -73,7 +73,7 @@ export default function TripForm() {
         },
         apiKey: process.env.NEXT_PUBLIC_API_KEY_PLACES,
         onPlaceSelected: (place) => {
-            console.log(place)
+            console.log(place);
             form.setValue("destination", place.formatted_address);
         }
     });

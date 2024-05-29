@@ -94,6 +94,8 @@
   body {
     background-image: url('../public/cloud.svg');
     background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     background-repeat: no-repeat;
     @apply bg-background text-foreground;
   }

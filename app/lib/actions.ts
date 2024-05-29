@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { passwordRegex } from './constants'
 import { isEmailTaken } from './utils'
+import { revalidatePath } from 'next/cache'
 /*
 Vaaarial2@gmail.com
 123456789123aA$
@@ -246,7 +247,7 @@ export async function handleTripForm(data: {
             dateEnd
         })
     })
-
+    revalidatePath('/dashboard')
     const response = await res.json()
 
     if (!res.ok) {

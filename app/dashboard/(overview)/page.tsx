@@ -1,16 +1,17 @@
+import TripsSkeleton from "@/app/ui/dashboard/tripsSkeleton";
 import Trips from "../../ui/dashboard/trips";
-import { getTrips } from "../../lib/data";
 import { Suspense } from "react";
-
 
 export default async function Page() {
 
-    const trips = await getTrips();
-
     return (
         <>
-            <main className="container">
-                <Trips trips={trips} />
+            <main className="container mx-auto px-4 py-8">
+                <div className="w-full bg-white/50 rounded-2xl">
+                    <Suspense fallback={<TripsSkeleton />}>
+                        <Trips />
+                    </Suspense>
+                </div>
             </main>
         </>
     )
