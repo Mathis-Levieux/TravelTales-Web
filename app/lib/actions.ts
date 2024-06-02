@@ -194,27 +194,27 @@ Vaaarial2@gmail.com
 
 export async function handleTripForm(data: {
     title: string,
-    dateRange: {
-        from: Date,
-        to: Date
-    },
     description?: string,
-    destination: string
+    destination: {
+        name: string,
+        dateStart: Date,
+        dateEnd: Date
+    }[],
 }) {
 
+
+    const DestinationSchema = z.object({
+        name: z.string().min(1, { message: "La destination ne peut pas être vide" }),
+        dateStart: z.date(),
+        dateEnd: z.date(),
+    })
 
     const FormSchema = z.object({
         title: z.string().min(1, {
             message: "Le nom du voyage ne peut pas être vide"
         }),
-        dateRange: z.object({
-            from: z.date(),
-            to: z.date(),
-        }),
         description: z.string().optional(),
-        destination: z.string().min(1, {
-            message: "La destination ne peut pas être vide"
-        })
+        destination: z.array(DestinationSchema).min(1, { message: "Ajoutez au moins une destination" })
     })
 
     const result = FormSchema.safeParse(data)
@@ -224,11 +224,6 @@ export async function handleTripForm(data: {
         }
     }
 
-    const dateStart = data.dateRange.from
-    const dateEnd = data.dateRange.to
-
-    const formattedDateStart = dateStart.toLocaleDateString()
-    const formattedDateEnd = dateEnd.toLocaleDateString()
     const { title, description, destination } = data
     /*
 123456789123aA$
@@ -242,15 +237,14 @@ export async function handleTripForm(data: {
         body: JSON.stringify({
             title,
             description,
-            destination,
-            dateStart,
-            dateEnd
+            destination
         })
     })
     revalidatePath('/dashboard')
     const response = await res.json()
 
     if (!res.ok) {
+        console.error(response)
         return {
             error: 'Erreur lors de la création du voyage'
         }
