@@ -8,7 +8,7 @@ import { verifyToken } from './app/lib/utils';
 
 export async function middleware(req: NextRequest) {
 
-    if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register')) {
+    if ((req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register' || req.nextUrl.pathname === '/')) {
         const accessToken = await getAccessToken();
         const refreshToken = await getRefreshToken();
         if (accessToken && refreshToken) {

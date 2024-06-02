@@ -15,20 +15,21 @@ interface HeaderProps {
     link?: string;
     tripIcons?: boolean;
     dashboardIcons?: boolean;
+    isLandingPage?: boolean;
 }
 
-export default async function Header({ button, buttonText, link, tripIcons, dashboardIcons }: HeaderProps) {
+export default async function Header({ isLandingPage, button, buttonText, link, tripIcons, dashboardIcons }: HeaderProps) {
     return (
         <header className="h-24 bg-header flex items-center">
 
             <CgProfile className="ml-12 cursor-pointer" size={50} color="white" />
-            <Link className="ml-12" href={'/dashboard'}>
+
+            <Link className="ml-12" href={'/'}>
                 <h1 className="raemoon text-7xl text-white font-bold pt-3">
                     TravelTales
                 </h1>
             </Link>
-            <Link href={'/dashboard/createTrip'}>créer voyage
-            </Link>
+
 
             {
                 dashboardIcons &&
@@ -58,6 +59,23 @@ export default async function Header({ button, buttonText, link, tripIcons, dash
                         {buttonText}
                     </Button>
                 </Link>
+            }
+
+            {
+                isLandingPage &&
+                <div>
+                    <Link className="ml-auto mr-12" href={'/login'}>
+                        <Button className="w-80 rounded-full bg-white text-bluetext">
+                            Se connecter
+                        </Button>
+                    </Link>
+
+                    <Link className="ml-auto mr-12" href={'/register'}>
+                        <Button className="w-80 rounded-full bg-white text-bluetext">
+                            Créer un compte
+                        </Button>
+                    </Link>
+                </div>
             }
         </header>
     )
