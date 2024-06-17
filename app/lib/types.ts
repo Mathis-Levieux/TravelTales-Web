@@ -1,11 +1,11 @@
 export type User = {
   // Define the properties of the User type here
-  id: number
+  id: number;
   username: string;
   email: string;
   themePreference: string;
-  bio: string | null,
-  avatar: string | null,
+  bio: string | null;
+  avatar: string | null;
   roleId: number;
   // Add more properties as needed
 };
@@ -15,10 +15,10 @@ export type Session = {
   username: string;
   email: string;
   themePreference: string;
-  bio: string | null,
-  avatar: string | null,
+  bio: string | null;
+  avatar: string | null;
   roleId: number;
-}
+};
 
 export type RegisterState = {
   errors?: {

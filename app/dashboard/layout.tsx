@@ -1,16 +1,14 @@
-import Header from "../ui/header"
+import Header from '../ui/header';
 
 export default function DashboardLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode
+  children: React.ReactNode;
 }) {
-    return (
-        <>
-            <Header
-                dashboardIcons={true}
-            />
-            {children}
-        </>
-    )
+  return (
+    <>
+      <Header dashboardIcons={true} />
+      {children}
+    </>
+  );
 }
