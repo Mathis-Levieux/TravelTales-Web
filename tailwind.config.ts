@@ -55,8 +55,8 @@ const config = {
         header: {
           DEFAULT: 'hsl(var(--header))',
         },
-        bluetext: {
-          DEFAULT: 'hsl(var(--bluetext))',
+        bleutext: {
+          DEFAULT: 'hsl(var(--bleutext))',
         },
         jaune: {
           DEFAULT: 'hsl(var(--jaune))',
@@ -67,6 +67,13 @@ const config = {
         bleufooter: {
           DEFAULT: 'hsl(var(--bleufooter))',
         },
+        beige: {
+          DEFAULT: 'hsl(var(--beige))',
+        }
+      },
+      boxShadow: {
+        createtripbutton: '0px 4px 4px 0px #FE705D',
+        jointripbutton: '0px 4px 4px 0px #C3A2F8',
       },
       borderRadius: {
         lg: 'var(--radius)',

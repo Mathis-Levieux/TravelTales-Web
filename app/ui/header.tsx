@@ -55,7 +55,7 @@ export default async function Header({
 
       {button && link && (
         <Link className="ml-auto mr-12" href={link}>
-          <Button className="w-80 rounded-full bg-white text-bluetext">
+          <Button className="w-80 rounded-full bg-white text-bleutext">
             {buttonText}
           </Button>
         </Link>
@@ -64,13 +64,13 @@ export default async function Header({
       {isLandingPage && (
         <div>
           <Link className="ml-auto mr-12" href={'/login'}>
-            <Button className="w-80 rounded-full bg-white text-bluetext">
+            <Button className="w-80 rounded-full bg-white text-bleutext">
               Se connecter
             </Button>
           </Link>
 
           <Link className="ml-auto mr-12" href={'/register'}>
-            <Button className="w-80 rounded-full bg-white text-bluetext">
+            <Button className="w-80 rounded-full bg-white text-bleutext">
               Créer un compte
             </Button>
           </Link>

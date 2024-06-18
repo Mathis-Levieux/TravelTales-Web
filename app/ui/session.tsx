@@ -1,16 +1,16 @@
-'use client';
+// 'use client';
 
-import { useAuth } from '../lib/authProvider';
+// import { useAuth } from '../lib/authProvider';
 
-export default function Session() {
-  const { session } = useAuth();
-  return (
-    <>
-      <h1>Session</h1>
-      <p>{session?.username}</p>
-      <p>{session?.id}</p>
-    </>
-  );
-}
+// export default function Session() {
+//   const { session } = useAuth();
+//   return (
+//     <>
+//       <h1>Session</h1>
+//       <p>{session?.username}</p>
+//       <p>{session?.id}</p>
+//     </>
+//   );
+// }
 
-//
+// //

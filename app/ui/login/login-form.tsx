@@ -41,7 +41,7 @@ export default function LoginForm() {
         'Votre email a été confirmé, vous pouvez vous maintenant vous connecter',
       );
     }
-  }, []);
+  }, [redirect]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     mode: 'all',
