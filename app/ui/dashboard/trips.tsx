@@ -7,7 +7,6 @@ export default async function Trips() {
   const trips = await getTrips();
 
 
-
   return (
     <>
       {trips.length > 0 ? (
@@ -25,19 +24,19 @@ export default async function Trips() {
           return (
             <div
               key={trip.id}
-              className="w-4/5 container flex flex-col justify-evenly bg-white/50 my-2 rounded-2xl h-24"
+              className="w-4/5 container px-0 flex flex-col justify-evenly bg-white/50 my-5 h-36 rounded-2xl"
             >
               <div className="flex justify-between items-center h-3/5">
-                <h2 className="text-xl font-semibold">{trip.title}</h2>
-                <FaRegTrashAlt className="text-red-600" />
+                <h2 className="pl-14 text-xl font-semibold">{trip.title}</h2>
+                <FaRegTrashAlt className="text-red-600 mr-14 cursor-pointer" />
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex">
-                  <FaMapMarkerAlt />
-                  <p>{trip.destination[0].name}</p>
+              <div className="flex justify-between items-center bg-gray-400 h-1/2 rounded-b-2xl">
+                <div className="flex items-center gap-2 pl-14">
+                  <FaMapMarkerAlt size={20} />
+                  <p>{trip.destination[0].name} et {(trip.destination.length - 1) > 1 ? `${trip.destination.length - 1} autres destinations` : "1 autre destination"}</p>
                 </div>
-                <div className="flex items-center">
-                  <FaCalendar />
+                <div className="flex items-center mr-14">
+                  <FaCalendar className='mr-2' />
                   <p>
                     {dateStart} - {dateEnd}
                   </p>

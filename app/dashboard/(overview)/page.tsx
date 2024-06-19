@@ -7,8 +7,8 @@ import TripButton from '@/app/ui/dashboard/trip-button';
 export default async function Page() {
   return (
     <>
-      <main className="container mx-auto px-4 py-8">
-        <div className="w-full bg-white/50 rounded-2xl py-5">
+      <main className="container mx-auto px-4 py-12">
+        <div className="w-full bg-white/50 rounded-2xl py-12">
           <div className='flex justify-evenly'>
             <Link className="rounded-full w-1/5" href={'/dashboard/createtrip'}>
               <TripButton
@@ -31,7 +31,9 @@ export default async function Page() {
           </div>
 
           <Suspense fallback={<TripsSkeleton />}>
-            <Trips />
+            <div className='py-6'>
+              <Trips />
+            </div>
           </Suspense>
         </div>
       </main>

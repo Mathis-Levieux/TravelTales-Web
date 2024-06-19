@@ -35,18 +35,26 @@ export async function middleware(req: NextRequest) {
       return response;
     }
 
-    try {
+    try { // La fonction verifyToken renvoyant une erreur si le token est invalide ou expiré, on la place dans un bloc try-catch
       const decoded = await verifyToken(accessToken as string);
       return NextResponse.next();
-    } catch (error) {
-      const res = await fetch('http://localhost:3001/auth/refresh-tokens', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-        credentials: 'include',
-      });
-      if (res.ok) {
+    } catch (err) { // Si le token est invalide ou expiré, on tente de le rafraîchir
+      try { // Try-Catch pour gérer les erreurs de fetch également
+        const res = await fetch('http://localhost:3001/auth/refresh-tokens', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+          credentials: 'include',
+        });
+
+        if (!res.ok) { // Si le rafraîchissement échoue, on redirige l'utilisateur vers la page de connexion
+          const response = NextResponse.redirect('http://localhost:3000/login');
+          response.cookies.delete('accessToken');
+          response.cookies.delete('refreshToken');
+          return response;
+        }
+
         const data = await res.json();
         const newAccessToken = data.accessToken;
         const newRefreshToken = data.refreshToken;
@@ -66,14 +74,16 @@ export async function middleware(req: NextRequest) {
         });
         applySetCookie(req, response);
         return response;
+      } catch (error) { // Si le fetch échoue (API probablement down), on redirige l'utilisateur vers la page de connexion
+        const response = NextResponse.redirect('http://localhost:3000/login');
+        response.cookies.delete('accessToken');
+        response.cookies.delete('refreshToken');
+        return response;
       }
-      const response = NextResponse.redirect('http://localhost:3000/login');
-      response.cookies.delete('accessToken');
-      response.cookies.delete('refreshToken');
-      return response;
     }
   }
 }
+
 
 function applySetCookie(req: NextRequest, res: NextResponse): void {
   // parse the outgoing Set-Cookie header
