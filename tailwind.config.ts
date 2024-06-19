@@ -69,7 +69,10 @@ const config = {
         },
         beige: {
           DEFAULT: 'hsl(var(--beige))',
-        }
+        },
+        rougelight: {
+          DEFAULT: 'hsl(var(--rougelight))',
+        },
       },
       boxShadow: {
         createtripbutton: '0px 4px 4px 0px #FE705D',

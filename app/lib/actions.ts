@@ -247,3 +247,39 @@ export async function handleTripForm(data: {
     message: 'Voyage créé, redirection en cours...',
   };
 }
+
+export async function handleLeaveTrip({ id }: { id: number }) {
+  // console.log(id);
+
+  const FormSchema = z.object({
+    id: z.number(),
+  });
+
+  const result = FormSchema.safeParse({ id });
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const accessToken = await getAccessToken();
+
+  const res = await fetch(`http://localhost:3001/trips/${id}/leave`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    return {
+      error: 'Erreur lors de la suppression du voyage',
+    };
+  }
+
+  revalidatePath('/dashboard');
+  return {
+    message: 'Vous avez quitté le voyage',
+  };
+}

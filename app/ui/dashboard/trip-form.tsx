@@ -66,7 +66,7 @@ export default function TripForm() {
       setMessage(response.message);
       setTimeout(() => {
         router.push('/dashboard');
-      }, 1500);
+      }, 700);
     }
   }
 
