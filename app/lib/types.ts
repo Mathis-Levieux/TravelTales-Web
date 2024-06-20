@@ -37,3 +37,13 @@ export type TripState = {
   };
   message?: string;
 };
+
+export type Trip = {
+  id: number;
+  title: string;
+  destination: {
+    name: string;
+    dateStart: string;
+    dateEnd: string;
+  }[];
+}

@@ -1,6 +1,7 @@
 import { getTrips } from '@/app/lib/data';
 import { FaCalendar, FaMapMarkerAlt, FaRegTrashAlt } from 'react-icons/fa';
-
+import QuitButton from './quit-button';
+import { Trip } from '@/app/lib/types';
 
 export default async function Trips() {
 
@@ -10,7 +11,7 @@ export default async function Trips() {
   return (
     <>
       {trips.length > 0 ? (
-        trips.map((trip: any) => {
+        trips.map((trip: Trip) => {
           const firstDate = trip.destination
             .map((destination: any) => new Date(destination.dateStart).getTime())
             .sort((a: any, b: any) => a - b)[0];
@@ -28,12 +29,12 @@ export default async function Trips() {
             >
               <div className="flex justify-between items-center h-3/5">
                 <h2 className="pl-14 text-xl font-semibold">{trip.title}</h2>
-                <FaRegTrashAlt className="text-red-600 mr-14 cursor-pointer" />
+                <QuitButton id={trip.id} />
               </div>
               <div className="flex justify-between items-center bg-gray-400 h-1/2 rounded-b-2xl">
                 <div className="flex items-center gap-2 pl-14">
                   <FaMapMarkerAlt size={20} />
-                  <p>{trip.destination[0].name} et {(trip.destination.length - 1) > 1 ? `${trip.destination.length - 1} autres destinations` : "1 autre destination"}</p>
+                  <p>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</p>
                 </div>
                 <div className="flex items-center mr-14">
                   <FaCalendar className='mr-2' />
