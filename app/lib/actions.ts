@@ -283,3 +283,33 @@ export async function handleLeaveTrip({ id }: { id: number }) {
     message: 'Vous avez quitté le voyage',
   };
 }
+
+
+
+export async function handleCountUsersInTrip({ id }: { id: number }) {
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${id}/user-count`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      return {
+        error: 'Erreur lors de la récupération du nombre de participants',
+      };
+    }
+
+    const response = await res.json();
+    return response;
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la récupération du nombre de participants',
+    };
+  }
+}
