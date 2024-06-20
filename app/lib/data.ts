@@ -15,7 +15,7 @@ export async function getUsers() {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    revalidatePath('/user');
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -36,6 +36,7 @@ export async function getTrips() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
+        next: { tags: ['trips'] }
       },
     );
 
@@ -48,5 +49,27 @@ export async function getTrips() {
   } catch (err) {
     console.error(err);
     throw new Error('An error occurred while fetching trips. Please try again later.');
+  }
+}
+
+
+export async function getUsername() {
+  try {
+    const res = await fetch('http://localhost:3001/users/me', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    if (!res.ok) {
+      return 'Utilisateur';
+    }
+
+    const response = await res.json();
+    return response.username;
+  } catch (error) {
+    console.error(error);
+    return 'Utilisateur';
   }
 }

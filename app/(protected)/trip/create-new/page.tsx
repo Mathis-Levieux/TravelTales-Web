@@ -1,7 +1,5 @@
-import TripForm from '@/app/ui/dashboard/trip-form';
-import Header from '@/app/ui/header';
+import TripForm from '@/app/ui/trip/create-trip/trip-form';
 
-// Page component
 export default async function Page() {
   return (
     <>

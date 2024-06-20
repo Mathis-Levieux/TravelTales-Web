@@ -4,8 +4,8 @@ import { logOut } from '../lib/actions';
 export default async function Nav() {
   return (
     <nav className="flex">
-      <Link className="me-11" href="/dashboard">
-        Retour au Dashboard
+      <Link className="me-11" href="/home">
+        Retour au home
       </Link>
       <form action={logOut}>
         <button type="submit">Déconnexion</button>

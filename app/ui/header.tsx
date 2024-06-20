@@ -4,42 +4,52 @@ import { CgProfile } from 'react-icons/cg';
 import { FaFolder, FaSuitcaseRolling, FaUsers, FaWallet } from 'react-icons/fa';
 import { IoMdNotifications, IoMdTrophy } from 'react-icons/io';
 import { IoEarthSharp } from 'react-icons/io5';
-
-// TO DO : AJOUTER LES LIENS VERS LES PAGES CORRESPONDANTES
+import { getUsername } from '@/app/lib/data';
 
 interface HeaderProps {
   button?: boolean;
   buttonText?: string;
   link?: string;
   tripIcons?: boolean;
-  dashboardIcons?: boolean;
+  homeIcons?: boolean;
+  isLoggedIn?: boolean;
   isLandingPage?: boolean;
 }
 
+
 export default async function Header({
-  isLandingPage,
+  isLoggedIn,
   button,
   buttonText,
   link,
   tripIcons,
-  dashboardIcons,
+  homeIcons,
+  isLandingPage,
 }: HeaderProps) {
+
+  const username = await getUsername();
+
   return (
     <header className="h-24 bg-header flex items-center">
-      <CgProfile className="ml-12 cursor-pointer" size={50} color="white" />
+      {
+        isLoggedIn &&
+        <Link className="sm:ml-12" href={`/user/${username}`}>
+          <CgProfile className="sm:text-6xl text-6xl" color="white" />
+        </Link>
+      }
 
-      <Link className="ml-12" href={'/'}>
+      <Link className="sm:ml-12 ml-4" href={'/'}>
         <h1 className="raemoon text-7xl text-white font-bold pt-3">
           TravelTales
         </h1>
       </Link>
 
-      {dashboardIcons && (
+      {homeIcons && (
         <>
-          <Link className="ml-auto mr-12" href={'/achievements'}>
-            <IoMdTrophy className="" size={20} color="white" />
+          <Link className="ml-auto sm:mr-12 mr-3" href={'/achievements'}>
+            <IoMdTrophy className="text-3xl" color="white" />
           </Link>
-          <IoMdNotifications className="mr-12" size={20} color="white" />
+          <IoMdNotifications className="sm:mr-12 text-3xl mr-3" color="white" />
         </>
       )}
 
@@ -62,14 +72,14 @@ export default async function Header({
       )}
 
       {isLandingPage && (
-        <div>
-          <Link className="ml-auto mr-12" href={'/login'}>
+        <div className='ml-auto'>
+          <Link className="mr-12" href={'/login'}>
             <Button className="w-80 rounded-full bg-white text-bleutext">
               Se connecter
             </Button>
           </Link>
 
-          <Link className="ml-auto mr-12" href={'/register'}>
+          <Link className="mr-12" href={'/register'}>
             <Button className="w-80 rounded-full bg-white text-bleutext">
               Créer un compte
             </Button>

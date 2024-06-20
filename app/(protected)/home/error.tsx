@@ -1,6 +1,6 @@
 "use client"
 
-import TripButton from "@/app/ui/dashboard/trip-button";
+import TripButton from "@/app/ui/home/trip-button";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -10,7 +10,7 @@ export default function Error() {
             <main className="container mx-auto px-4 py-8">
                 <div className="w-full bg-white/50 rounded-2xl py-5">
                     <div className='flex justify-evenly'>
-                        <Link className="rounded-full w-1/5" href={'/dashboard/createtrip'}>
+                        <Link className="rounded-full w-1/5" href={'/trip/create-new'}>
                             <TripButton
                                 textColor="marron"
                                 icon='plus'
@@ -19,7 +19,7 @@ export default function Error() {
                                 Créer un voyage
                             </TripButton>
                         </Link>
-                        <Link className='rounded-full w-1/5' href={'/dashboard/createtrip'}>
+                        <Link className='rounded-full w-1/5' href={'/trip/create-new'}>
                             <TripButton
                                 textColor="bleutext"
                                 icon='share'

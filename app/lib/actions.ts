@@ -3,9 +3,9 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { passwordRegex } from './constants';
-import { isEmailTaken } from './utils';
-import { revalidatePath } from 'next/cache';
+import { passwordRegex } from '@/app/lib/constants';
+import { isEmailTaken } from '@/app/lib/utils';
+import { revalidatePath, revalidateTag } from 'next/cache';
 /*
 Vaaarial2@gmail.com
 123456789123aA$
@@ -131,7 +131,7 @@ export async function handleLogIn(data: { email: string; password: string }) {
     };
   }
 
-  redirect('/dashboard');
+  redirect('/home');
 }
 
 export async function saveAccessToken(accessToken: string) {
@@ -234,7 +234,7 @@ export async function handleTripForm(data: {
       destination,
     }),
   });
-  revalidatePath('/dashboard');
+  revalidateTag('trips');
   const response = await res.json();
 
   if (!res.ok) {
@@ -266,7 +266,7 @@ export async function handleLeaveTrip({ id }: { id: number }) {
   const accessToken = await getAccessToken();
 
   const res = await fetch(`http://localhost:3001/trips/${id}/leave`, {
-    method: 'POST',
+    method: 'DELETE',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -278,7 +278,7 @@ export async function handleLeaveTrip({ id }: { id: number }) {
     };
   }
 
-  revalidatePath('/dashboard');
+  revalidateTag('trips');
   return {
     message: 'Vous avez quitté le voyage',
   };

@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
     if (accessToken && refreshToken) {
-      return NextResponse.redirect('http://localhost:3000/dashboard');
+      return NextResponse.redirect('http://localhost:3000/home');
     }
     return NextResponse.next();
   }

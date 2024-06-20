@@ -1,8 +1,8 @@
-import TripsSkeleton from '@/app/ui/dashboard/tripsSkeleton';
-import Trips from '../../ui/dashboard/trips';
+import TripsSkeleton from '@/app/ui/home/tripsSkeleton';
+import Trips from '@/app/ui/home/trips';
 import { Suspense } from 'react';
 import Link from 'next/link';
-import TripButton from '@/app/ui/dashboard/trip-button';
+import TripButton from '@/app/ui/home/trip-button';
 
 export default async function Page() {
   return (
@@ -10,7 +10,7 @@ export default async function Page() {
       <main className="container mx-auto px-4 py-12">
         <div className="w-full bg-white/50 rounded-2xl py-12">
           <div className='flex justify-evenly'>
-            <Link className="rounded-full w-1/5" href={'/dashboard/createtrip'}>
+            <Link className="rounded-full w-1/5" href={'/trip/create-new'}>
               <TripButton
                 textColor="marron"
                 icon='plus'
@@ -19,7 +19,7 @@ export default async function Page() {
                 Créer un voyage
               </TripButton>
             </Link>
-            <Link className='rounded-full w-1/5' href={'/dashboard/createtrip'}>
+            <Link className='rounded-full w-1/5' href={'/trip/create-new'}>
               <TripButton
                 textColor="bleutext"
                 icon='share'

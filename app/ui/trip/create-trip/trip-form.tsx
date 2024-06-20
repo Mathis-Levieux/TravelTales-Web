@@ -11,7 +11,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import DatePickerWithRange from './date-picker-with-range';
+import DatePickerWithRange from '@/app/ui/trip/create-trip/date-picker-with-range';
 import { Input } from '@/components/ui/input';
 import { handleTripForm } from '@/app/lib/actions';
 import { useState } from 'react';
@@ -65,7 +65,7 @@ export default function TripForm() {
     else if (response && response.message) {
       setMessage(response.message);
       setTimeout(() => {
-        router.push('/dashboard');
+        router.push('/home');
       }, 700);
     }
   }

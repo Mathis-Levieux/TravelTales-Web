@@ -1,6 +1,6 @@
 import { getTrips } from '@/app/lib/data';
 import { FaCalendar, FaMapMarkerAlt, FaRegTrashAlt } from 'react-icons/fa';
-import QuitButton from './quit-button';
+import QuitButton from '@/app/ui/trip/quit-button';
 import { Trip } from '@/app/lib/types';
 
 export default async function Trips() {
@@ -9,7 +9,10 @@ export default async function Trips() {
 
 
   return (
+
+
     <>
+      {trips.length > 0 ? <h2 className='text-2xl text-black mt-12 ml-28'>Mes voyages : </h2> : ""}
       {trips.length > 0 ? (
         trips.map((trip: Trip) => {
           const firstDate = trip.destination

@@ -1,13 +1,13 @@
 import Header from '../ui/header';
 
-export default function DashboardLayout({
+export default function HomeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <>
-      <Header dashboardIcons={true} />
+      <Header isLoggedIn={true} homeIcons={true} />
       {children}
     </>
   );
