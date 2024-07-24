@@ -313,3 +313,62 @@ export async function handleCountUsersInTrip({ id }: { id: number }) {
     };
   }
 }
+
+export async function handleEditUserInfos(data: {
+  email: string;
+  username: string;
+  // avatar: string;
+}) {
+
+  const FormSchema = z
+    .object({
+      email: z.string().email({
+        message: "L'email est invalide",
+      }),
+      username: z.string().min(3, {
+        message: "Le nom d'utilisateur doit contenir au moins 3 caractères",
+      }),
+    });
+
+  const result = FormSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const { email, username } = data;
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch('http://localhost:3001/users/me', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ username, email }),
+    });
+
+    revalidateTag('user');
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+
+    return {
+      message: 'Informations modifiées',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la modification des informations',
+    };
+  }
+
+
+}

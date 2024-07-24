@@ -1,13 +1,14 @@
 export type User = {
-  // Define the properties of the User type here
   id: number;
   username: string;
   email: string;
   themePreference: string;
   bio: string | null;
+  createdAt: string;
+  updatedAt: string;
   avatar: string | null;
-  roleId: number;
-  // Add more properties as needed
+  role: string;
+  verified: true | false;
 };
 
 export type Session = {

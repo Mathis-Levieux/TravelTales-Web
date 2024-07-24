@@ -64,9 +64,6 @@ export default function TripForm() {
     if (response && response.error) setMessage(response.error);
     else if (response && response.message) {
       setMessage(response.message);
-      setTimeout(() => {
-        router.push('/home');
-      }, 700);
     }
   }
 

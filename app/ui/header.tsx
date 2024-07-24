@@ -1,10 +1,11 @@
+
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CgProfile } from 'react-icons/cg';
 import { FaFolder, FaSuitcaseRolling, FaUsers, FaWallet } from 'react-icons/fa';
 import { IoMdNotifications, IoMdTrophy } from 'react-icons/io';
 import { IoEarthSharp } from 'react-icons/io5';
-import { getUsername } from '@/app/lib/data';
+import { getUser } from '@/app/lib/data';
 
 interface HeaderProps {
   button?: boolean;
@@ -27,13 +28,16 @@ export default async function Header({
   isLandingPage,
 }: HeaderProps) {
 
-  const username = await getUsername();
+  let username;
+  if (isLoggedIn) {
+    username = await getUser('username');
+  }
 
   return (
     <header className="h-24 bg-header flex items-center">
       {
         isLoggedIn &&
-        <Link className="sm:ml-12" href={`/user/${username}`}>
+        <Link className="sm:ml-12" href={`/user`}>
           <CgProfile className="sm:text-6xl text-6xl" color="white" />
         </Link>
       }

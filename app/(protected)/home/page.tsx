@@ -5,6 +5,7 @@ import Link from 'next/link';
 import TripButton from '@/app/ui/home/trip-button';
 
 export default async function Page() {
+
   return (
     <>
       <main className="container mx-auto px-4 py-12">

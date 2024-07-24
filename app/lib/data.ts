@@ -1,10 +1,11 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { getAccessToken } from './actions';
+import { getAccessToken } from '@/app/lib/actions';
+import { Trip, User } from '@/app/lib/types';
 
 const API_URL = process.env.API_URL;
 
-export async function getUsers() {
+export async function getUsers(): Promise<User[]> {
   try {
     const accessToken = await getAccessToken();
 
@@ -24,7 +25,7 @@ export async function getUsers() {
   }
 }
 
-export async function getTrips() {
+export async function getTrips(): Promise<Trip[]> {
   try {
     const accessToken = await getAccessToken();
 
@@ -53,23 +54,28 @@ export async function getTrips() {
 }
 
 
-export async function getUsername() {
+export async function getUser(data?: string) {
   try {
     const res = await fetch('http://localhost:3001/users/me', {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
       },
+      next: { tags: ['user'] }
+
     });
 
     if (!res.ok) {
-      return 'Utilisateur';
+      throw new Error('An error occurred while fetching user data. Please try again later.');
     }
 
     const response = await res.json();
-    return response.username;
+    if (data) {
+      return response[data];
+    }
+    return response
   } catch (error) {
     console.error(error);
-    return 'Utilisateur';
+    throw new Error('An error occurred while fetching user data. Please try again later.');
   }
 }
