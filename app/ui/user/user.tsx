@@ -13,6 +13,7 @@ import { IoMdMail } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { z } from "zod";
 import { useRouter } from 'next/navigation'
+import { IoLockClosed, IoLockClosedOutline, IoLockClosedSharp } from "react-icons/io5";
 
 
 const FormSchema = z
@@ -62,8 +63,8 @@ export default function User({ user }: { user: User }) {
                         name="username"
                         render={({ field }) => (
                             <FormItem className="pb-3 relative">
-                                <FaUser className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
-                                <MdEdit className="absolute right-3 top-3 transform -translate-y-1/2 z-10 text-marron" />
+                                <FaUser className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-header" />
+                                <MdEdit className="absolute right-3 top-3 transform -translate-y-1/2 z-10 text-header" />
                                 <FormControl>
                                     <Input
                                         className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold "
@@ -81,8 +82,8 @@ export default function User({ user }: { user: User }) {
                         render={({ field }) => (
                             <FormItem className="pb-3 relative">
 
-                                <IoMdMail className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
-                                <MdEdit className="absolute right-3 top-3 transform -translate-y-1/2 z-10 text-marron" />
+                                <IoMdMail className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-header" />
+                                <MdEdit className="absolute right-3 top-3 transform -translate-y-1/2 z-10 text-header" />
 
                                 <FormControl>
                                     <Input
@@ -95,6 +96,11 @@ export default function User({ user }: { user: User }) {
                             </FormItem>
                         )}
                     />
+
+                    <Button type="button" className="mt-1.5 pl-1.5 flex justify-start rounded-full bg-white border-rougelight border-4 text-rougelight w-full hover:bg-white">
+                        <IoLockClosed className="text-xl text-rougelight" />
+                        <span className="pl-2">Modifier le mot de passe</span>
+                    </Button>
                 </div>
 
                 <FormMessage aria-live="polite" role="status">
