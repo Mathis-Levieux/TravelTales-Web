@@ -2,6 +2,7 @@ import { getTrips } from '@/app/lib/data';
 import { FaCalendar, FaMapMarkerAlt, FaRegTrashAlt } from 'react-icons/fa';
 import QuitButton from '@/app/ui/trip/quit-button';
 import { Trip } from '@/app/lib/types';
+import Link from 'next/link';
 
 export default async function Trips() {
 
@@ -26,25 +27,30 @@ export default async function Trips() {
           const dateEnd = new Date(lastDate).toLocaleDateString('fr-FR');
 
           return (
-            <div
-              key={trip.id}
-              className="w-4/5 container px-0 flex flex-col justify-evenly bg-white/50 my-5 h-36 rounded-2xl"
-            >
-              <div className="flex justify-between items-center h-3/5">
-                <h2 className="pl-14 text-xl font-semibold">{trip.title}</h2>
+            <div key={trip.id} className='relative'>
+              <Link href={`/trip/${trip.id}`}>
+                <div
+                  className="w-4/5 container px-0 flex flex-col justify-evenly bg-white/50 my-5 h-36 rounded-2xl"
+                >
+                  <div className="flex justify-between items-center h-3/5">
+                    <h2 className="pl-14 text-xl font-semibold">{trip.title}</h2>
+                  </div>
+                  <div className="flex justify-between items-center bg-gray-400 h-1/2 rounded-b-2xl">
+                    <div className="flex items-center gap-2 pl-14">
+                      <FaMapMarkerAlt size={20} />
+                      <p>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</p>
+                    </div>
+                    <div className="flex items-center mr-14">
+                      <FaCalendar className='mr-2' />
+                      <p>
+                        {dateStart} - {dateEnd}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Link >
+              <div className='absolute top-8 right-36'>
                 <QuitButton id={trip.id} />
-              </div>
-              <div className="flex justify-between items-center bg-gray-400 h-1/2 rounded-b-2xl">
-                <div className="flex items-center gap-2 pl-14">
-                  <FaMapMarkerAlt size={20} />
-                  <p>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</p>
-                </div>
-                <div className="flex items-center mr-14">
-                  <FaCalendar className='mr-2' />
-                  <p>
-                    {dateStart} - {dateEnd}
-                  </p>
-                </div>
               </div>
             </div>
           );

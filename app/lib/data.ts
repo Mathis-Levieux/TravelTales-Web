@@ -79,3 +79,28 @@ export async function getUser(data?: string) {
     throw new Error('An error occurred while fetching user data. Please try again later.');
   }
 }
+
+export async function getTrip(id: string) {
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+      next: { tags: ['trips'] }
+
+    });
+
+    if (!res.ok) {
+      throw new Error('An error occurred while fetching user data. Please try again later.');
+    }
+
+    const response = await res.json();
+
+    return response
+
+  } catch (error) {
+    console.error(error);
+    throw new Error('An error occurred while fetching user data. Please try again later.');
+  }
+}
