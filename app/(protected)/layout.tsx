@@ -1,4 +1,4 @@
-import Header from '../ui/header';
+import Header from '@/app/ui/header';
 
 export default function HomeLayout({
   children,
@@ -7,7 +7,6 @@ export default function HomeLayout({
 }) {
   return (
     <>
-      <Header isLoggedIn={true} homeIcons={true} />
       {children}
     </>
   );

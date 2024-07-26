@@ -77,6 +77,7 @@ const config = {
       boxShadow: {
         createtripbutton: '0px 4px 4px 0px #FE705D',
         jointripbutton: '0px 4px 4px 0px #C3A2F8',
+        input: 'inset 4px 5px 4px 0px rgba(0, 0, 0, 0.25)',
       },
       borderRadius: {
         lg: 'var(--radius)',

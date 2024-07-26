@@ -35,7 +35,7 @@ export default function QuitButton({ id }: { id: number }) {
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <div onClick={countUsersInTrip}>
-                        <FaRegTrashAlt
+                        <FaRegTrashAlt title="Quitter le voyage"
                             className="text-red-600 mr-14 cursor-pointer"
                         />
                     </div>

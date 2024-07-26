@@ -1,14 +1,17 @@
 import { getTrip } from "@/app/lib/data";
+import { notFound } from "next/navigation";
+import Trip from "@/app/ui/trip/trip";
 
 export default async function Page({ params }: { params: { id: string } }) {
 
     const trip = await getTrip(params.id);
-    console.log(trip);
+    if (!trip) notFound();
+
 
     return (
         <>
-            <main className="container m-auto w-full flex justify-center">
-                oe {params.id}
+            <main className="container mx-auto px-4 py-12 w-2/3">
+                <Trip trip={trip} />
             </main>
         </>
     )

@@ -64,8 +64,12 @@ export default function TripForm() {
     if (response && response.error) setMessage(response.error);
     else if (response && response.message) {
       setMessage(response.message);
+      setTimeout(() => {
+        router.push('/home');
+      }, 700);
     }
   }
+
 
   const createPlacesWidget = (index: number) => {
     const { ref, autocompleteRef } = usePlacesWidget({
@@ -97,7 +101,7 @@ export default function TripForm() {
                 <IoEarthSharp className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                 <FormControl>
                   <Input
-                    className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold "
+                    className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input"
                     placeholder="Nom du voyage"
                     {...field}
                   />
@@ -115,7 +119,7 @@ export default function TripForm() {
                 <FaPencilAlt className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                 <FormControl>
                   <Input
-                    className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold"
+                    className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input"
                     placeholder="Description (optionnelle)"
                     {...field}
                   />
@@ -135,7 +139,7 @@ export default function TripForm() {
                     <FaMapMarkerAlt className="absolute left-3 top-5 transform -translate-y-1/2 z-10 text-marron" />
                     <FormControl ref={createPlacesWidget(index) as never}>
                       <Input
-                        className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold "
+                        className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input"
                         placeholder="Destination"
                         {...field}
                       />

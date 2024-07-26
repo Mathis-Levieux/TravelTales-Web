@@ -8,10 +8,7 @@ export default async function Trips() {
 
   const trips = await getTrips();
 
-
   return (
-
-
     <>
       {trips.length > 0 ? <h2 className='text-2xl text-black mt-12 ml-28'>Mes voyages : </h2> : ""}
       {trips.length > 0 ? (

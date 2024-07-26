@@ -88,19 +88,16 @@ export async function getTrip(id: string) {
         Authorization: `Bearer ${await getAccessToken()}`,
       },
       next: { tags: ['trips'] }
-
     });
 
     if (!res.ok) {
-      throw new Error('An error occurred while fetching user data. Please try again later.');
+      return null;
     }
 
-    const response = await res.json();
+    return await res.json();
 
-    return response
-
-  } catch (error) {
-    console.error(error);
-    throw new Error('An error occurred while fetching user data. Please try again later.');
+  } catch (err) {
+    console.error(err);
+    throw new Error('Une erreur est survenue lors de la récupération des données du voyage. Veuillez réessayer plus tard.');
   }
 }

@@ -3,11 +3,13 @@ import Trips from '@/app/ui/home/trips';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import TripButton from '@/app/ui/home/trip-button';
+import Header from '@/app/ui/header';
 
 export default async function Page() {
 
   return (
     <>
+      <Header isLoggedIn={true} homeIcons={true} />
       <main className="container mx-auto px-4 py-12">
         <div className="w-full bg-white/50 rounded-2xl py-12">
           <div className='flex justify-evenly'>

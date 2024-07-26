@@ -369,6 +369,54 @@ export async function handleEditUserInfos(data: {
       error: 'Erreur lors de la modification des informations',
     };
   }
+}
 
+export async function handleTripNameForm(tripId: string, newTitle: string) {
 
+  const FormSchema = z.object({
+    newTitle: z.string().min(1, {
+      message: 'Le nom du voyage ne peut pas être vide',
+    }),
+  });
+
+  const result = FormSchema.safeParse({ newTitle });
+
+  if (!result.success) {
+    return {
+      error: 'Le nom du voyage est invalide',
+    };
+  }
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${tripId}/title`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ title: newTitle }),
+    });
+
+    revalidateTag('trips');
+
+    if (!res.ok) {
+      console.log("titre non modifié")
+      const response = await res.json();
+      console.log(response);
+      return {
+        error: response.message,
+      };
+    }
+    console.log("titre modifié")
+    return {
+      message: 'Nom du voyage modifié',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la modification du nom du voyage',
+    };
+  }
 }

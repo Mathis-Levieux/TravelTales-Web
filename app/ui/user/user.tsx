@@ -67,7 +67,7 @@ export default function User({ user }: { user: User }) {
                                 <MdEdit className="absolute right-3 top-3 transform -translate-y-1/2 z-10 text-header" />
                                 <FormControl>
                                     <Input
-                                        className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold "
+                                        className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input"
                                         placeholder="Username"
                                         {...field}
                                     />
@@ -87,7 +87,7 @@ export default function User({ user }: { user: User }) {
 
                                 <FormControl>
                                     <Input
-                                        className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold "
+                                        className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input"
                                         placeholder="Email"
                                         {...field}
                                     />
