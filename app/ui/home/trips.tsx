@@ -8,10 +8,20 @@ export default async function Trips() {
 
   const trips = await getTrips();
 
+  const sortedTrips = trips.sort((a: Trip, b: Trip) => {
+    const firstDateA = a.destination
+      .map((destination: any) => new Date(destination.dateStart).getTime())
+      .sort((a: any, b: any) => a - b)[0];
+    const firstDateB = b.destination
+      .map((destination: any) => new Date(destination.dateStart).getTime())
+      .sort((a: any, b: any) => a - b)[0];
+    return firstDateA - firstDateB;
+  });
+
   return (
     <>
-      {trips.length > 0 ? <h2 className='text-2xl text-black mt-12 ml-28'>Mes voyages : </h2> : ""}
-      {trips.length > 0 ? (
+      {sortedTrips.length > 0 ? <h2 className='text-2xl text-black mt-12 ml-28'>Mes voyages : </h2> : ""}
+      {sortedTrips.length > 0 ? (
         trips.map((trip: Trip) => {
           const firstDate = trip.destination
             .map((destination: any) => new Date(destination.dateStart).getTime())

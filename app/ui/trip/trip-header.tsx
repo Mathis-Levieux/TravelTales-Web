@@ -28,15 +28,15 @@ export default async function TripHeader({ trip }: { trip: any }) {
             </div>
             <div className="flex justify-between bg-jaune h-1/3 items-center">
                 <div className="flex items-center gap-2 ml-2">
-                    <FaMapMarkerAlt />
+                    <FaMapMarkerAlt className="text-marron" />
                     <span>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <FaWallet />
+                    <FaWallet className="text-marron" />
                     <span>{remainingBudget}</span>
                 </div>
                 <div className="flex items-center gap-2 mr-2">
-                    <FaCalendar />
+                    <FaCalendar className="text-marron" />
                     <span>{dateStart} - {dateEnd}</span>
                 </div>
             </div>

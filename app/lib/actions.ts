@@ -402,14 +402,11 @@ export async function handleTripNameForm(tripId: string, newTitle: string) {
     revalidateTag('trips');
 
     if (!res.ok) {
-      console.log("titre non modifié")
       const response = await res.json();
-      console.log(response);
       return {
         error: response.message,
       };
     }
-    console.log("titre modifié")
     return {
       message: 'Nom du voyage modifié',
     };
