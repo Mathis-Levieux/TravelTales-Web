@@ -19,23 +19,23 @@ export default async function TripHeader({ trip }: { trip: any }) {
     const remainingBudget = totalBudget - totalExpenses;
 
     return (
-        <div className="flex flex-col  h-36 rounded-2xl bg-opacity-55 bg-white">
+        <div className="flex flex-col  h-36 rounded-2xl bg-opacity-65 bg-white">
             <div className="flex justify-between bg-white h-2/3 pt-3 rounded-t-xl bg-opacity-65">
                 <TripName tripTitle={trip.title} tripId={trip.id} className={"ps-5 w-1/2"} />
                 <div className="flex me-5">
                     <ImExit className="text-xl text-rougelight" />
                 </div>
             </div>
-            <div className="flex justify-between bg-jaune h-1/3 items-center">
-                <div className="flex items-center gap-2 ml-2">
+            <div className="flex justify-between bg-jaune h-1/3 items-center rounded-b-2xl">
+                <div className="flex items-center gap-2 ml-5">
                     <FaMapMarkerAlt className="text-marron" />
                     <span>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <FaWallet className="text-marron" />
-                    <span>{remainingBudget}</span>
+                    <span>{remainingBudget}€</span>
                 </div>
-                <div className="flex items-center gap-2 mr-2">
+                <div className="flex items-center gap-2 mr-5">
                     <FaCalendar className="text-marron" />
                     <span>{dateStart} - {dateEnd}</span>
                 </div>

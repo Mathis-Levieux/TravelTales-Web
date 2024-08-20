@@ -6,8 +6,9 @@ import Link from 'next/link';
 
 export default async function Trips() {
 
-  const trips = await getTrips();
+  let trips = await getTrips();
 
+  // On trie les voyages par date de départ
   const sortedTrips = trips.sort((a: Trip, b: Trip) => {
     const firstDateA = a.destination
       .map((destination: any) => new Date(destination.dateStart).getTime())
@@ -22,7 +23,7 @@ export default async function Trips() {
     <>
       {sortedTrips.length > 0 ? <h2 className='text-2xl text-black mt-12 ml-28'>Mes voyages : </h2> : ""}
       {sortedTrips.length > 0 ? (
-        trips.map((trip: Trip) => {
+        sortedTrips.map((trip: Trip) => {
           const firstDate = trip.destination
             .map((destination: any) => new Date(destination.dateStart).getTime())
             .sort((a: any, b: any) => a - b)[0];
@@ -42,7 +43,7 @@ export default async function Trips() {
                   <div className="flex justify-between items-center h-3/5">
                     <h2 className="pl-14 text-xl font-semibold">{trip.title}</h2>
                   </div>
-                  <div className="flex justify-between items-center bg-gray-400 h-1/2 rounded-b-2xl">
+                  <div className="flex justify-between items-center bg-jaune h-1/2 rounded-b-2xl">
                     <div className="flex items-center gap-2 pl-14">
                       <FaMapMarkerAlt size={20} />
                       <p>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</p>

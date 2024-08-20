@@ -7,13 +7,15 @@ interface TripButtonProps {
     className?: string;
     textColor: string;
     icon: string;
+    textCenter?: boolean;
 }
 
 export default function TripButton({
     className,
     children,
     textColor,
-    icon
+    icon,
+    textCenter,
 }: TripButtonProps) {
     return (
         <button className={`w-full font-semibold rounded-full py-2 px-3 flex items-center opacity-85 ${className}`}>
@@ -28,7 +30,7 @@ export default function TripButton({
                 }
             </div>
             <div className="bg-white rounded-r-full flex w-full py-1 ml-2 pl-2">
-                <span className="mr-auto">{children}</span>
+                <span className={textCenter ? "m-auto" : "mr-auto"}>{children}</span>
             </div>
         </button>
     );
