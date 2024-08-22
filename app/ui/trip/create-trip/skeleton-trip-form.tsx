@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Loading() {
+export default function SkeletonTripForm() {
     return (
         <div className="container m-auto w-full flex justify-center">
             <div className="my-7 rounded-2xl sm:w-6/12 w-full bg-white/50 flex flex-col items-center">

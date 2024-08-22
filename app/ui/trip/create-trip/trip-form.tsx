@@ -36,6 +36,7 @@ const FormSchema = z.object({
 });
 
 export default function TripForm() {
+
   const router = useRouter();
   const [message, setMessage] = useState<string>('');
   const form = useForm<z.infer<typeof FormSchema>>({

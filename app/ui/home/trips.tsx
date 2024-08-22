@@ -9,6 +9,7 @@ export default async function Trips() {
   let trips = await getTrips();
 
   // On trie les voyages par date de départ
+
   const sortedTrips = trips.sort((a: Trip, b: Trip) => {
     const firstDateA = a.destination
       .map((destination: any) => new Date(destination.dateStart).getTime())
