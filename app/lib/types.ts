@@ -48,3 +48,24 @@ export type Trip = {
     dateEnd: string;
   }[];
 }
+
+export type Activity = {
+  id: number;
+  name: string;
+  isDone: boolean;
+  comment?: string;
+  score?: number;
+  date: string | null;
+  destinationId: number;
+  category: string;
+}
+
+export type Destination = {
+  id: number;
+  name: string;
+  dateStart: string;
+  dateEnd: string;
+  timezone: string | null;
+  tripId: number;
+  activity: Activity[];
+}
