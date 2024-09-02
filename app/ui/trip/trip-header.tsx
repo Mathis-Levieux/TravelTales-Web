@@ -1,6 +1,7 @@
 import { FaCalendar, FaMapMarkerAlt, FaWallet } from "react-icons/fa";
 import { ImExit } from "react-icons/im";
 import TripName from "./trip-name-form";
+import QuitButton from "./quit-button";
 
 export default async function TripHeader({ trip }: { trip: any }) {
 
@@ -23,7 +24,7 @@ export default async function TripHeader({ trip }: { trip: any }) {
             <div className="flex justify-between bg-white h-2/3 pt-3 rounded-t-xl bg-opacity-65">
                 <TripName tripTitle={trip.title} tripId={trip.id} className={"ps-5 w-1/2"} />
                 <div className="flex me-5">
-                    <ImExit className="text-xl text-rougelight" />
+                    <QuitButton id={trip.id} />
                 </div>
             </div>
             <div className="flex justify-between bg-jaune h-1/3 items-center rounded-b-2xl">

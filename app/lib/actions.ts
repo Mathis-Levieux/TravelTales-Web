@@ -249,7 +249,6 @@ export async function handleTripForm(data: {
 }
 
 export async function handleLeaveTrip({ id }: { id: number }) {
-  // console.log(id);
 
   const FormSchema = z.object({
     id: z.number(),
@@ -279,9 +278,7 @@ export async function handleLeaveTrip({ id }: { id: number }) {
   }
 
   revalidateTag('trips');
-  return {
-    message: 'Vous avez quitté le voyage',
-  };
+  redirect('/home');
 }
 
 
