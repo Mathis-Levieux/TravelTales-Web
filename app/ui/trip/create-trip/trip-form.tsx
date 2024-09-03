@@ -189,9 +189,15 @@ export default function TripForm() {
           <Button
             className="mt-3"
             type="button"
-            onClick={() =>
-              append({ name: '', dateStart: new Date(), dateEnd: new Date() })
-            }
+            onClick={() => {
+              const lastDestination = fields[fields.length - 1];
+              const lastDateEnd = lastDestination ? lastDestination.dateEnd : new Date();
+              append({
+                name: '',
+                dateStart: lastDateEnd,
+                dateEnd: new Date(lastDateEnd.getTime() + 7 * 24 * 60 * 60 * 1000),
+              });
+            }}
           >
             Ajouter une destination
           </Button>

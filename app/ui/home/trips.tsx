@@ -3,6 +3,7 @@ import { FaCalendar, FaMapMarkerAlt, FaRegTrashAlt } from 'react-icons/fa';
 import QuitButton from '@/app/ui/trip/quit-button';
 import { Trip } from '@/app/lib/types';
 import Link from 'next/link';
+import RoundIcon from '../round-icon';
 
 export default async function Trips() {
 
@@ -22,7 +23,6 @@ export default async function Trips() {
 
   return (
     <>
-      {sortedTrips.length > 0 ? <h2 className='text-2xl text-black mt-12 ml-28'>Mes voyages : </h2> : ""}
       {sortedTrips.length > 0 ? (
         sortedTrips.map((trip: Trip) => {
           const firstDate = trip.destination
@@ -36,30 +36,30 @@ export default async function Trips() {
           const dateEnd = new Date(lastDate).toLocaleDateString('fr-FR');
 
           return (
-            <div key={trip.id} className='relative'>
-              <Link href={`/trip/${trip.id}`}>
+            <div key={trip.id} className='relative flex justify-center'>
+              <Link href={`/trip/${trip.id}`} className='block w-2/3'>
                 <div
-                  className="w-4/5 container px-0 flex flex-col justify-evenly bg-white/50 my-5 h-36 rounded-2xl"
+                  className="container px-0 flex flex-col justify-evenly bg-white/50 my-5 h-36 rounded-2xl"
                 >
                   <div className="flex justify-between items-center h-3/5">
-                    <h2 className="pl-14 text-xl font-semibold">{trip.title}</h2>
+                    <h2 className="pl-14 text-xl font-bold">{trip.title}</h2>
                   </div>
                   <div className="flex justify-between items-center bg-jaune h-1/2 rounded-b-2xl">
                     <div className="flex items-center gap-2 pl-14">
-                      <FaMapMarkerAlt size={20} />
-                      <p>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</p>
+                      <RoundIcon icon={<FaMapMarkerAlt size={20} className='text-marron' />} className='bg-white h-10 w-10' />
+                      <p className='text-marron'>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</p>
                     </div>
                     <div className="flex items-center mr-14">
-                      <FaCalendar className='mr-2' />
-                      <p>
+                      <RoundIcon icon={<FaCalendar size={20} className='text-marron' />} className='bg-white h-10 w-10 mr-2' />
+                      <p className='text-marron font-semibold'>
                         {dateStart} - {dateEnd}
                       </p>
                     </div>
                   </div>
                 </div>
               </Link >
-              <div className='absolute top-8 right-36'>
-                <QuitButton id={trip.id} />
+              <div className='absolute top-7 right-60'>
+                <RoundIcon icon={<QuitButton id={trip.id} className='text-2xl' />} className='bg-white h-8 w-8' />
               </div>
             </div>
           );

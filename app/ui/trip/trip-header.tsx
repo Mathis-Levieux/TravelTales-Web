@@ -23,7 +23,7 @@ export default async function TripHeader({ trip }: { trip: any }) {
         <div className="flex flex-col  h-36 rounded-2xl bg-opacity-65 bg-white">
             <div className="flex justify-between bg-white h-2/3 pt-3 rounded-t-xl bg-opacity-65">
                 <TripName tripTitle={trip.title} tripId={trip.id} className={"ps-5 w-1/2"} />
-                <div className="flex me-5">
+                <div className="rounded-full bg-black">
                     <QuitButton id={trip.id} />
                 </div>
             </div>

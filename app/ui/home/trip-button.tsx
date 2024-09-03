@@ -18,7 +18,7 @@ export default function TripButton({
     textCenter,
 }: TripButtonProps) {
     return (
-        <button className={`w-full font-semibold rounded-full py-2 px-3 flex items-center opacity-85 ${className}`}>
+        <button className={`font-semibold rounded-full py-3 px-3 flex items-center opacity-85 ${className}`}>
             <div className="flex items-center justify-center rounded-full">
                 {icon == 'plus' &&
                     <FaPlus className={`text-${textColor}`} size={32} />
@@ -29,7 +29,7 @@ export default function TripButton({
 
                 }
             </div>
-            <div className="bg-white rounded-r-full flex w-full py-1 ml-2 pl-2">
+            <div className="bg-white rounded-r-full flex w-full py-2 ml-2 pl-2">
                 <span className={textCenter ? "m-auto" : "mr-auto"}>{children}</span>
             </div>
         </button>

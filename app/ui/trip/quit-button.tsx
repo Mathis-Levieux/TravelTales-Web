@@ -11,13 +11,14 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt, FaTrash, FaTrashAlt } from "react-icons/fa";
 import { handleCountUsersInTrip, handleLeaveTrip } from "@/app/lib/actions";
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { useState } from "react";
+import { PiTrashFill } from "react-icons/pi";
 
 
-export default function QuitButton({ id }: { id: number }) {
+export default function QuitButton({ id, className }: { id: number, className?: string }) {
 
     const leaveTrip = async () => {
         await handleLeaveTrip({ id });
@@ -35,8 +36,8 @@ export default function QuitButton({ id }: { id: number }) {
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <div onClick={countUsersInTrip}>
-                        <FaRegTrashAlt title="Quitter le voyage"
-                            className="text-red-600 mr-14 cursor-pointer"
+                        <PiTrashFill title="Quitter le voyage"
+                            className={`text-red-600 cursor-pointer text-2xl ${className}`}
                         />
                     </div>
                 </AlertDialogTrigger>
