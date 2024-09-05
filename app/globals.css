@@ -43,6 +43,8 @@
 
     --marron: 28 58 44;
 
+    --marron-fonce: 28 59 18;
+
     --beige: 46 32 85;
 
     --bleutext: 187 66 41;
@@ -50,6 +52,10 @@
     --bleufooter: 188 60 72;
 
     --rougelight: 7 99 68;
+
+    --violet: 263 86 80;
+
+    --rose: 348 100 86;
 
     --radius: 0.5rem;
   }

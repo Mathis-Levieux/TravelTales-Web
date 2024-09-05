@@ -20,7 +20,7 @@ const FormSchema = z.object({
     }),
 });
 
-export default function TripForm({ tripTitle, tripId, className }: { tripTitle: string; tripId: string, className: string }) {
+export default function TripNameForm({ tripTitle, tripId, className }: { tripTitle: string; tripId: string, className: string }) {
 
     const [message, setMessage] = useState<string>('');
 
@@ -58,7 +58,7 @@ export default function TripForm({ tripTitle, tripId, className }: { tripTitle: 
                                 <MdEdit className="absolute right-3 top-3 z-10 text-marron text-xl pointer-events-none" />
                                 <FormControl>
                                     <Input
-                                        className="rounded-full border-none focus-visible:ring-2 placeholder:font-bold text-xl font-bold shadow-input"
+                                        className="rounded-full text-marronfonce border-none focus-visible:ring-2 placeholder:font-bold text-xl font-bold shadow-input"
                                         placeholder="Titre du voyage"
                                         {...field}
                                         onBlur={form.handleSubmit(onSubmit)}

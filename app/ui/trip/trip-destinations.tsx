@@ -1,32 +1,56 @@
-import { FaPersonWalking } from "react-icons/fa6";
-import { IoRestaurantSharp } from "react-icons/io5";
-import { MdEdit, MdOutlineCastle } from "react-icons/md";
-import { GiShoppingBag } from "react-icons/gi";
-import type { Destination } from "../../lib/types";
+import { MdEdit } from "react-icons/md";
+import type { Activity, Destination } from "../../lib/types";
 import { FaCalendar } from "react-icons/fa";
+import RoundIcon from "../round-icon";
+import ActivityComponent from "./activity";
+import { FaPlus } from "react-icons/fa6";
+import QuitButton from "./quit-button";
 
 
 export default async function TripDestinations({ destinations }: { destinations: Destination[] }) {
 
+    const dateStart = new Date(destinations[0].dateStart).toLocaleDateString('fr-FR');
+    const dateEnd = new Date(destinations[0].dateEnd).toLocaleDateString('fr-FR');
+
     return (
-        <div className="">
+        <div className="flex justify-center">
             {destinations.map((destination: Destination, index: number) => (
-                <div key={index} className="flex flex-col rounded-b-2xl">
-                    <div className="ms-4 me-4 flex justify-between">
-                        <h3>{destination.name}</h3>
-                        <MdEdit className="" />
+                <div key={index} className="flex flex-col w-11/12">
+
+
+                    {/* Destination Header */}
+                    <div className="flex items-center justify-between bg-jaune rounded-t-[40px] h-20 px-14">
+                        <h2 className="text-marronfonce text-2xl font-bold">{destination.name}</h2>
+                        <div className="flex gap-2">
+                            <RoundIcon icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10' />
+                            <RoundIcon icon={<FaPlus className="text-marron text-2xl" />} className='bg-white h-10 w-10' />
+                            <RoundIcon icon={<QuitButton id={destination.id} className='text-2xl text-red' />} className='bg-white h-10 w-10' />
+                        </div>
                     </div>
 
-                    <div>
+
+                    {/* Destination Activities */}
+                    <div className="bg-white bg-opacity-55 flex flex-col items-center pt-6 pb-6 gap-3">
+                        {destination.activity.map((activity: Activity, index: number) => (
+                            <ActivityComponent activity={activity} />
+                        ))}
                     </div>
 
-                    <div>
-                        <FaCalendar className="text-marron" />
-                        <p>{destination.dateStart} - {destination.dateEnd}</p>
+
+                    {/* Destination Dates */}
+                    <div className="flex items-center bg-jaune rounded-b-[40px] h-20 px-14 gap-5 mb-5">
+                        <RoundIcon icon={<FaCalendar className="text-marron text-2xl" />} className='bg-white h-10 w-10' />
+                        <span className="">{dateStart} - {dateEnd}</span>
                     </div>
+
+
                 </div>
             )
             )}
         </div>
     )
 }
+
+// {destination.activity.map((activity: Activity, index: number) => (
+//     <span>{activity.name}</span>
+// ))}

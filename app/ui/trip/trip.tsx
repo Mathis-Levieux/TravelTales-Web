@@ -4,6 +4,7 @@ import TripHeader from "./trip-header";
 
 export default async function Trip({ trip }: { trip: any }) {
 
+
     return (
         <div className="flex flex-col rounded-2xl bg-opacity-55 bg-white">
             <TripHeader trip={trip} />

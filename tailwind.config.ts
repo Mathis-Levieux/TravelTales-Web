@@ -64,6 +64,9 @@ const config = {
         marron: {
           DEFAULT: 'hsl(var(--marron))',
         },
+        marronfonce: {
+          DEFAULT: 'hsl(var(--marron-fonce))',
+        },
         bleufooter: {
           DEFAULT: 'hsl(var(--bleufooter))',
         },
@@ -72,6 +75,12 @@ const config = {
         },
         rougelight: {
           DEFAULT: 'hsl(var(--rougelight))',
+        },
+        violet: {
+          DEFAULT: 'hsl(var(--violet))',
+        },
+        rose: {
+          DEFAULT: 'hsl(var(--rose))',
         },
       },
       boxShadow: {

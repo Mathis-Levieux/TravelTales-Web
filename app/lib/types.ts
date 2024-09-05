@@ -55,7 +55,7 @@ export type Activity = {
   isDone: boolean;
   comment?: string;
   score?: number;
-  date: string | null;
+  date: string;
   destinationId: number;
   category: string;
 }
