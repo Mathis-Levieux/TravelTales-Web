@@ -63,8 +63,8 @@ export type Activity = {
 export type Destination = {
   id: number;
   name: string;
-  dateStart: string;
-  dateEnd: string;
+  dateStart: Date;
+  dateEnd: Date;
   timezone: string | null;
   tripId: number;
   activity: Activity[];

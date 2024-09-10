@@ -82,6 +82,9 @@ const config = {
         rose: {
           DEFAULT: 'hsl(var(--rose))',
         },
+        grisfonce: {
+          DEFAULT: 'hsl(var(--gris-fonce))',
+        },
       },
       boxShadow: {
         createtripbutton: '0px 4px 4px 0px #FE705D',
@@ -110,6 +113,9 @@ const config = {
     },
   },
   plugins: [require('tailwindcss-animate')],
+  safelist: [{
+    pattern: /(bg|text|border)-(jaune|marron|marronfonce|bleufooter|beige|rougelight|violet|rose|grisfonce)/,
+  }]
 } satisfies Config;
 
 export default config;

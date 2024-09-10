@@ -1,8 +1,10 @@
 const colorMap: { [key: string]: string } = {
     food: "rose",
-    shopping: "violet",
-    sightseeing: "marron",
+    culture: "jaune",
+    nature: "marron",
     sport: "bleufooter",
+    shopping: "violet",
+    other: "grisfonce"
 };
 
 export default colorMap;

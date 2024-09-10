@@ -6,7 +6,11 @@ import { z } from 'zod';
 import { passwordRegex } from '@/app/lib/constants';
 import { isEmailTaken } from '@/app/lib/utils';
 import { revalidatePath, revalidateTag } from 'next/cache';
+import { Destination } from './types';
+
 /*
+logs test
+Vaaarial
 Vaaarial2@gmail.com
 123456789123aA$
 */
@@ -413,4 +417,8 @@ export async function handleTripNameForm(tripId: string, newTitle: string) {
       error: 'Erreur lors de la modification du nom du voyage',
     };
   }
+}
+
+export async function handleTripDestinationForm(values: { name: string; dateStart: Date; dateEnd: Date; }) {
+  console.log("form envoye", values);
 }

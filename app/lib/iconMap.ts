@@ -7,7 +7,7 @@ import { IconType } from 'react-icons';  // Import IconType for typing
 const iconMap: { [key: string]: IconType } = {
     food: GiKnifeFork,
     shopping: GiShoppingBag,
-    sightseeing: MdOutlineCastle,
+    culture: MdOutlineCastle,
     sport: FaPersonWalking,
 };
 
