@@ -9,7 +9,6 @@ import {
     DialogContent,
     DialogDescription,
     DialogFooter,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
@@ -24,54 +23,39 @@ import { Input } from '@/components/ui/input';
 import DatePickerWithRange from '@/app/ui/trip/create-trip/date-picker-with-range';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
-import { editDestinationForm } from '@/app/lib/actions';
-import { Destination } from '@/app/lib/types';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { handleAddDestinationForm } from '@/app/lib/actions';
 
-const DestinationEditSchema = z.object({
+const addDestinationSchema = z.object({
     tripId: z.number(),
-    destinationId: z.number(),
     name: z.string().min(1, { message: 'La destination ne peut pas être vide' }),
     dateStart: z.date(),
     dateEnd: z.date()
 });
 
-export default function EditDestinationForm({ destination, children }: { destination: Destination, children: any }) {
+export default function AddDestinationForm({ tripId, children }: { tripId: number, children: any }) {
     const router = useRouter();
     const [message, setMessage] = useState<string>('');
 
-    const form = useForm<z.infer<typeof DestinationEditSchema>>({
-        mode: 'all',
-        resolver: zodResolver(DestinationEditSchema),
+    const form = useForm<z.infer<typeof addDestinationSchema>>({
+        mode: 'onChange',
+        resolver: zodResolver(addDestinationSchema),
         defaultValues: {
-            tripId: destination.tripId,
-            destinationId: destination.id,
-            name: destination?.name || '',
-            dateStart: new Date(destination.dateStart),
-            dateEnd: new Date(destination.dateEnd),
+            tripId: tripId,
+            name: '',
+            dateStart: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+            dateEnd: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7 * 2),
         },
     });
 
-    async function onSubmit(values: z.infer<typeof DestinationEditSchema>) {
+    async function onSubmit(values: z.infer<typeof addDestinationSchema>) {
         try {
-
-            destination.dateStart = new Date(destination.dateStart);
-            destination.dateEnd = new Date(destination.dateEnd);
-
-            if (
-                destination.dateStart.getTime() === values.dateStart.getTime() &&
-                destination.dateEnd.getTime() === values.dateEnd.getTime() &&
-                destination.name === values.name
-            )
-                return setMessage('Aucune modification n\'a été apportée');
-
-            const response = await editDestinationForm(values); // Remplace par ta fonction d'édition
+            const response = await handleAddDestinationForm(values);
             if (response && response.error) setMessage(response.error);
             else {
-                setMessage('Destination mise à jour avec succès');
+                setMessage('Destination ajoutée avec succès');
                 setTimeout(() => {
-                    router.push(`/trip/${values.tripId}`);
+                    router.push(`/trip/${tripId}`);
                 }, 700);
             }
         } catch (error) {
@@ -123,6 +107,7 @@ export default function EditDestinationForm({ destination, children }: { destina
                                                 to: form.getValues('dateEnd'),
                                             }}
                                             onChange={(val) => {
+                                                console.log(val);
                                                 // @ts-expect-error
                                                 form.setValue('dateStart', val?.from);
                                                 // @ts-expect-error
@@ -144,11 +129,12 @@ export default function EditDestinationForm({ destination, children }: { destina
 
                         <DialogFooter>
                             <Button type="submit" className='w-full bg-jaune text-marron font-bold h-16 mt-16'>
-                                Mettre à jour la destination
+                                Ajouter une destination
                             </Button>
                         </DialogFooter>
                     </form>
                 </Form>
+
             </DialogContent>
         </Dialog>
     );

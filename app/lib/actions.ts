@@ -419,6 +419,150 @@ export async function handleTripNameForm(tripId: string, newTitle: string) {
   }
 }
 
-export async function handleTripDestinationForm(values: { name: string; dateStart: Date; dateEnd: Date; }) {
-  console.log("form envoye", values);
+export async function editDestinationForm(values: { tripId: number, destinationId: number, name: string; dateStart: Date; dateEnd: Date; }) {
+
+  console.log(values);
+
+  const DestinationEditSchema = z.object({
+    tripId: z.number(),
+    destinationId: z.number(),
+    name: z.string().min(1, { message: 'La destination ne peut pas être vide' }),
+    dateStart: z.date(),
+    dateEnd: z.date(),
+  });
+
+  const result = DestinationEditSchema.safeParse(values);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+  const { tripId, name, dateStart, dateEnd, destinationId } = values;
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${tripId}/destination/${destinationId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ name, dateStart, dateEnd }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Destination modifiée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la modification de la destination',
+    };
+  }
+}
+
+export async function handleAddDestinationForm(values: { tripId: number, name: string; dateStart: Date; dateEnd: Date; }) {
+
+  console.log(values);
+
+  const addDestinationSchema = z.object({
+    tripId: z.number(),
+    name: z.string().min(1, { message: 'La destination ne peut pas être vide' }),
+    dateStart: z.date(),
+    dateEnd: z.date()
+  });
+
+  const result = addDestinationSchema.safeParse(values);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const { tripId, name, dateStart, dateEnd } = values;
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${tripId}/destination`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ name, dateStart, dateEnd }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Destination ajoutée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de l\'ajout de la destination',
+    };
+  }
+}
+
+export async function handleDeleteDestination({ tripId, destId }: { tripId: number, destId: number }) {
+
+  const FormSchema = z.object({
+    tripId: z.number(),
+    destId: z.number(),
+  });
+
+  const result = FormSchema.safeParse({ tripId, destId });
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${tripId}/destination/${destId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Destination supprimée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la suppression de la destination',
+    };
+  }
 }

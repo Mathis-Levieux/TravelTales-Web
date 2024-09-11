@@ -58,7 +58,7 @@ export default function TripNameForm({ tripTitle, tripId, className }: { tripTit
                                 <MdEdit className="absolute right-3 top-3 z-10 text-marron text-xl pointer-events-none" />
                                 <FormControl>
                                     <Input
-                                        className="rounded-full text-marronfonce border-none focus-visible:ring-2 placeholder:font-bold text-xl font-bold shadow-input"
+                                        className="rounded-full text-marronfonce border-none focus-visible:ring-2 placeholder:font-bold text-2xl font-bold shadow-input"
                                         placeholder="Titre du voyage"
                                         {...field}
                                         onBlur={form.handleSubmit(onSubmit)}
