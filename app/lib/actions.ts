@@ -566,3 +566,55 @@ export async function handleDeleteDestination({ tripId, destId }: { tripId: numb
     };
   }
 }
+
+export async function handleAddActivityForm(values: { destinationId: number, name: string, date: Date, comment?: string, category: string }) {
+
+  const addActivitySchema = z.object({
+    tripId: z.number(),
+    destinationId: z.number(),
+    name: z.string().min(1, { message: 'Le nom ne peut pas être vide' }),
+    date: z.date(),
+    comment: z.string().optional(),
+    category: z.string()
+  });
+
+  const result = addActivitySchema.safeParse(values);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const { destinationId, name, date, comment, category } = values;
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/activities`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ destinationId, name, date, comment, category }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Activité ajoutée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de l\'ajout de l\'activité',
+    };
+  }
+}

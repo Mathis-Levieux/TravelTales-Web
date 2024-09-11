@@ -7,10 +7,13 @@ import { FaPlus } from "react-icons/fa6";
 import QuitButton from "./quit-button";
 import EditDestinationForm from "./edit-destination";
 import QuitDestButton from "./quit-destination-button";
+import AddActivityForm from "./add-activity";
+import { getActivitiesCategories } from "@/app/lib/data";
 
 
 export default async function TripDestinations({ destinations }: { destinations: Destination[] }) {
 
+    const categories = await getActivitiesCategories()
 
     return (
 
@@ -30,9 +33,11 @@ export default async function TripDestinations({ destinations }: { destinations:
                             <div className="flex gap-2">
                                 {/* Edit Destination Modal*/}
                                 <EditDestinationForm destination={destination}>
-                                    <RoundIcon icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10' />
+                                    <RoundIcon icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
                                 </EditDestinationForm>
-                                <RoundIcon icon={<FaPlus className="text-marron text-2xl" />} className='bg-white h-10 w-10' />
+                                <AddActivityForm categories={categories} destination={destination}>
+                                    <RoundIcon icon={<FaPlus className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
+                                </AddActivityForm>
                                 <RoundIcon icon={<QuitDestButton values={{ tripId: destination.tripId, destId: destination.id }} className='text-2xl' />} className='bg-white h-10 w-10' />
                             </div>
                         </div>

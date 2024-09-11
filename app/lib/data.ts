@@ -101,3 +101,24 @@ export async function getTrip(id: string) {
     throw new Error('Une erreur est survenue lors de la récupération des données du voyage. Veuillez réessayer plus tard.');
   }
 }
+
+export async function getActivitiesCategories() {
+  try {
+    const res = await fetch('http://localhost:3001/activities/categories', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+      next: { tags: ['activities'] }
+    });
+
+    if (!res.ok) {
+      throw new Error('An error occurred while fetching activities categories. Please try again later.');
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('An error occurred while fetching activities categories. Please try again later.');
+  }
+}
