@@ -116,6 +116,7 @@ export default function RegisterForm() {
                     <Input
                       className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold"
                       placeholder="Mot de passe"
+                      type='password'
                       {...field}
                     />
                   </FormControl>
@@ -134,6 +135,7 @@ export default function RegisterForm() {
                     <Input
                       className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold"
                       placeholder="Confirmer le mot de passe"
+                      type='password'
                       {...field}
                     />
                   </FormControl>

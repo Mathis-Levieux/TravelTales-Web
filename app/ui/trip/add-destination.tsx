@@ -54,9 +54,9 @@ export default function AddDestinationForm({ tripId, children }: { tripId: numbe
             if (response && response.error) setMessage(response.error);
             else {
                 setMessage('Destination ajoutée avec succès');
-                setTimeout(() => {
-                    router.push(`/trip/${tripId}`);
-                }, 700);
+                // setTimeout(() => {
+                //     router.push(`/trip/${tripId}`);
+                // }, 700);
             }
         } catch (error) {
             setMessage('Une erreur est survenue');

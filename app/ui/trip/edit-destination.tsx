@@ -70,9 +70,9 @@ export default function EditDestinationForm({ destination, children }: { destina
             if (response && response.error) setMessage(response.error);
             else {
                 setMessage('Destination mise à jour avec succès');
-                setTimeout(() => {
-                    router.push(`/trip/${values.tripId}`);
-                }, 700);
+                // setTimeout(() => {
+                //     router.push(`/trip/${values.tripId}`);
+                // }, 700);
             }
         } catch (error) {
             setMessage('Une erreur est survenue');
