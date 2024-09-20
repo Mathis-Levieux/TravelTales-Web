@@ -15,23 +15,34 @@ import {
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FaMapMarkerAlt, FaPencilAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPencilAlt, FaRegStar } from 'react-icons/fa';
 import { Destination } from '@/app/lib/types';
 import DatePicker from './date-picker';
 import { handleAddActivityForm } from '@/app/lib/actions';
-import { errors } from 'jose';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { MdOutlineCategory } from 'react-icons/md';
+import { capitalizeFirstLetter } from '@/app/lib/utils';
+
 
 const addActivitySchema = z.object({
     destinationId: z.number(),
     name: z.string().min(1, { message: 'Le nom ne peut pas être vide' }),
-    comment: z.string().optional(),
+    description: z.string().optional(),
     date: z.date(),
     category: z.string().min(1, { message: 'La catégorie ne peut pas être vide' }),
 });
@@ -47,7 +58,7 @@ export default function AddActivityForm({ categories, destination, children }: {
         defaultValues: {
             destinationId: destination.id,
             name: '',
-            comment: '',
+            description: '',
             date: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
         },
     });
@@ -58,9 +69,9 @@ export default function AddActivityForm({ categories, destination, children }: {
             if (response && response.error) setMessage(response.error);
             else {
                 setMessage('Activité ajoutée avec succès');
-                setTimeout(() => {
-                    router.push(`/trip/${destination.tripId}`);
-                }, 700);
+                // setTimeout(() => {
+                //     router.push(`/trip/${destination.tripId}`);
+                // }, 700);
             }
         } catch (error) {
             setMessage('Une erreur est survenue');
@@ -84,7 +95,7 @@ export default function AddActivityForm({ categories, destination, children }: {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem className="pb-3 relative mt-16 mx-8">
-                                        <FaMapMarkerAlt className="absolute left-3 top-7 transform -translate-y-1/2 z-10 text-marron" />
+                                        <FaRegStar className="absolute left-3 top-7 transform -translate-y-1/2 z-10 text-marron text-xl" />
                                         <FormControl>
                                             <Input
                                                 className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input"
@@ -102,14 +113,14 @@ export default function AddActivityForm({ categories, destination, children }: {
                             />
                             <FormField
                                 control={form.control}
-                                name="comment"
+                                name="description"
                                 render={({ field }) => (
                                     <FormItem className="pb-3 relative mx-8">
                                         <FaPencilAlt className="absolute left-3 top-7 transform -translate-y-1/2 z-10 text-marron" />
                                         <FormControl>
                                             <Input
                                                 className="rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input"
-                                                placeholder="Commentaire sur l'activité"
+                                                placeholder="Description"
                                                 {...field}
                                                 onChange={(e) => {
                                                     setMessage('');
@@ -144,12 +155,40 @@ export default function AddActivityForm({ categories, destination, children }: {
                                     </FormItem>
                                 )}
                             />
+
+                            <FormField
+                                control={form.control}
+                                name="category"
+                                render={({ field }) => (
+                                    <FormItem className='pb-3 relative mx-8 mt-2'>
+                                        <MdOutlineCategory className="absolute left-3 top-7 transform -translate-y-1/2 z-10 text-marron" />
+                                        <FormLabel></FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className='rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input'>
+                                                    <SelectValue placeholder="Sélectionner une catégorie" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent className=''>
+                                                {categories.map((category) => (
+                                                    <SelectItem key={category} value={category} className='hover:bg-slate-400'>
+                                                        {capitalizeFirstLetter(category)}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                             {message && <p className="text-center text-red-500 mt-1">{message}</p>}
                         </div>
 
                         <DialogFooter>
-                            <Button type="submit" className='w-full bg-jaune text-marron font-bold h-16 mt-16'>
-                                Ajouter une destination
+                            <Button type="submit" className='w-full bg-jaune text-marron font-bold h-16 mt-16' disabled={!form.formState.isValid}>
+                                Ajouter une activité
                             </Button>
                         </DialogFooter>
                     </form>

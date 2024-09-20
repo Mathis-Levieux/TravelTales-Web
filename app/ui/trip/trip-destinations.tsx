@@ -4,16 +4,16 @@ import { FaCalendar } from "react-icons/fa";
 import RoundIcon from "../round-icon";
 import ActivityComponent from "./activity";
 import { FaPlus } from "react-icons/fa6";
-import QuitButton from "./quit-button";
 import EditDestinationForm from "./edit-destination";
 import QuitDestButton from "./quit-destination-button";
 import AddActivityForm from "./add-activity";
 import { getActivitiesCategories } from "@/app/lib/data";
+import Link from "next/link";
 
 
 export default async function TripDestinations({ destinations }: { destinations: Destination[] }) {
 
-    const categories = await getActivitiesCategories()
+    const categories = await getActivitiesCategories();
 
     return (
 
@@ -33,12 +33,12 @@ export default async function TripDestinations({ destinations }: { destinations:
                             <div className="flex gap-2">
                                 {/* Edit Destination Modal*/}
                                 <EditDestinationForm destination={destination}>
-                                    <RoundIcon icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
+                                    <RoundIcon title="Editer la destination" aria-label="Editer la destination" icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
                                 </EditDestinationForm>
                                 <AddActivityForm categories={categories} destination={destination}>
-                                    <RoundIcon icon={<FaPlus className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
+                                    <RoundIcon title="Ejouter une activité" aria-label="Ejouter une activité" icon={<FaPlus className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
                                 </AddActivityForm>
-                                <RoundIcon icon={<QuitDestButton values={{ tripId: destination.tripId, destId: destination.id }} className='text-2xl' />} className='bg-white h-10 w-10' />
+                                <RoundIcon title="Supprimer la destination" aria-label="Supprimer la destination" icon={<QuitDestButton values={{ tripId: destination.tripId, destId: destination.id }} className='text-2xl' />} className='bg-white h-10 w-10' />
                             </div>
                         </div>
 
@@ -46,7 +46,9 @@ export default async function TripDestinations({ destinations }: { destinations:
                         <div className="bg-white bg-opacity-55 flex flex-col items-center pt-8 pb-8 gap-3">
                             {destination.activity.length > 0 ? (
                                 destination.activity.map((activity: Activity, index: number) => (
-                                    <ActivityComponent key={activity.id} activity={activity} />
+                                    <Link href={`/trip/${destination.tripId}/activity/${activity.id}`} key={activity.id} className="rounded-full opacity-85 w-11/12">
+                                        <ActivityComponent key={activity.id} activity={activity} />
+                                    </Link>
                                 ))) : (
                                 <span className="text-marron">Aucune activité prévue, ajoutez en dès maintenant!</span>
                             )
@@ -55,19 +57,13 @@ export default async function TripDestinations({ destinations }: { destinations:
 
 
                         {/* Destination Dates */}
-                        <div className="flex items-center bg-jaune rounded-b-[40px] h-20 px-14 gap-5 mb-5">
+                        <div className="flex items-center bg-jaune rounded-b-[40px] h-20 px-14 gap-5 mb-5" title={`Début et fin du voyage: ${dateStart} - ${dateEnd}`} aria-label={`Début et fin du voyage: ${dateStart} - ${dateEnd}`}>
                             <RoundIcon icon={<FaCalendar className="text-marron text-2xl" />} className='bg-white h-10 w-10' />
                             <span className="">{dateStart} - {dateEnd}</span>
                         </div>
 
-
-                        {/* Modal Pour éditer une destination */}
                     </div>
                 </div>
             )
         }))
 }
-
-// {destination.activity.map((activity: Activity, index: number) => (
-//     <span>{activity.name}</span>
-// ))}

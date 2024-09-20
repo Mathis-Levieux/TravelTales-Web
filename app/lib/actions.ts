@@ -6,7 +6,6 @@ import { z } from 'zod';
 import { passwordRegex } from '@/app/lib/constants';
 import { isEmailTaken } from '@/app/lib/utils';
 import { revalidatePath, revalidateTag } from 'next/cache';
-import { Destination } from './types';
 
 /*
 logs test
@@ -473,8 +472,6 @@ export async function editDestinationForm(values: { tripId: number, destinationI
 
 export async function handleAddDestinationForm(values: { tripId: number, name: string; dateStart: Date; dateEnd: Date; }) {
 
-  console.log(values);
-
   const addDestinationSchema = z.object({
     tripId: z.number(),
     name: z.string().min(1, { message: 'La destination ne peut pas être vide' }),
@@ -567,15 +564,16 @@ export async function handleDeleteDestination({ tripId, destId }: { tripId: numb
   }
 }
 
-export async function handleAddActivityForm(values: { destinationId: number, name: string, date: Date, comment?: string, category: string }) {
+export async function handleAddActivityForm(values: { destinationId: number, name: string, date: Date, description?: string, category: string }) {
+
+  console.log(values);
 
   const addActivitySchema = z.object({
-    tripId: z.number(),
     destinationId: z.number(),
     name: z.string().min(1, { message: 'Le nom ne peut pas être vide' }),
+    description: z.string().optional(),
     date: z.date(),
-    comment: z.string().optional(),
-    category: z.string()
+    category: z.string().min(1, { message: 'La catégorie ne peut pas être vide' }),
   });
 
   const result = addActivitySchema.safeParse(values);
@@ -586,7 +584,7 @@ export async function handleAddActivityForm(values: { destinationId: number, nam
     };
   }
 
-  const { destinationId, name, date, comment, category } = values;
+  const { destinationId, name, date, description, category } = values;
 
   const accessToken = await getAccessToken();
 
@@ -597,7 +595,7 @@ export async function handleAddActivityForm(values: { destinationId: number, nam
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ destinationId, name, date, comment, category }),
+      body: JSON.stringify({ destinationId, name, date, description, category }),
     });
 
     revalidatePath('trips');

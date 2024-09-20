@@ -1,14 +1,14 @@
-import { FaPersonWalking } from "react-icons/fa6";
-import { MdOutlineCastle } from "react-icons/md";
-import { GiKnifeFork, GiShoppingBag } from "react-icons/gi";
-import { IconType } from 'react-icons';  // Import IconType for typing
+import { FaBagShopping, FaBurger, FaPersonWalking } from "react-icons/fa6";
+import { IconType } from 'react-icons';
+import { FaEllipsisH, FaLandmark, FaTree } from "react-icons/fa";
 
-// Define a mapping between activity categories and their corresponding icons (as components)
 const iconMap: { [key: string]: IconType } = {
-    food: GiKnifeFork,
-    shopping: GiShoppingBag,
-    culture: MdOutlineCastle,
+    food: FaBurger,
+    shopping: FaBagShopping,
+    culture: FaLandmark,
     sport: FaPersonWalking,
+    other: FaEllipsisH,
+    nature: FaTree,
 };
 
 export default iconMap;

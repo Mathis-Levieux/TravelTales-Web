@@ -8,17 +8,19 @@ interface TripButtonProps {
     textColor: string;
     icon: string;
     textCenter?: boolean;
+    title?: string;
 }
 
 export default function TripButton({
     className,
     children,
+    title,
     textColor,
     icon,
     textCenter,
 }: TripButtonProps) {
     return (
-        <button className={`font-semibold rounded-full py-3 px-3 flex items-center opacity-85 ${className}`}>
+        <button className={`font-semibold rounded-full py-3 px-3 flex items-center opacity-85 ${className}`} title={title}>
             <div className="flex items-center justify-center rounded-full">
                 {icon == 'plus' &&
                     <FaPlus className={`text-${textColor}`} size={32} />

@@ -30,3 +30,8 @@ export async function isEmailTaken(email: string) {
     return false;
   }
 }
+
+
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

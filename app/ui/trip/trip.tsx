@@ -13,6 +13,7 @@ export default async function Trip({ trip }: { trip: any }) {
             <AddDestinationForm tripId={trip.id}>
                 <TripButton
                     textColor="marron"
+                    title='Ajouter une destination'
                     icon='plus'
                     textCenter={true}
                     className='mt-10 mb-10 shadow-createtripbutton bg-jaune border-beige w-3/5 m-auto'>
