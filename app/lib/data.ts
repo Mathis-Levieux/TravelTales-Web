@@ -1,7 +1,7 @@
 'use server';
 import { revalidatePath } from 'next/cache';
 import { getAccessToken } from '@/app/lib/actions';
-import { Trip, User } from '@/app/lib/types';
+import { Activity, Trip, User } from '@/app/lib/types';
 
 const API_URL = process.env.API_URL;
 
@@ -80,7 +80,7 @@ export async function getUser(data?: string) {
   }
 }
 
-export async function getTrip(id: string) {
+export async function getTrip(id: string): Promise<Trip | null> {
   try {
     const res = await fetch(`http://localhost:3001/trips/${id}`, {
       method: 'GET',
@@ -120,5 +120,51 @@ export async function getActivitiesCategories() {
   } catch (error) {
     console.error(error);
     throw new Error('An error occurred while fetching activities categories. Please try again later.');
+  }
+}
+
+
+export async function getActivity(id: string): Promise<Activity | null> {
+  try {
+    const res = await fetch(`http://localhost:3001/activities/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+      next: { tags: ['activities'] }
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    return await res.json();
+
+  } catch (err) {
+    console.error(err);
+    throw new Error('An error occurred while fetching activity data. Please try again later.');
+  }
+}
+
+export async function getUsersInTrips(tripId: string) {
+
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${tripId}/users`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+      next: { tags: ['trips'] }
+    });
+
+    if (!res.ok) {
+      throw new Error('An error occurred while fetching users in trips. Please try again later.');
+    }
+
+    return await res.json();
+  }
+  catch (error) {
+    console.error(error);
+    throw new Error('An error occurred while fetching users in trips. Please try again later.');
   }
 }

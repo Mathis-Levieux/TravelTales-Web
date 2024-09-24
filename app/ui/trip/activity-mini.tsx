@@ -2,6 +2,8 @@ import colorMap from "@/app/lib/colorMap";
 import iconMap from "@/app/lib/iconMap";
 import { Activity } from "@/app/lib/types";
 import { FaQuestionCircle } from 'react-icons/fa'; // Fallback icon
+import { MdDone } from "react-icons/md";
+import RoundIcon from "../round-icon";
 
 const DefaultIcon = FaQuestionCircle;
 
@@ -21,7 +23,10 @@ export default async function ActivityComponent({ activity }: { activity: Activi
             </div>
             <div className="bg-white rounded-r-full flex justify-between w-full py-2 ml-2 pl-2">
                 <span className={`text-gray-700`}>{activity.name}</span>
-                <IconComponent className={`text-2xl text-${color} mr-5`} title={activity.category} aria-label={activity.category} />
+                <div className="flex gap-2">
+                    {activity.isDone && <MdDone className="text-2xl text-bleutext border-4 border-bleufooter rounded-full" />}
+                    <IconComponent className={`text-2xl text-${color} mr-5`} title={activity.category} aria-label={activity.category} />
+                </div>
             </div>
         </div>
 

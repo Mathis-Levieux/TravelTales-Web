@@ -2,9 +2,9 @@ import { getTrip } from "@/app/lib/data";
 import { notFound } from "next/navigation";
 import Trip from "@/app/ui/trip/trip";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { tripId: string } }) {
 
-    const trip = await getTrip(params.id);
+    const trip = await getTrip(params.tripId);
     if (!trip) notFound();
 
 

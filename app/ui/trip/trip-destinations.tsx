@@ -2,7 +2,7 @@ import { MdEdit } from "react-icons/md";
 import type { Activity, Destination } from "../../lib/types";
 import { FaCalendar } from "react-icons/fa";
 import RoundIcon from "../round-icon";
-import ActivityComponent from "./activity";
+import ActivityComponent from "./activity-mini";
 import { FaPlus } from "react-icons/fa6";
 import EditDestinationForm from "./edit-destination";
 import QuitDestButton from "./quit-destination-button";
@@ -36,7 +36,7 @@ export default async function TripDestinations({ destinations }: { destinations:
                                     <RoundIcon title="Editer la destination" aria-label="Editer la destination" icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
                                 </EditDestinationForm>
                                 <AddActivityForm categories={categories} destination={destination}>
-                                    <RoundIcon title="Ejouter une activité" aria-label="Ejouter une activité" icon={<FaPlus className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
+                                    <RoundIcon title="Ajouter une activité" aria-label="Ejouter une activité" icon={<FaPlus className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
                                 </AddActivityForm>
                                 <RoundIcon title="Supprimer la destination" aria-label="Supprimer la destination" icon={<QuitDestButton values={{ tripId: destination.tripId, destId: destination.id }} className='text-2xl' />} className='bg-white h-10 w-10' />
                             </div>

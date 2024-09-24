@@ -1,11 +1,10 @@
-
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CgProfile } from 'react-icons/cg';
 import { FaFolder, FaSuitcaseRolling, FaUsers, FaWallet } from 'react-icons/fa';
 import { IoMdNotifications, IoMdTrophy } from 'react-icons/io';
 import { IoEarthSharp } from 'react-icons/io5';
-import { getUser } from '@/app/lib/data';
+import { getUsersInTrips } from '@/app/lib/data';
 
 interface HeaderProps {
   button?: boolean;
@@ -15,6 +14,7 @@ interface HeaderProps {
   homeIcons?: boolean;
   isLoggedIn?: boolean;
   isLandingPage?: boolean;
+  tripId?: string;
 }
 
 
@@ -26,12 +26,9 @@ export default async function Header({
   tripIcons,
   homeIcons,
   isLandingPage,
+  tripId
 }: HeaderProps) {
 
-  let username;
-  if (isLoggedIn) {
-    username = await getUser('username');
-  }
 
   return (
     <header className="h-24 bg-header flex items-center">
@@ -63,7 +60,9 @@ export default async function Header({
           <FaFolder className="" size={30} color="white" />
           <FaSuitcaseRolling className="" size={30} color="white" />
           <FaWallet className="" size={30} color="white" />
-          <FaUsers className="" size={30} color="white" />
+          <Link href={`/trip/${tripId}/members`}>
+            <FaUsers className="" size={30} color="white" />
+          </Link>
         </div>
       )}
 

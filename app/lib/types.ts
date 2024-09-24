@@ -42,22 +42,51 @@ export type TripState = {
 export type Trip = {
   id: number;
   title: string;
-  destination: {
-    name: string;
-    dateStart: string;
-    dateEnd: string;
-  }[];
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isDone: boolean;
+  note: string;
+  destination: Destination[];
 }
 
 export type Activity = {
   id: number;
   name: string;
   isDone: boolean;
-  comment?: string;
-  score?: number;
-  date: string;
+  description: string;
+  score: number | null;
+  date: Date;
   destinationId: number;
   category: string;
+  expense: Expense;
+  comment: Comment[];
+}
+
+export type Comment = {
+  id: number;
+  content: string;
+  date: Date;
+  userId: number;
+  activityId: number;
+}
+
+export type Expense = {
+  id: number;
+  name: string;
+  amount: number;
+  date: Date;
+  budgetId: number;
+  activityId: number;
+}
+
+export type Budget = {
+  id: number;
+  isVisible: boolean;
+  amount: number;
+  category: string;
+  tripId: number;
+  userId: number;
 }
 
 export type Destination = {
