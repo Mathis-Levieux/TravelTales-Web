@@ -4,7 +4,6 @@ import { CgProfile } from 'react-icons/cg';
 import { FaFolder, FaSuitcaseRolling, FaUsers, FaWallet } from 'react-icons/fa';
 import { IoMdNotifications, IoMdTrophy } from 'react-icons/io';
 import { IoEarthSharp } from 'react-icons/io5';
-import { getUsersInTrips } from '@/app/lib/data';
 
 interface HeaderProps {
   button?: boolean;

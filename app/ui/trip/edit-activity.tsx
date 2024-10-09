@@ -51,7 +51,6 @@ const ActivityEditSchema = z.object({
 
 export default function EditActivityForm({ activity, children, categories }: { activity: Activity, children: any, categories: string[] }) {
 
-    console.log(categories);
 
     const router = useRouter();
     const [message, setMessage] = useState<string>('');

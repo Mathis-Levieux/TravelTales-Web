@@ -4,11 +4,11 @@ import { Activity } from "@/app/lib/types";
 import { FaCalendar, FaComment, FaMoneyBill, FaQuestionCircle, FaWallet } from 'react-icons/fa'; // Fallback icon
 import { MdDone, MdEdit } from "react-icons/md";
 import RoundIcon from "../round-icon";
-import { PiTrashFill } from "react-icons/pi";
 import ActivityButton from "./activity-buttons";
 import DeleteActivity from "./delete-activity";
 import EditActivityForm from "./edit-activity";
 import { getActivitiesCategories } from "@/app/lib/data";
+import CreateCommentForm from "./create-comment";
 
 const DefaultIcon = FaQuestionCircle;
 
@@ -28,6 +28,10 @@ export default async function ActivityFull({ activity }: { activity: Activity })
         expense = `${activity.expense.amount} €`;
     }
 
+    activity.comment.forEach(comment => {
+
+        console.log(comment)
+    })
     return (
         <div className="flex mt-14 justify-around">
             {/* Partie gauche - Titre, description, budget, date et formulaires de dépenses et de commentaires */}
@@ -73,7 +77,9 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                 <ActivityButton className={`mt-10 mb-5 bg-${color} shadow-createtripbutton`} icon={<FaWallet className="text-2xl mx-3" />} title="Ajouter une dépense" textCenter={true} >Créer une dépense</ActivityButton>
 
                 {/* Formulaire de commentaires */}
-                <ActivityButton className={`mb-10 bg-jaune shadow-createtripbutton`} icon={<FaComment className="text-2xl mx-3" />} title="Ajouter un commentaire" textCenter={true} >Ajouter un commentaire</ActivityButton>
+                <CreateCommentForm activity={activity}>
+                    <ActivityButton className={`mb-10 bg-jaune shadow-createtripbutton`} icon={<FaComment className="text-2xl mx-3" />} title="Ajouter un commentaire" textCenter={true} >Ajouter un commentaire</ActivityButton>
+                </CreateCommentForm>
             </div>
 
 
@@ -83,7 +89,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                     activity.comment.map((comment, index) => (
                         <div key={index} className="flex flex-col bg-white bg-opacity-65 rounded-3xl shadow-lg mb-6 p-4">
                             <div className="flex items-center justify-between">
-                                <h3 className="text-marron font-bold text-xl">{comment.userId}</h3>
+                                <h3 className="text-marron font-bold text-xl">{comment.user.username}</h3>
                                 <p className="text-gray-500">{new Date(comment.date).toLocaleDateString('fr-FR', {
                                     day: '2-digit',
                                     month: '2-digit',

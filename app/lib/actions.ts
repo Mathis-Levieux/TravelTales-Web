@@ -755,3 +755,52 @@ export async function handleEditActivity(values: { activityId: number, name: str
     };
   }
 }
+
+export async function handleCreateComment(data: { content: string, date: Date, activityId: number }) {
+
+  const CommentSchema = z.object({
+    content: z.string().min(1, { message: 'Le commentaire ne peut pas être vide' }),
+    date: z.date(),
+    activityId: z.number(),
+  });
+
+  const result = CommentSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const { content, date, activityId } = data;
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/activities/${activityId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ content, date, activityId }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Commentaire ajouté',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de l\'ajout du commentaire',
+    };
+  }
+}

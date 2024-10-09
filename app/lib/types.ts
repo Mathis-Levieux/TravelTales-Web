@@ -70,6 +70,7 @@ export type Comment = {
   date: Date;
   userId: number;
   activityId: number;
+  user: { username: string }
 }
 
 export type Expense = {
