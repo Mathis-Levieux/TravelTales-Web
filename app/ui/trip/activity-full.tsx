@@ -7,11 +7,14 @@ import RoundIcon from "../round-icon";
 import { PiTrashFill } from "react-icons/pi";
 import ActivityButton from "./activity-buttons";
 import DeleteActivity from "./delete-activity";
+import EditActivityForm from "./edit-activity";
+import { getActivitiesCategories } from "@/app/lib/data";
 
 const DefaultIcon = FaQuestionCircle;
 
 export default async function ActivityFull({ activity }: { activity: Activity }) {
-    console.log(activity)
+
+    const categories = await getActivitiesCategories();
     const IconComponent = iconMap[activity.category] || DefaultIcon;
     const color = colorMap[activity.category] || "bg-white";
     const date = new Date(activity.date).toLocaleDateString('fr-FR', {
@@ -41,7 +44,9 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                             </div>
                             {/* Actions - Editer et supprimer */}
                             <div className="flex space-x-2">
-                                <RoundIcon title="Editer la destination" aria-label="Editer la destination" icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
+                                <EditActivityForm categories={categories} activity={activity}>
+                                    <RoundIcon title="Modifier l'activité" aria-label="Modifier l'activité" icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
+                                </EditActivityForm>
                                 <RoundIcon icon={<DeleteActivity activityId={activity.id} tripId={activity.destination.tripId} className='text-2xl' />} className='bg-white h-10 w-10 cursor-pointer' />
                             </div>
                         </div>

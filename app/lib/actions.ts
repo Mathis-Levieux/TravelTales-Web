@@ -664,44 +664,94 @@ export async function inviteMemberToTrip(values: { tripId: number, email: string
 }
 
 export async function handleDeleteActivity({ activityId }: { activityId: number }) {
-  
-    const FormSchema = z.object({
-      activityId: z.number(),
-    });
-  
-    const result = FormSchema.safeParse({ activityId });
-  
-    if (!result.success) {
-      return {
-        error: 'Invalid data',
-      };
-    }
-  
-    const accessToken = await getAccessToken();
-  
-    try {
-      const res = await fetch(`http://localhost:3001/activities/${activityId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-  
-      revalidatePath('trips');
-  
-      if (!res.ok) {
-        const response = await res.json();
-        return {
-          error: response.message,
-        };
-      }
-      return {
-        message: 'Activité supprimée',
-      };
-    } catch (err) {
-      console.error(err);
-      return {
-        error: 'Erreur lors de la suppression de l\'activité',
-      };
-    }
+
+  const FormSchema = z.object({
+    activityId: z.number(),
+  });
+
+  const result = FormSchema.safeParse({ activityId });
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
   }
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/activities/${activityId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Activité supprimée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la suppression de l\'activité',
+    };
+  }
+}
+
+export async function handleEditActivity(values: { activityId: number, name: string, date: Date, category: string, destinationId: number }) {
+
+  const ActivityEditSchema = z.object({
+    destinationId: z.number(),
+    activityId: z.number(),
+    name: z.string().min(1, { message: 'La destination ne peut pas être vide' }),
+    date: z.date(),
+    category: z.string(),
+  });
+
+  const result = ActivityEditSchema.safeParse(values);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+  const { destinationId, activityId, name, date, category } = values;
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/activities/${activityId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ name, date, category, destinationId }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Activité modifiée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la modification de l\'activité',
+    };
+  }
+}

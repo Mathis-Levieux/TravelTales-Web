@@ -24,10 +24,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { FaMapMarkerAlt, FaPencilAlt, FaRegStar } from 'react-icons/fa';
-import { Destination } from '@/app/lib/types';
+
+import {handleEditActivity } from '@/app/lib/actions';
+import { Activity } from '@/app/lib/types';
+import { FaPencilAlt } from 'react-icons/fa';
 import DatePicker from './date-picker';
-import { handleAddActivityForm } from '@/app/lib/actions';
+import { MdOutlineCategory } from 'react-icons/md';
 import {
     Select,
     SelectContent,
@@ -35,49 +37,53 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { MdOutlineCategory } from 'react-icons/md';
+import { FaRegStar } from 'react-icons/fa6';
 import { capitalizeFirstLetter } from '@/app/lib/utils';
 
-
-const addActivitySchema = z.object({
+const ActivityEditSchema = z.object({
     destinationId: z.number(),
-    name: z.string().min(1, { message: 'Le nom ne peut pas être vide' }),
+    activityId: z.number(),
     description: z.string().optional(),
+    name: z.string().min(1, { message: "Le nom de l'activité ne peut pas être vide" }),
     date: z.date(),
-    category: z.string().min(1, { message: 'La catégorie ne peut pas être vide' }),
+    category: z.string(),
 });
 
+export default function EditActivityForm({ activity, children, categories }: { activity: Activity, children: any, categories: string[] }) {
 
-export default function AddActivityForm({ categories, destination, children }: { categories: string[], destination: Destination, children: any }) {
+    console.log(categories);
+
     const router = useRouter();
     const [message, setMessage] = useState<string>('');
 
-    const form = useForm<z.infer<typeof addActivitySchema>>({
-        mode: 'onChange',
-        resolver: zodResolver(addActivitySchema),
+    const form = useForm<z.infer<typeof ActivityEditSchema>>({
+        mode: 'all',
+        resolver: zodResolver(ActivityEditSchema),
         defaultValues: {
-            destinationId: destination.id,
-            name: '',
-            description: '',
-            date: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+            destinationId: activity.destinationId,
+            activityId: activity.id,
+            description: activity.description,
+            name: activity.name,
+            date: activity.date,
+            category: activity.category,
         },
     });
 
-    async function onSubmit(values: z.infer<typeof addActivitySchema>) {
+    async function onSubmit(values: z.infer<typeof ActivityEditSchema>) {
         try {
-            const response = await handleAddActivityForm(values);
+
+            const response = await handleEditActivity(values);
             if (response && response.error) setMessage(response.error);
             else {
-                setMessage('Activité ajoutée avec succès');
+                setMessage('Activité mise à jour avec succès');
                 // setTimeout(() => {
-                //     router.push(`/trip/${destination.tripId}`);
+                //     router.push(`/trip/${values.tripId}`);
                 // }, 700);
             }
         } catch (error) {
             setMessage('Une erreur est survenue');
         }
     }
-
 
     return (
         <Dialog>
@@ -188,7 +194,7 @@ export default function AddActivityForm({ categories, destination, children }: {
 
                         <DialogFooter>
                             <Button type="submit" className='w-full bg-jaune text-marron font-bold h-16 mt-16' disabled={!form.formState.isValid}>
-                                Ajouter une activité
+                                Mettre à jour l'activité
                             </Button>
                         </DialogFooter>
                     </form>
