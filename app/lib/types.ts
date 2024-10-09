@@ -61,6 +61,7 @@ export type Activity = {
   category: string;
   expense: Expense;
   comment: Comment[];
+  destination: Destination;
 }
 
 export type Comment = {

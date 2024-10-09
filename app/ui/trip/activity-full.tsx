@@ -6,11 +6,12 @@ import { MdDone, MdEdit } from "react-icons/md";
 import RoundIcon from "../round-icon";
 import { PiTrashFill } from "react-icons/pi";
 import ActivityButton from "./activity-buttons";
+import DeleteActivity from "./delete-activity";
 
 const DefaultIcon = FaQuestionCircle;
 
 export default async function ActivityFull({ activity }: { activity: Activity }) {
-
+    console.log(activity)
     const IconComponent = iconMap[activity.category] || DefaultIcon;
     const color = colorMap[activity.category] || "bg-white";
     const date = new Date(activity.date).toLocaleDateString('fr-FR', {
@@ -41,7 +42,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                             {/* Actions - Editer et supprimer */}
                             <div className="flex space-x-2">
                                 <RoundIcon title="Editer la destination" aria-label="Editer la destination" icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
-                                <RoundIcon title="Supprimer la destination" aria-label="Supprimer la destination" icon={<PiTrashFill className={`text-red-600 cursor-pointer text-2xl`} />} className='bg-white h-10 w-10 cursor-pointer' />
+                                <RoundIcon icon={<DeleteActivity activityId={activity.id} tripId={activity.destination.tripId} className='text-2xl' />} className='bg-white h-10 w-10 cursor-pointer' />
                             </div>
                         </div>
 
@@ -59,7 +60,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                             <FaCalendar className="text-2xl" />
                             <p className="text-lg">{date}</p>
                         </div>
-                        <RoundIcon title="isDone" aria-label="isDone" icon={<MdDone className={`text-${color} text-5xl`} />} className={`bg-white border-8 border-${color} h-20 w-20 cursor-pointer absolute left-1/2 transform -translate-x-1/2 top-4`} />
+                        <RoundIcon title="Fait / Pas encore fait" aria-label="Fait / Pas encore fait" icon={<MdDone className={`text-${color} text-5xl`} />} className={`bg-white border-8 border-${color} h-20 w-20 cursor-pointer absolute left-1/2 transform -translate-x-1/2 top-4`} />
                     </div>
                 </div>
 

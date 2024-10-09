@@ -662,3 +662,46 @@ export async function inviteMemberToTrip(values: { tripId: number, email: string
     };
   }
 }
+
+export async function handleDeleteActivity({ activityId }: { activityId: number }) {
+  
+    const FormSchema = z.object({
+      activityId: z.number(),
+    });
+  
+    const result = FormSchema.safeParse({ activityId });
+  
+    if (!result.success) {
+      return {
+        error: 'Invalid data',
+      };
+    }
+  
+    const accessToken = await getAccessToken();
+  
+    try {
+      const res = await fetch(`http://localhost:3001/activities/${activityId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      revalidatePath('trips');
+  
+      if (!res.ok) {
+        const response = await res.json();
+        return {
+          error: response.message,
+        };
+      }
+      return {
+        message: 'Activité supprimée',
+      };
+    } catch (err) {
+      console.error(err);
+      return {
+        error: 'Erreur lors de la suppression de l\'activité',
+      };
+    }
+  }
