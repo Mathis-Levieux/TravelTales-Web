@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
     const trip = await getTrip(params.tripId);
     if (!trip) notFound();
     const usersInTrip = await getUsersInTrips(params.tripId);
-
+    const tripId = parseInt(params.tripId);
 
 
     return (
@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
                 <div className="flex flex-col rounded-2xl bg-opacity-55 bg-white">
                     <TripHeader trip={trip} />
                     <div className="gap-4 flex flex-col w-full mb-16">
-                        <FormMemberInvitation />
+                        <FormMemberInvitation tripId={tripId}/>
                         {usersInTrip.map((user: User) => (
                             <MemberComponent key={user.id} user={user} />
                         ))}

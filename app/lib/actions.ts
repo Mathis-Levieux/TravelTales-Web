@@ -616,3 +616,49 @@ export async function handleAddActivityForm(values: { destinationId: number, nam
     };
   }
 }
+
+export async function inviteMemberToTrip(values: { tripId: number, email: string }) {
+
+  const FormSchema = z.object({
+    tripId: z.number(),
+    email: z.string().email({
+      message: "L'email est invalide",
+    }),
+  });
+  const { tripId, email } = values;
+  const result = FormSchema.safeParse({ tripId, email });
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/trips/${tripId}/invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Invitation envoyée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de l\'envoi de l\'invitation',
+    };
+  }
+}

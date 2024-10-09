@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import TripButton from '@/app/ui/home/trip-button';
 import Header from '@/app/ui/header';
+import JoinMessage from '@/app/ui/home/join-message';
 
 export default async function Page() {
 
@@ -12,6 +13,7 @@ export default async function Page() {
       <Header isLoggedIn={true} homeIcons={true} />
       <main className="container mx-auto px-4 py-12">
         <div className="w-full rounded-2xl py-12">
+            <JoinMessage />
           <div className='flex justify-center gap-16'>
             <Link className="rounded-full w-1/4" href={'/trip/create-new'}>
               <TripButton
