@@ -1,19 +1,21 @@
 import colorMap from "@/app/lib/colorMap";
 import iconMap from "@/app/lib/iconMap";
-import { Activity } from "@/app/lib/types";
+import { Activity, User } from "@/app/lib/types";
 import { FaCalendar, FaComment, FaMoneyBill, FaQuestionCircle, FaWallet } from 'react-icons/fa'; // Fallback icon
 import { MdDone, MdEdit } from "react-icons/md";
 import RoundIcon from "../round-icon";
 import ActivityButton from "./activity-buttons";
 import DeleteActivity from "./delete-activity";
 import EditActivityForm from "./edit-activity";
-import { getActivitiesCategories } from "@/app/lib/data";
+import { getActivitiesCategories, getUser } from "@/app/lib/data";
 import CreateCommentForm from "./create-comment";
+import DeleteComment from "./delete-comment";
 
 const DefaultIcon = FaQuestionCircle;
 
 export default async function ActivityFull({ activity }: { activity: Activity }) {
 
+    const username = await getUser('username');
     const categories = await getActivitiesCategories();
     const IconComponent = iconMap[activity.category] || DefaultIcon;
     const color = colorMap[activity.category] || "bg-white";
@@ -28,10 +30,6 @@ export default async function ActivityFull({ activity }: { activity: Activity })
         expense = `${activity.expense.amount} €`;
     }
 
-    activity.comment.forEach(comment => {
-
-        console.log(comment)
-    })
     return (
         <div className="flex mt-14 justify-around">
             {/* Partie gauche - Titre, description, budget, date et formulaires de dépenses et de commentaires */}
@@ -97,6 +95,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                                 })}</p>
                             </div>
                             <p className="text-gray-700 mt-2">{comment.content}</p>
+                            {username === comment.user.username && <DeleteComment comment={comment} />}
                         </div>
                     ))
                 }

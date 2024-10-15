@@ -6,7 +6,7 @@ export default function JoinMessage() {
 
     const searchParams = useSearchParams();
     const join = searchParams.get('join');
-    console.log(join);
+    
     if (join == 'success') {
         return (
             <p className="text-black text-center mb-4">Vous avez bien rejoint le voyage !</p>

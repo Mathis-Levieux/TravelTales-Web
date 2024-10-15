@@ -14,17 +14,16 @@ import {
 import { PiTrashFill } from "react-icons/pi";
 import RoundIcon from "../round-icon";
 import { RiArrowGoBackLine } from "react-icons/ri";
-import { handleDeleteActivity } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
+import { handleDeleteComment } from "@/app/lib/actions";
+import { Comment } from "@/app/lib/types";
 
+export default function DeleteComment({ comment }: { comment: Comment }) {
 
-export default function DeleteActivity({ activityId, className, tripId }: { activityId: number, className?: string, tripId: number }) {
-    
     const router = useRouter();
 
-    const leaveActivity = async () => {
-        await handleDeleteActivity({ activityId });
-        router.push(`/trip/${tripId}`);
+    const deleteComment = async () => {
+        await handleDeleteComment(comment.id);
     }
 
     return (
@@ -32,7 +31,7 @@ export default function DeleteActivity({ activityId, className, tripId }: { acti
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <div>
-                        <RoundIcon title="Supprimer l'activité" aria-label="Supprimer l'activité" icon={<PiTrashFill className={`text-red-600 cursor-pointer text-2xl`} />} className='bg-white h-10 w-10 cursor-pointer' />
+                        <RoundIcon title="Supprimer le commentaire" aria-label="Supprimer le commentaire" icon={<PiTrashFill className={`text-red-600 cursor-pointer text-2xl`} />} className='bg-white h-10 w-10 cursor-pointer' />
                     </div>
                 </AlertDialogTrigger>
                 <AlertDialogContent className="p-0 border-none">
@@ -44,17 +43,17 @@ export default function DeleteActivity({ activityId, className, tripId }: { acti
                                 />
                             </div>
                         </AlertDialogCancel>
-                        <AlertDialogTitle className="text-center">{"Êtes-vous sûr de vouloir supprimer cette activité ?"}</AlertDialogTitle>
+                        <AlertDialogTitle className="text-center">{"Êtes-vous sûr de vouloir supprimer votre commentaire ?"}</AlertDialogTitle>
                         <AlertDialogDescription className="text-center">
-                            {"Si vous supprimez cette activité, vous ne pourrez plus accéder à ses informations."}
+                            {"Cette action est définitive."}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="">
                         <AlertDialogAction
                             className="text-white font-bold w-full bg-rougelight hover:bg-red-600 py-6"
-                            onClick={leaveActivity}
+                            onClick={deleteComment}
                         >
-                            {"Supprimer l'activité"}
+                            {"Supprimer le commentaire"}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

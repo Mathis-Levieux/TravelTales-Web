@@ -420,8 +420,6 @@ export async function handleTripNameForm(tripId: string, newTitle: string) {
 
 export async function editDestinationForm(values: { tripId: number, destinationId: number, name: string; dateStart: Date; dateEnd: Date; }) {
 
-  console.log(values);
-
   const DestinationEditSchema = z.object({
     tripId: z.number(),
     destinationId: z.number(),
@@ -565,8 +563,6 @@ export async function handleDeleteDestination({ tripId, destId }: { tripId: numb
 }
 
 export async function handleAddActivityForm(values: { destinationId: number, name: string, date: Date, description?: string, category: string }) {
-
-  console.log(values);
 
   const addActivitySchema = z.object({
     destinationId: z.number(),
@@ -801,6 +797,49 @@ export async function handleCreateComment(data: { content: string, date: Date, a
     console.error(err);
     return {
       error: 'Erreur lors de l\'ajout du commentaire',
+    };
+  }
+}
+
+export async function handleDeleteComment(commentId: number) {
+
+  const FormSchema = z.object({
+    commentId: z.number(),
+  });
+
+  const result = FormSchema.safeParse({ commentId });
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/activities/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Commentaire supprimé',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la suppression du commentaire',
     };
   }
 }

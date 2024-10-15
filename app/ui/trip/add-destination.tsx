@@ -107,7 +107,6 @@ export default function AddDestinationForm({ tripId, children }: { tripId: numbe
                                                 to: form.getValues('dateEnd'),
                                             }}
                                             onChange={(val) => {
-                                                console.log(val);
                                                 // @ts-expect-error
                                                 form.setValue('dateStart', val?.from);
                                                 // @ts-expect-error
