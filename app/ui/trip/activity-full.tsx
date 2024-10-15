@@ -10,6 +10,8 @@ import EditActivityForm from "./edit-activity";
 import { getActivitiesCategories, getUser } from "@/app/lib/data";
 import CreateCommentForm from "./create-comment";
 import DeleteComment from "./delete-comment";
+import { FaUser } from "react-icons/fa6";
+import { Delete } from "lucide-react";
 
 const DefaultIcon = FaQuestionCircle;
 
@@ -85,18 +87,37 @@ export default async function ActivityFull({ activity }: { activity: Activity })
             <div className="w-[45%]">
                 {
                     activity.comment.map((comment, index) => (
-                        <div key={index} className="flex flex-col bg-white bg-opacity-65 rounded-3xl shadow-lg mb-6 p-4">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-marron font-bold text-xl">{comment.user.username}</h3>
-                                <p className="text-gray-500">{new Date(comment.date).toLocaleDateString('fr-FR', {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                })}</p>
+
+                        <div key={index} className="flex mb-5 gap-2 items-center">
+
+                            <div className="flex flex-col items-center">
+                                <RoundIcon title="Utilisateur" aria-label="Utilisateur" icon={<FaUser className={`text-2xl`} />} className={`bg-white h-12 w-12 cursor-pointer border-4 border-${color}`} />
+                                <h3 className="font-bold text-sm">{comment.user.username}</h3>
                             </div>
-                            <p className="text-gray-700 mt-2">{comment.content}</p>
-                            {username === comment.user.username && <DeleteComment comment={comment} />}
+
+                            <div className={`flex rounded-full w-full bg-${color} items-center`}>
+                                <div className="w-11/12 rounded-l-full bg-white my-3 ml-3 mr-4">
+                                    <p className="mx-2 py-3 text-justify">{comment.content}</p>
+                                </div>
+                                <div className={`w-1/12 bg-white rounded-full mr-4`}>
+                                    {username === comment.user.username && <DeleteComment comment={comment} />}
+                                </div>
+                            </div>
                         </div>
+
+
+                        // <div key={index} className={`flex flex-col bg-white bg-opacity-65 rounded-full shadow-lg mb-6 p-4 border-8 border-${color}`}>
+                        //     <div className="flex items-center justify-around">
+                        //         <h3 className="font-bold text-xl">{comment.user.username}</h3>
+                        //         <p className="text-gray-500">{new Date(comment.date).toLocaleDateString('fr-FR', {
+                        //             day: '2-digit',
+                        //             month: '2-digit',
+                        //             year: 'numeric',
+                        //         })}</p>
+                        //         {username === comment.user.username && <DeleteComment comment={comment} />}
+                        //     </div>
+                        //     <p className="text-gray-700 mt-2">{comment.content}</p>
+                        // </div>
                     ))
                 }
             </div>
