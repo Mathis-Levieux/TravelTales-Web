@@ -55,10 +55,16 @@ export default async function Header({
 
       {tripIcons && (
         <div className="ml-auto flex gap-32 mr-20">
-          <IoEarthSharp className="" size={30} color="white" />
+          <Link href={`/trip/${tripId}`}>
+            <IoEarthSharp className="" size={30} color="white" />
+          </Link>
           <FaFolder className="" size={30} color="white" />
-          <FaSuitcaseRolling className="" size={30} color="white" />
-          <FaWallet className="" size={30} color="white" />
+          <Link href={`/trip/${tripId}/packing-lists`}>
+            <FaSuitcaseRolling className="" size={30} color="white" />
+          </Link>
+          <Link href={`/trip/${tripId}/budgets`}>
+            <FaWallet className="" size={30} color="white" />
+          </Link>
           <Link href={`/trip/${tripId}/members`}>
             <FaUsers className="" size={30} color="white" />
           </Link>
