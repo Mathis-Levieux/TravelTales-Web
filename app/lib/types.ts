@@ -48,6 +48,7 @@ export type Trip = {
   isDone: boolean;
   note: string;
   destination: Destination[];
+  budget: Budget[];
 }
 
 export type Activity = {

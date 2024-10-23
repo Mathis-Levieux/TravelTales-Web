@@ -168,3 +168,23 @@ export async function getUsersInTrips(tripId: string) {
     throw new Error('An error occurred while fetching users in trips. Please try again later.');
   }
 }
+
+export async function getBudgetCategories() {
+  try {
+    const res = await fetch('http://localhost:3001/budgets/categories', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error('An error occurred while fetching budgets categories. Please try again later.');
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('An error occurred while fetching budgets categories. Please try again later.');
+  }
+}

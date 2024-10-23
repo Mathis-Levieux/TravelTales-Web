@@ -12,6 +12,7 @@ import CreateCommentForm from "./create-comment";
 import DeleteComment from "./delete-comment";
 import { FaUser } from "react-icons/fa6";
 import { Delete } from "lucide-react";
+import Link from "next/link";
 
 const DefaultIcon = FaQuestionCircle;
 
@@ -74,8 +75,9 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                 </div>
 
                 {/* Formulaire de dépenses */}
-                <ActivityButton className={`mt-10 mb-5 bg-${color} shadow-createtripbutton`} icon={<FaWallet className="text-2xl mx-3" />} title="Ajouter une dépense" textCenter={true} >Créer une dépense</ActivityButton>
-
+                <Link href={`/trip/${activity.destination.tripId}/budget`}>
+                    <ActivityButton className={`mt-10 mb-5 bg-${color} shadow-createtripbutton w-full`} icon={<FaWallet className="text-2xl mx-3" />} title="Ajouter une dépense" textCenter={true} >Créer une dépense</ActivityButton>
+                </Link>
                 {/* Formulaire de commentaires */}
                 <CreateCommentForm activity={activity}>
                     <ActivityButton className={`mb-10 bg-jaune shadow-createtripbutton`} icon={<FaComment className="text-2xl mx-3" />} title="Ajouter un commentaire" textCenter={true} >Ajouter un commentaire</ActivityButton>
@@ -109,7 +111,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
             </div>
 
 
-        </div>
+        </div >
 
     )
 }

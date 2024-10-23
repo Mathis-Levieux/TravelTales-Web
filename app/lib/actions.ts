@@ -267,7 +267,7 @@ export async function handleLeaveTrip({ id }: { id: number }) {
 
   const accessToken = await getAccessToken();
 
-  const res = await fetch(`http://localhost:3001/trips/${id}/leave`, {
+  const res = await fetch(`http://localhost:3001/trips/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -840,6 +840,54 @@ export async function handleDeleteComment(commentId: number) {
     console.error(err);
     return {
       error: 'Erreur lors de la suppression du commentaire',
+    };
+  }
+}
+
+export async function handleCreateBudget(data: { tripId: number, amount: number, category: string }) {
+
+  const createBudgetSchema = z.object({
+    tripId: z.number(),
+    amount: z.number().positive(),
+    category: z.string(),
+  });
+
+  const result = createBudgetSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const { tripId, amount, category } = data;
+  const accessToken = await getAccessToken();
+  
+  try {
+    const res = await fetch(`http://localhost:3001/budgets`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ tripId, amount, category }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Budget ajouté',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de l\'ajout du budget',
     };
   }
 }

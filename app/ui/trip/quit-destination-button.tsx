@@ -11,10 +11,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { FaRegTrashAlt, FaTrash, FaTrashAlt } from "react-icons/fa";
-import { handleCountUsersInTrip, handleDeleteDestination, handleLeaveTrip } from "@/app/lib/actions";
+import { handleDeleteDestination } from "@/app/lib/actions";
 import { RiArrowGoBackLine } from "react-icons/ri";
-import { useState } from "react";
 import { PiTrashFill } from "react-icons/pi";
 
 

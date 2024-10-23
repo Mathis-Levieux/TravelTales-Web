@@ -59,10 +59,10 @@ export default async function Header({
             <IoEarthSharp className="" size={30} color="white" />
           </Link>
           <FaFolder className="" size={30} color="white" />
-          <Link href={`/trip/${tripId}/packing-lists`}>
+          <Link href={`/trip/${tripId}/packing-list`}>
             <FaSuitcaseRolling className="" size={30} color="white" />
           </Link>
-          <Link href={`/trip/${tripId}/budgets`}>
+          <Link href={`/trip/${tripId}/budget`}>
             <FaWallet className="" size={30} color="white" />
           </Link>
           <Link href={`/trip/${tripId}/members`}>
