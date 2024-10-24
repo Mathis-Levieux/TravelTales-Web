@@ -90,6 +90,7 @@ export type Budget = {
   category: string;
   tripId: number;
   userId: number;
+  expense: Expense[];
 }
 
 export type Destination = {

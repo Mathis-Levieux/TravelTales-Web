@@ -188,3 +188,24 @@ export async function getBudgetCategories() {
     throw new Error('An error occurred while fetching budgets categories. Please try again later.');
   }
 }
+
+export async function getActivities(tripId: number) {
+  try {
+    const res = await fetch(`http://localhost:3001/activities/trips/${tripId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+      next: { tags: ['activities'] }
+    });
+
+    if (!res.ok) {
+      throw new Error('An error occurred while fetching activities. Please try again later.');
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw new Error('An error occurred while fetching activities. Please try again later.');
+  }
+}

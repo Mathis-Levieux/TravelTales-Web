@@ -1,6 +1,7 @@
 import { getBudgetCategories, getTrip } from "@/app/lib/data";
 import { Trip } from "@/app/lib/types";
 import TripButton from "@/app/ui/home/trip-button";
+import Budget from "@/app/ui/trip/budget/budget";
 import CreateBudgetForm from "@/app/ui/trip/budget/create-budget";
 import TripHeader from "@/app/ui/trip/trip-header";
 import { notFound } from "next/navigation";
@@ -11,7 +12,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
     if (!trip) notFound();
 
     const budgetCategories = await getBudgetCategories();
-
+    const budget = trip.budget[0];
     return (
         <>
             <main className="container mx-auto px-4 py-12 w-2/3">
@@ -33,7 +34,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
                         </>
                     ) :
                         (
-                            <p>Vous avez un budget</p>
+                            <Budget budget={budget} />
                         )
                     }
                 </div>

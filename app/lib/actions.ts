@@ -862,7 +862,7 @@ export async function handleCreateBudget(data: { tripId: number, amount: number,
 
   const { tripId, amount, category } = data;
   const accessToken = await getAccessToken();
-  
+
   try {
     const res = await fetch(`http://localhost:3001/budgets`, {
       method: 'POST',
@@ -888,6 +888,55 @@ export async function handleCreateBudget(data: { tripId: number, amount: number,
     console.error(err);
     return {
       error: 'Erreur lors de l\'ajout du budget',
+    };
+  }
+}
+
+export async function handleAddExpense(data: { budgetId: number, name: string, amount: number, activityId?: number }) {
+
+  const addExpenseSchema = z.object({
+    name: z.string().min(3, { message: 'Le nom de la dépense doit contenir au moins 3 caractères' }),
+    budgetId: z.number(),
+    amount: z.number().positive(),
+    activityId: z.number().optional(),
+  });
+
+  const result = addExpenseSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const { budgetId, name, amount, activityId } = data;
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/budgets/${budgetId}/expenses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ name, amount, activityId }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Dépense ajoutée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de l\'ajout de la dépense',
     };
   }
 }
