@@ -15,7 +15,7 @@ export default async function BudgetComponent({ budget, categories }: { budget: 
 
     return (
         <>
-            <div className="w-full flex m-14 justify-around">
+            <div className="w-full flex my-14 justify-around">
                 <div className="flex flex-col w-2/5">
                     <div className="flex bg-opacity-55 bg-white items-center justify-between rounded-t-3xl py-5">
                         <div className="flex gap-3 items-center ms-3">
@@ -24,7 +24,7 @@ export default async function BudgetComponent({ budget, categories }: { budget: 
                         </div>
                         <div className="flex gap-3 items-center me-3">
                             <DeleteBudgetComponent budgetId={budget.id} />
-                            <EditBudgetComponent budget={budget} categories={categories} />
+                            <EditBudgetComponent budget={budget} />
                         </div>
                     </div>
                     <div className="flex flex-col bg-jaune rounded-b-3xl py-5 ps-4">
@@ -37,7 +37,7 @@ export default async function BudgetComponent({ budget, categories }: { budget: 
                             <span className="font-bold text-xl text-marronfonce">Solde : {balance} €</span>
                         </div>
                     </div>
-                    <AddExpenseForm budgetId={budget.id} activities={activities}>
+                    <AddExpenseForm budgetId={budget.id} activities={activities} categories={categories}>
                         <TripButton
                             textColor="marron"
                             title='Créer une dépense'
@@ -48,8 +48,10 @@ export default async function BudgetComponent({ budget, categories }: { budget: 
                         </TripButton>
                     </AddExpenseForm>
                 </div>
-                <div className="w-2/5">
-                    <Expense />
+                <div className="w-2/5 flex flex-col gap-3">
+                    {budget.expense.map((expense) => (
+                        <Expense key={expense.id} expense={expense} />
+                    ))}
                 </div>
             </div>
         </>

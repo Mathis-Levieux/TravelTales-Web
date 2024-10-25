@@ -1,5 +1,4 @@
-import colorMap from "@/app/lib/colorMap";
-import iconMap from "@/app/lib/iconMap";
+import { colorMap } from "@/app/lib/colorMap";
 import { Activity, User } from "@/app/lib/types";
 import { FaCalendar, FaComment, FaMoneyBill, FaQuestionCircle, FaWallet } from 'react-icons/fa'; // Fallback icon
 import { MdDone, MdEdit } from "react-icons/md";
@@ -13,6 +12,7 @@ import DeleteComment from "./delete-comment";
 import { FaUser } from "react-icons/fa6";
 import { Delete } from "lucide-react";
 import Link from "next/link";
+import { iconMap } from "@/app/lib/iconMap";
 
 const DefaultIcon = FaQuestionCircle;
 

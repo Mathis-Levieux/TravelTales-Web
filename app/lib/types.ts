@@ -80,14 +80,14 @@ export type Expense = {
   amount: number;
   date: Date;
   budgetId: number;
-  activityId: number;
+  activityId: number; 
+  category: string
 }
 
 export type Budget = {
   id: number;
   isVisible: boolean;
   amount: number;
-  category: string;
   tripId: number;
   userId: number;
   expense: Expense[];

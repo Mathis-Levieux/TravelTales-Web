@@ -39,7 +39,7 @@ const BudgetEditSchema = z.object({
     ),
 });
 
-export default function EditBudgetComponent({ budget }: { budget: Budget, categories: string[] }) {
+export default function EditBudgetComponent({ budget }: { budget: Budget }) {
 
     const [message, setMessage] = useState<string>('');
 
@@ -102,7 +102,7 @@ export default function EditBudgetComponent({ budget }: { budget: Budget, catego
 
                         <DialogFooter>
                             <Button type="submit" className='w-full bg-jaune text-marron font-bold h-16 mt-16'>
-                                Mettre à jour la destination
+                                Mettre à jour le budget
                             </Button>
                         </DialogFooter>
                     </form>

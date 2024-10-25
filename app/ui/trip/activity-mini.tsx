@@ -1,9 +1,8 @@
-import colorMap from "@/app/lib/colorMap";
-import iconMap from "@/app/lib/iconMap";
+import { colorMap } from "@/app/lib/colorMap";
+import { iconMap } from "@/app/lib/iconMap";
 import { Activity } from "@/app/lib/types";
 import { FaQuestionCircle } from 'react-icons/fa'; // Fallback icon
 import { MdDone } from "react-icons/md";
-import RoundIcon from "../round-icon";
 
 const DefaultIcon = FaQuestionCircle;
 

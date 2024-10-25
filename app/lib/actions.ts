@@ -891,13 +891,14 @@ export async function handleCreateBudget(data: { tripId: number, amount: number 
   }
 }
 
-export async function handleAddExpense(data: { budgetId: number, name: string, amount: number, activityId?: number }) {
+export async function handleAddExpense(data: { budgetId: number, name: string, amount: number, category: string, activityId?: number | null }) {
 
   const addExpenseSchema = z.object({
     name: z.string().min(3, { message: 'Le nom de la dépense doit contenir au moins 3 caractères' }),
     budgetId: z.number(),
     amount: z.number().positive(),
-    activityId: z.number().optional(),
+    activityId: z.number().nullable().optional(),
+    category: z.string().min(1, { message: 'La catégorie ne peut pas être vide' }),
   });
 
   const result = addExpenseSchema.safeParse(data);
@@ -908,7 +909,7 @@ export async function handleAddExpense(data: { budgetId: number, name: string, a
     };
   }
 
-  const { budgetId, name, amount, activityId } = data;
+  const { budgetId, name, amount, activityId, category } = data;
   const accessToken = await getAccessToken();
 
   try {
@@ -918,7 +919,7 @@ export async function handleAddExpense(data: { budgetId: number, name: string, a
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ name, amount, activityId }),
+      body: JSON.stringify({ name, amount, activityId, category }),
     });
 
     revalidatePath('trips');
@@ -936,6 +937,50 @@ export async function handleAddExpense(data: { budgetId: number, name: string, a
     console.error(err);
     return {
       error: 'Erreur lors de l\'ajout de la dépense',
+    };
+  }
+}
+
+export async function handleDeleteExpense(expenseId: number, budgetId: number) {
+
+  const FormSchema = z.object({
+    expenseId: z.number(),
+    budgetId: z.number(),
+  });
+
+  const result = FormSchema.safeParse({ expenseId, budgetId });
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/budgets/${budgetId}/expenses/${expenseId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Dépense supprimée',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la suppression de la dépense',
     };
   }
 }

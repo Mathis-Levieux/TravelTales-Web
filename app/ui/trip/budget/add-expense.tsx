@@ -29,6 +29,7 @@ import { MdOutlineCategory } from 'react-icons/md';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Activity } from '@/app/lib/types';
 import { handleAddExpense } from '@/app/lib/actions';
+import { capitalizeFirstLetter } from '@/app/lib/utils';
 
 const addExpenseSchema = z.object({
     budgetId: z.number(),
@@ -40,11 +41,14 @@ const addExpenseSchema = z.object({
             required_error: 'Le montant est requis',
         }).positive()
     ),
-    activityId: z.number().optional(),
+    activityId: z.number().nullable().optional(),
+    category: z.string({
+        required_error: 'La catégorie est requise',
+    }),
 });
 
-export default function AddExpenseForm({ budgetId, activities, children }: { budgetId: number, activities: Activity[], children: any }) {
-    const router = useRouter();
+export default function AddExpenseForm({ budgetId, activities, categories, children }: { budgetId: number, activities: Activity[], categories: string[], children: any }) {
+
     const [message, setMessage] = useState<string>('');
 
     const form = useForm<z.infer<typeof addExpenseSchema>>({
@@ -130,16 +134,46 @@ export default function AddExpenseForm({ budgetId, activities, children }: { bud
                                     <FormItem className='pb-3 relative mx-8'>
                                         <MdOutlineCategory className="absolute left-3 top-7 transform -translate-y-1/2 z-10 text-marron" />
                                         <FormLabel></FormLabel>
-                                        <Select onValueChange={(value) => field.onChange(Number(value))} defaultValue={field.value ? String(field.value) : undefined}>
+                                        <Select onValueChange={(value) => field.onChange(value === "Aucune activité" ? null : Number(value))} defaultValue={field.value ? String(field.value) : undefined}>
                                             <FormControl>
                                                 <SelectTrigger className='rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input'>
                                                     <SelectValue placeholder="Voulez-vous relier cette dépense à une activité ?" />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className=''>
+                                                <SelectItem value={"Aucune activité"} className='hover:bg-slate-400'>
+                                                    Aucune activité
+                                                </SelectItem>
                                                 {activities.map((activity: Activity) => (
                                                     <SelectItem key={activity.id} value={String(activity.id)} className='hover:bg-slate-400'>
                                                         {activity.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="category"
+                                render={({ field }) => (
+                                    <FormItem className='pb-3 relative mx-8'>
+                                        <MdOutlineCategory className="absolute left-3 top-7 transform -translate-y-1/2 z-10 text-marron" />
+                                        <FormLabel></FormLabel>
+                                        <Select onValueChange={(value) => field.onChange(value)} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className='rounded-full border-none focus-visible:ring-2 pl-10 placeholder:font-bold shadow-input'>
+                                                    <SelectValue placeholder="Catégorie" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent className=''>
+                                                {categories.map((category: string) => (
+                                                    <SelectItem key={category} value={category} className='hover:bg-slate-400'>
+                                                        {capitalizeFirstLetter(category)}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
