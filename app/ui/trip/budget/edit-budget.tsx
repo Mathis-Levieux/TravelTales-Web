@@ -21,11 +21,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { FaMapMarkerAlt } from 'react-icons/fa';
-import { handleCreateBudget } from '@/app/lib/actions';
 
-const createBudgetSchema = z.object({
-    tripId: z.number(),
+import { Budget } from '@/app/lib/types';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import RoundIcon from '../../round-icon';
+import { MdEdit } from 'react-icons/md';
+import { handleEditBudgetForm } from '@/app/lib/actions';
+
+const BudgetEditSchema = z.object({
+    budgetId: z.number(),
     amount: z.preprocess(
         (val) => (typeof val === 'string' ? parseFloat(val) : val),
         z.number({
@@ -35,34 +39,35 @@ const createBudgetSchema = z.object({
     ),
 });
 
-export default function CreateBudgetForm({ tripId, children }: { tripId: number, children: any }) {
-    
+export default function EditBudgetComponent({ budget }: { budget: Budget, categories: string[] }) {
+
     const [message, setMessage] = useState<string>('');
 
-    const form = useForm<z.infer<typeof createBudgetSchema>>({
-        mode: 'onChange',
-        resolver: zodResolver(createBudgetSchema),
+    const form = useForm<z.infer<typeof BudgetEditSchema>>({
+        mode: 'all',
+        resolver: zodResolver(BudgetEditSchema),
         defaultValues: {
-            tripId: tripId,
+            budgetId: budget.id,
+            amount: budget.amount,
         },
     });
 
-    async function onSubmit(values: z.infer<typeof createBudgetSchema>) {
-        try {
-            const response = await handleCreateBudget(values);
-            if (response && response.error) setMessage(response.error);
-            else {
-                setMessage('Budget ajouté avec succès');
-            }
-        } catch (error) {
-            setMessage('Une erreur est survenue');
+    async function onSubmit(values: z.infer<typeof BudgetEditSchema>) {
+
+        const response = await handleEditBudgetForm(values); // Remplace par ta fonction d'édition
+        if (response && response.error) setMessage(response.error);
+        else {
+            setMessage('Budget mis à jour avec succès');
         }
+
     }
 
     return (
         <Dialog>
             <DialogTrigger asChild onClick={(e) => setMessage('')}>
-                {children}
+                <div>
+                    <RoundIcon title="Modifier le budget" aria-label="Modifier le budget" icon={<MdEdit className="text-marron text-2xl" />} className='bg-white h-10 w-10 cursor-pointer' />
+                </div>
             </DialogTrigger>
             <DialogContent className="m-0 p-0 w-full bg-white gap-0 max-w-3xl">
                 <DialogTitle></DialogTitle>
@@ -96,13 +101,12 @@ export default function CreateBudgetForm({ tripId, children }: { tripId: number,
                         </div>
 
                         <DialogFooter>
-                            <Button type="submit" className='w-full bg-jaune text-marron font-bold h-16 mt-16' disabled={!form.formState.isValid}>
-                                Créer le budget
+                            <Button type="submit" className='w-full bg-jaune text-marron font-bold h-16 mt-16'>
+                                Mettre à jour la destination
                             </Button>
                         </DialogFooter>
                     </form>
                 </Form>
-
             </DialogContent>
         </Dialog>
     );

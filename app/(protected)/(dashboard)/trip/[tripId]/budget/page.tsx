@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
                     {trip.budget.length === 0 ? (
                         <>
                             <h3 className="text-center font-bold my-12 text-3xl text-marron">Vous n'avez pas encore de budget, créez en un maintenant !</h3>
-                            <CreateBudgetForm tripId={trip.id} categories={budgetCategories}>
+                            <CreateBudgetForm tripId={trip.id} >
                                 <TripButton
                                     textColor="marron"
                                     title='Créer un budget'
@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
                         </>
                     ) :
                         (
-                            <Budget budget={budget} />
+                            <Budget categories={budgetCategories} budget={budget} />
                         )
                     }
                 </div>

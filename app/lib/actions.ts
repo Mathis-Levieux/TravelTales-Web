@@ -844,12 +844,11 @@ export async function handleDeleteComment(commentId: number) {
   }
 }
 
-export async function handleCreateBudget(data: { tripId: number, amount: number, category: string }) {
+export async function handleCreateBudget(data: { tripId: number, amount: number }) {
 
   const createBudgetSchema = z.object({
     tripId: z.number(),
     amount: z.number().positive(),
-    category: z.string(),
   });
 
   const result = createBudgetSchema.safeParse(data);
@@ -860,7 +859,7 @@ export async function handleCreateBudget(data: { tripId: number, amount: number,
     };
   }
 
-  const { tripId, amount, category } = data;
+  const { tripId, amount } = data;
   const accessToken = await getAccessToken();
 
   try {
@@ -870,7 +869,7 @@ export async function handleCreateBudget(data: { tripId: number, amount: number,
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({ tripId, amount, category }),
+      body: JSON.stringify({ tripId, amount }),
     });
 
     revalidatePath('trips');
@@ -937,6 +936,97 @@ export async function handleAddExpense(data: { budgetId: number, name: string, a
     console.error(err);
     return {
       error: 'Erreur lors de l\'ajout de la dépense',
+    };
+  }
+}
+
+export async function handleDeleteBudget(budgetId: number) {
+
+  const FormSchema = z.object({
+    budgetId: z.number(),
+  });
+
+  const result = FormSchema.safeParse({ budgetId });
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/budgets/${budgetId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Budget supprimé',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la suppression du budget',
+    };
+  }
+}
+
+export async function handleEditBudgetForm(data: { budgetId: number, amount: number }) {
+
+
+  const BudgetEditSchema = z.object({
+    budgetId: z.number(),
+    amount: z.number().positive(),
+  });
+
+  const result = BudgetEditSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      error: 'Invalid data',
+    };
+  }
+
+  const { budgetId, amount } = data;
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`http://localhost:3001/budgets/${budgetId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ amount }),
+    });
+
+    revalidatePath('trips');
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+    return {
+      message: 'Budget modifié',
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la modification du budget',
     };
   }
 }
