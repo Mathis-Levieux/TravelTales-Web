@@ -10,7 +10,7 @@ export default async function Page() {
     return (
         <>
             <Header isLoggedIn={true} homeIcons={true} />
-            <main className="container m-auto w-full flex justify-center">
+            <main className="w-full flex justify-center">
                 <Profile user={user} />
             </main>
         </>

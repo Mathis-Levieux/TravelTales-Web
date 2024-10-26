@@ -15,6 +15,8 @@ import { z } from "zod";
 import { useRouter } from 'next/navigation'
 import { IoLockClosed } from "react-icons/io5";
 import { logOut } from '@/app/lib/actions';
+import { Delete } from "lucide-react";
+import DeleteAccount from "./delete-account";
 
 
 const FormSchema = z
@@ -52,7 +54,7 @@ export default function User({ user }: { user: User }) {
     }
 
     return user && (
-        <div className="flex flex-col w-full items-center">
+        <div className="md:my-12 my-6 md:mx-4 mx-2 flex flex-col w-full items-center">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -117,10 +119,12 @@ export default function User({ user }: { user: User }) {
                 </form>
             </Form>
             <form action={logOut}>
-                <Button type="submit" className="mt-1.5 flex justify-start rounded-full bg-white border-rougelight border-4 text-rougelight w-full hover:bg-white">
+                <Button type="submit" className="mt-5 flex justify-start rounded-full bg-white border-rougelight border-4 text-rougelight w-full hover:bg-white">
                     Déconnexion
                 </Button>
             </form>
+
+            <DeleteAccount userId={user.id} />
         </div>
 
     )

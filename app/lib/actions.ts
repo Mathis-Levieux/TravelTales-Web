@@ -1077,3 +1077,35 @@ export async function handleEditBudgetForm(data: { budgetId: number, amount: num
     };
   }
 }
+
+export async function handleDeleteAccount() {
+
+  const accessToken = await getAccessToken();
+
+  try {
+    const res = await fetch(`${API_URL}/users/me`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!res.ok) {
+      const response = await res.json();
+      return {
+        error: response.message,
+      };
+    }
+
+    cookies().delete('accessToken');
+    cookies().delete('refreshToken');
+
+    redirect('home');
+
+  } catch (err) {
+    console.error(err);
+    return {
+      error: 'Erreur lors de la suppression du compte',
+    };
+  }
+}
