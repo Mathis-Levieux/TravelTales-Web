@@ -1,5 +1,7 @@
 import { jwtVerify } from 'jose';
 
+const API_URL = process.env.API_URL;
+
 export async function verifyToken(token: string) {
   try {
     const verified = await jwtVerify(
@@ -16,7 +18,7 @@ export async function isEmailTaken(email: string) {
   if (!email) {
     return;
   }
-  const response = await fetch(`http://localhost:3001/auth/${email}`, {
+  const response = await fetch(`${API_URL}/auth/${email}`, {
     method: 'GET',
     cache: 'no-store',
     headers: {

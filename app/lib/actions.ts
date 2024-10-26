@@ -7,6 +7,8 @@ import { passwordRegex } from '@/app/lib/constants';
 import { isEmailTaken } from '@/app/lib/utils';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
+const API_URL = process.env.API_URL;
+
 /*
 logs test
 Vaaarial
@@ -66,7 +68,7 @@ export async function handleRegister(data: {
   }
 
   try {
-    const response = await fetch('http://localhost:3001/auth/signup', {
+    const response = await fetch(`${API_URL}/auth/signup`, {
       method: 'POST',
       cache: 'no-store',
       headers: {
@@ -108,7 +110,7 @@ export async function handleLogIn(data: { email: string; password: string }) {
   const { email, password } = data;
 
   try {
-    const response = await fetch('http://localhost:3001/auth/login', {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       cache: 'no-store',
       headers: {
@@ -169,7 +171,7 @@ export async function getRefreshToken() {
 export async function logOut() {
   const refreshToken = await getRefreshToken();
 
-  const response = await fetch('http://localhost:3001/auth/logout', {
+  const response = await fetch(`${API_URL}/auth/logout`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${refreshToken}`,
@@ -225,7 +227,7 @@ export async function handleTripForm(data: {
   /*
 123456789123aA$
     */
-  const res = await fetch('http://localhost:3001/trips', {
+  const res = await fetch(`${API_URL}/trips`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -267,7 +269,7 @@ export async function handleLeaveTrip({ id }: { id: number }) {
 
   const accessToken = await getAccessToken();
 
-  const res = await fetch(`http://localhost:3001/trips/${id}`, {
+  const res = await fetch(`${API_URL}/trips/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -291,7 +293,7 @@ export async function handleCountUsersInTrip({ id }: { id: number }) {
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/trips/${id}/user-count`, {
+    const res = await fetch(`${API_URL}/trips/${id}/user-count`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -343,7 +345,7 @@ export async function handleEditUserInfos(data: {
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch('http://localhost:3001/users/me', {
+    const res = await fetch(`${API_URL}/users/me`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -390,7 +392,7 @@ export async function handleTripNameForm(tripId: string, newTitle: string) {
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/trips/${tripId}/title`, {
+    const res = await fetch(`${API_URL}/trips/${tripId}/title`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -440,7 +442,7 @@ export async function editDestinationForm(values: { tripId: number, destinationI
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/trips/${tripId}/destination/${destinationId}`, {
+    const res = await fetch(`${API_URL}/trips/${tripId}/destination/${destinationId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -490,7 +492,7 @@ export async function handleAddDestinationForm(values: { tripId: number, name: s
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/trips/${tripId}/destination`, {
+    const res = await fetch(`${API_URL}/trips/${tripId}/destination`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -536,7 +538,7 @@ export async function handleDeleteDestination({ tripId, destId }: { tripId: numb
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/trips/${tripId}/destination/${destId}`, {
+    const res = await fetch(`${API_URL}/trips/${tripId}/destination/${destId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -585,7 +587,7 @@ export async function handleAddActivityForm(values: { destinationId: number, nam
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/activities`, {
+    const res = await fetch(`${API_URL}/activities`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -633,7 +635,7 @@ export async function inviteMemberToTrip(values: { tripId: number, email: string
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/trips/${tripId}/invite`, {
+    const res = await fetch(`${API_URL}/trips/${tripId}/invite`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -676,7 +678,7 @@ export async function handleDeleteActivity({ activityId }: { activityId: number 
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/activities/${activityId}`, {
+    const res = await fetch(`${API_URL}/activities/${activityId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -724,7 +726,7 @@ export async function handleEditActivity(values: { activityId: number, name: str
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/activities/${activityId}`, {
+    const res = await fetch(`${API_URL}/activities/${activityId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -773,7 +775,7 @@ export async function handleCreateComment(data: { content: string, date: Date, a
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/activities/${activityId}/comments`, {
+    const res = await fetch(`${API_URL}/activities/${activityId}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -818,7 +820,7 @@ export async function handleDeleteComment(commentId: number) {
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/activities/comments/${commentId}`, {
+    const res = await fetch(`${API_URL}/activities/comments/${commentId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -863,7 +865,7 @@ export async function handleCreateBudget(data: { tripId: number, amount: number 
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/budgets`, {
+    const res = await fetch(`${API_URL}/budgets`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -913,7 +915,7 @@ export async function handleAddExpense(data: { budgetId: number, name: string, a
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/budgets/${budgetId}/expenses`, {
+    const res = await fetch(`${API_URL}/budgets/${budgetId}/expenses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -959,7 +961,7 @@ export async function handleDeleteExpense(expenseId: number, budgetId: number) {
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/budgets/${budgetId}/expenses/${expenseId}`, {
+    const res = await fetch(`${API_URL}/budgets/${budgetId}/expenses/${expenseId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -1002,7 +1004,7 @@ export async function handleDeleteBudget(budgetId: number) {
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/budgets/${budgetId}`, {
+    const res = await fetch(`${API_URL}/budgets/${budgetId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -1048,7 +1050,7 @@ export async function handleEditBudgetForm(data: { budgetId: number, amount: num
   const accessToken = await getAccessToken();
 
   try {
-    const res = await fetch(`http://localhost:3001/budgets/${budgetId}`, {
+    const res = await fetch(`${API_URL}/budgets/${budgetId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

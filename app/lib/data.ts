@@ -9,7 +9,7 @@ export async function getUsers(): Promise<User[]> {
   try {
     const accessToken = await getAccessToken();
 
-    const response = await fetch('http://localhost:3001/users/', {
+    const response = await fetch(`${API_URL}/users/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export async function getTrips(): Promise<Trip[]> {
 
 export async function getUser(data?: string) {
   try {
-    const res = await fetch('http://localhost:3001/users/me', {
+    const res = await fetch(`${API_URL}/users/me`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
@@ -82,7 +82,7 @@ export async function getUser(data?: string) {
 
 export async function getTrip(id: string): Promise<Trip | null> {
   try {
-    const res = await fetch(`http://localhost:3001/trips/${id}`, {
+    const res = await fetch(`${API_URL}/trips/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
@@ -104,7 +104,7 @@ export async function getTrip(id: string): Promise<Trip | null> {
 
 export async function getActivitiesCategories() {
   try {
-    const res = await fetch('http://localhost:3001/activities/categories', {
+    const res = await fetch(`${API_URL}/activities/categories`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
@@ -126,7 +126,7 @@ export async function getActivitiesCategories() {
 
 export async function getActivity(id: string): Promise<Activity | null> {
   try {
-    const res = await fetch(`http://localhost:3001/activities/${id}`, {
+    const res = await fetch(`${API_URL}/activities/${id}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
@@ -149,7 +149,7 @@ export async function getActivity(id: string): Promise<Activity | null> {
 export async function getUsersInTrips(tripId: string) {
 
   try {
-    const res = await fetch(`http://localhost:3001/trips/${tripId}/users`, {
+    const res = await fetch(`${API_URL}/trips/${tripId}/users`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
@@ -171,7 +171,7 @@ export async function getUsersInTrips(tripId: string) {
 
 export async function getBudgetCategories() {
   try {
-    const res = await fetch('http://localhost:3001/budgets/categories', {
+    const res = await fetch(`${API_URL}/budgets/categories`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,
@@ -191,7 +191,7 @@ export async function getBudgetCategories() {
 
 export async function getActivities(tripId: number) {
   try {
-    const res = await fetch(`http://localhost:3001/activities/trips/${tripId}`, {
+    const res = await fetch(`${API_URL}/activities/trips/${tripId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${await getAccessToken()}`,

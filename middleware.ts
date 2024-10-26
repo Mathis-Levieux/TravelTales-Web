@@ -7,6 +7,8 @@ import { NextRequest } from 'next/server';
 import { getAccessToken, getRefreshToken } from './app/lib/actions';
 import { verifyToken } from './app/lib/utils';
 
+const API_URL = process.env.API_URL;
+
 export async function middleware(req: NextRequest) {
   if (
     req.nextUrl.pathname === '/login' ||
@@ -16,7 +18,7 @@ export async function middleware(req: NextRequest) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
     if (accessToken && refreshToken) {
-      return NextResponse.redirect('http://localhost:3000/home');
+      return NextResponse.redirect(`http://localhost:3000/home`);
     }
     return NextResponse.next();
   }
@@ -24,7 +26,8 @@ export async function middleware(req: NextRequest) {
   if (
     req.nextUrl.pathname !== '/login' &&
     req.nextUrl.pathname !== '/register' &&
-    req.nextUrl.pathname !== '/'
+    req.nextUrl.pathname !== '/' &&
+    req.nextUrl.pathname !== '/download'
   ) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
@@ -40,7 +43,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.next();
     } catch (err) { // Si le token est invalide ou expiré, on tente de le rafraîchir
       try { // Try-Catch pour gérer les erreurs de fetch également
-        const res = await fetch('http://localhost:3001/auth/refresh-tokens', {
+        const res = await fetch(`${API_URL}/auth/refresh-tokens`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${refreshToken}`,

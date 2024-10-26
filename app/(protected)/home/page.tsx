@@ -13,7 +13,7 @@ export default async function Page() {
       <Header isLoggedIn={true} homeIcons={true} />
       <main className="container mx-auto px-4 py-12">
         <div className="w-full rounded-2xl py-12">
-            <JoinMessage />
+          <JoinMessage />
           <div className='flex justify-center gap-16'>
             <Link className="rounded-full w-1/4" href={'/trip/create-new'}>
               <TripButton
