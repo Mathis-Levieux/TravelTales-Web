@@ -67,7 +67,7 @@ export default function RegisterForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="my-10 rounded-2xl w-6/12 bg-white/50 flex flex-col items-center"
+          className="my-10 rounded-2xl md:w-6/12 w-11/12 bg-white/50 flex flex-col items-center"
         >
           <div className="w-10/12 my-20">
             <FormField

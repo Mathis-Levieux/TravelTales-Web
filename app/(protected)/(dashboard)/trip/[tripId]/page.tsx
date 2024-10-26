@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
 
     return (
         <>
-            <main className="container mx-auto px-4 py-12 w-2/3">
+            <main className="container mx-auto md:px-4 px-2 py-12 md:w-2/3 w-full">
                 <Trip trip={trip} />
             </main>
         </>

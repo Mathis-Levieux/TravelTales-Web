@@ -41,7 +41,7 @@ export default function QuitButton({ id, className }: { id: number, className?: 
                         />
                     </div>
                 </AlertDialogTrigger>
-                <AlertDialogContent className="p-0 border-none">
+                <AlertDialogContent className="md:w-full w-full p-0 border-none">
                     <AlertDialogHeader className="p-4 h-40 flex flex-col justify-center items-center relative">
                         <AlertDialogCancel asChild>
                             <div className="absolute top-1 right-2 border-none">

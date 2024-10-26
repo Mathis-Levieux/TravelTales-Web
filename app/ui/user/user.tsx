@@ -56,9 +56,9 @@ export default function User({ user }: { user: User }) {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="my-7 rounded-2xl sm:w-6/12 w-full bg-white/50 flex flex-col items-center"
+                    className="md:my-7 my-2 rounded-2xl md:w-6/12 w-full bg-white/50 flex flex-col items-center"
                 >
-                    <div className="w-10/12 my-20">
+                    <div className="md:w-10/12 w-11/12 md:my-20 my-12">
                         <FormField
                             control={form.control}
                             name="username"

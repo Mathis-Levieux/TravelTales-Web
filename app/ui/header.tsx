@@ -39,7 +39,7 @@ export default async function Header({
       }
 
       <Link className="sm:ml-12 ml-4" href={'/'}>
-        <h1 className="raemoon text-7xl text-white font-bold pt-3">
+        <h1 className="raemoon md:text-7xl text-5xl text-white font-bold pt-3">
           TravelTales
         </h1>
       </Link>
@@ -54,7 +54,7 @@ export default async function Header({
       )}
 
       {tripIcons && (
-        <div className="ml-auto flex gap-32 mr-20">
+        <div className="md:ml-auto flex md:gap-32 md:mr-20 md:m-0 m-auto gap-3">
           <Link href={`/trip/${tripId}`}>
             <IoEarthSharp className="" size={30} color="white" />
           </Link>
@@ -72,27 +72,28 @@ export default async function Header({
       )}
 
       {button && link && (
-        <Link className="ml-auto mr-12" href={link}>
-          <Button className="w-80 rounded-full bg-white text-bleutext">
+        <Link className="md:ml-auto md:mr-12 m-auto md:m-0 " href={link}>
+          <Button className="md:w-80 w-full rounded-full bg-white text-bleutext">
             {buttonText}
           </Button>
         </Link>
       )}
 
       {isLandingPage && (
-        <div className='ml-auto'>
-          <Link className="mr-12" href={'/login'}>
-            <Button className="w-80 rounded-full bg-white text-bleutext">
+        <div className="flex md:flex-row flex-col m-auto md:m-0 md:ml-auto md:items-end items-center">
+          <Link className="md:mr-12 mb-2 md:mb-0" href={'/login'}>
+            <Button className="md:w-80 w-36 rounded-full bg-white text-bleutext">
               Se connecter
             </Button>
           </Link>
 
-          <Link className="mr-12" href={'/register'}>
-            <Button className="w-80 rounded-full bg-white text-bleutext">
+          <Link className="md:mr-12" href={'/register'}>
+            <Button className="md:w-80 w-36 rounded-full bg-white text-bleutext">
               Créer un compte
             </Button>
           </Link>
         </div>
+
       )}
     </header>
   );

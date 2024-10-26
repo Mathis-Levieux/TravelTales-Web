@@ -34,9 +34,9 @@ export default async function ActivityFull({ activity }: { activity: Activity })
     }
 
     return (
-        <div className="flex mt-14 justify-around">
+        <div className="flex md:mt-14 mt-8 md:flex-row flex-col md:justify-around">
             {/* Partie gauche - Titre, description, budget, date et formulaires de dépenses et de commentaires */}
-            <div className="flex flex-col w-[45%]">
+            <div className="flex flex-col md:w-[45%] w-full">
                 <div className="flex flex-col bg-white bg-opacity-65 rounded-3xl shadow-lg mb-6">
                     {/* Icône et titre */}
                     <div className="h-3/4 p-4">
@@ -45,7 +45,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                                 <div className={`h-12 w-12 flex items-center justify-center bg-white rounded-full border-4 border-${color} text-${color}`}>
                                     <IconComponent />
                                 </div>
-                                <h3 className={`ml-4 text-${color} font-bold text-2xl`}>{activity.name}</h3>
+                                <h3 className={`ml-4 text-${color} font-bold text-2xl truncate`}>{activity.name}</h3>
                             </div>
                             {/* Actions - Editer et supprimer */}
                             <div className="flex space-x-2">
@@ -86,7 +86,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
 
 
             {/* Partie droite - Commentaires */}
-            <div className="w-[45%]">
+            <div className="md:w-[45%] w-full">
                 {
                     activity.comment.map((comment, index) => (
                         <div key={comment.id} className="flex mb-5 gap-2 items-center">
@@ -101,7 +101,7 @@ export default async function ActivityFull({ activity }: { activity: Activity })
                                         {comment.content}
                                     </p>
                                 </div>
-                                <div className="w-1/12 bg-white rounded-full mr-4">
+                                <div className="w-1/12 bg-white rounded-full md:mr-4 mr-6">
                                     {username === comment.user.username && <DeleteComment comment={comment} />}
                                 </div>
                             </div>

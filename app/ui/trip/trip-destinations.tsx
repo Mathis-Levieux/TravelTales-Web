@@ -28,8 +28,8 @@ export default async function TripDestinations({ destinations }: { destinations:
 
 
                         {/* Destination Header */}
-                        <div className="flex items-center justify-between bg-jaune rounded-t-[40px] h-20 px-14">
-                            <h2 className="text-marronfonce text-2xl font-bold">{destination.name}</h2>
+                        <div className="flex items-center justify-between bg-jaune rounded-t-[40px] h-20 md:px-14 px-5">
+                            <h2 className="text-marronfonce text-2xl font-bold truncate">{destination.name}</h2>
                             <div className="flex gap-2">
                                 {/* Edit Destination Modal*/}
                                 <EditDestinationForm destination={destination}>

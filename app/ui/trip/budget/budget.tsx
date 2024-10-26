@@ -15,8 +15,8 @@ export default async function BudgetComponent({ budget, categories }: { budget: 
 
     return (
         <>
-            <div className="w-full flex my-14 justify-around">
-                <div className="flex flex-col w-2/5">
+            <div className="w-full flex md:my-14 my-8 justify-around md:flex-row flex-col">
+                <div className="flex flex-col md:w-2/5 w-full">
                     <div className="flex bg-opacity-55 bg-white items-center justify-between rounded-t-3xl py-5">
                         <div className="flex gap-3 items-center ms-3">
                             <FaCoins className="text-marron text-2xl me-3" />
@@ -48,7 +48,7 @@ export default async function BudgetComponent({ budget, categories }: { budget: 
                         </TripButton>
                     </AddExpenseForm>
                 </div>
-                <div className="w-2/5 flex flex-col gap-3">
+                <div className="md:w-2/5 w-full flex flex-col gap-3">
                     {budget.expense.map((expense) => (
                         <Expense key={expense.id} expense={expense} />
                     ))}

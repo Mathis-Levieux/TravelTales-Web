@@ -37,7 +37,7 @@ export default async function Trips() {
 
           return (
             <div key={trip.id} className='relative flex justify-center'>
-              <Link href={`/trip/${trip.id}`} className='block w-2/3'>
+              <Link href={`/trip/${trip.id}`} className='block md:w-2/3 w-full'>
                 <div
                   className="container px-0 flex flex-col justify-evenly bg-white/50 my-5 h-36 rounded-2xl"
                 >
@@ -45,11 +45,11 @@ export default async function Trips() {
                     <h2 className="pl-14 text-xl font-bold">{trip.title}</h2>
                   </div>
                   <div className="flex justify-between items-center bg-jaune h-1/2 rounded-b-2xl">
-                    <div className="flex items-center gap-2 pl-14">
+                    <div className="flex items-center gap-2 md:pl-14 pl-2">
                       <RoundIcon icon={<FaMapMarkerAlt size={20} className='text-marron' />} className='bg-white h-10 w-10' />
                       <p className='text-marron'>{trip.destination[0].name} {(trip.destination.length - 1) > 1 ? `et ${trip.destination.length - 1} autres destinations` : (trip.destination.length - 1) === 1 ? 'et 1 autre destination' : ''}</p>
                     </div>
-                    <div className="flex items-center mr-14">
+                    <div className="flex items-center md:mr-14 mr-2">
                       <RoundIcon icon={<FaCalendar size={20} className='text-marron' />} className='bg-white h-10 w-10 mr-2' />
                       <p className='text-marron font-semibold'>
                         {dateStart} - {dateEnd}
@@ -58,7 +58,7 @@ export default async function Trips() {
                   </div>
                 </div>
               </Link >
-              <div className='absolute top-7 right-60'>
+              <div className='absolute top-7 md:right-60 right-4'>
                 <RoundIcon icon={<QuitButton id={trip.id} className='text-2xl' />} className='bg-white h-8 w-8' />
               </div>
             </div>

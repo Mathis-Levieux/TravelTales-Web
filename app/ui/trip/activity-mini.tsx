@@ -21,7 +21,7 @@ export default async function ActivityComponent({ activity }: { activity: Activi
                 {date && <span className={`text-sm font-bold`}>{date}</span>}
             </div>
             <div className="bg-white rounded-r-full flex justify-between w-full py-2 ml-2 pl-2">
-                <span className={`text-gray-700`}>{activity.name}</span>
+                <span className={`text-gray-700 truncate md:max-w-full max-w-[8rem]`}>{activity.name}</span>
                 <div className="flex gap-2">
                     {activity.isDone && <MdDone className="text-2xl text-bleutext border-4 border-bleufooter rounded-full" />}
                     <IconComponent className={`text-2xl text-${color} mr-5`} title={activity.category} aria-label={activity.category} />

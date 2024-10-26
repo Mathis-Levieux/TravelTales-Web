@@ -25,7 +25,7 @@ export default function ExpenseComponent({ expense }: { expense: Expense }) {
 
                 <div className={`rounded-full font-semibold py-1.5 px-1.5 flex items-center bg-${color} w-full gap-2`}>
                     <div className="bg-white rounded-l-full flex justify-between w-full py-2 px-2 items-center">
-                        <span title={`${expense.name}`} className={`font-bold w-2/4 truncate`}>{expense.name}</span>
+                        <span title={`${expense.name}`} className={`font-bold w-2/4 truncate md:max-w-full max-w-[6rem]`}>{expense.name}</span>
                         <span className="">{expense.amount} €</span>
                         <span className="text-gray-400 text-sm" >{date}</span>
                     </div>

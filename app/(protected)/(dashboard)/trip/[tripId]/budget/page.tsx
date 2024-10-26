@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { tripId: string } }) {
     const budget = trip.budget[0];
     return (
         <>
-            <main className="container mx-auto px-4 py-12 w-2/3">
+            <main className="container mx-auto md:px-4 px-2 md:py-12 py-6 md:w-2/3 w-full">
                 <div className="flex flex-col rounded-2xl bg-opacity-55 bg-white">
                     <TripHeader trip={trip} />
                     {trip.budget.length === 0 ? (

@@ -11,11 +11,11 @@ export default async function Page() {
   return (
     <>
       <Header isLoggedIn={true} homeIcons={true} />
-      <main className="container mx-auto px-4 py-12">
-        <div className="w-full rounded-2xl py-12">
+      <main className="container mx-auto px-4 md:py-12 py-4">
+        <div className="w-full rounded-2xl md:py-12 py-4">
           <JoinMessage />
-          <div className='flex justify-center gap-16'>
-            <Link className="rounded-full w-1/4" href={'/trip/create-new'}>
+          <div className='flex justify-center md:gap-16 gap-4 md:flex-row flex-col items-center'>
+            <Link className="rounded-full md:w-1/4 w-11/12" href={'/trip/create-new'}>
               <TripButton
                 textColor="marron"
                 icon='plus'
@@ -24,7 +24,7 @@ export default async function Page() {
                 Créer un voyage
               </TripButton>
             </Link>
-            <Link className='rounded-full w-1/4' href={'/trip/create-new'}>
+            <Link className='rounded-full md:w-1/4 w-11/12' href={'/trip/create-new'}>
               <TripButton
                 textColor="bleutext"
                 icon='share'
@@ -36,7 +36,7 @@ export default async function Page() {
           </div>
 
           <Suspense fallback={<TripsSkeleton />}>
-            <div className='py-14'>
+            <div className='md:py-14 py-6'>
               <Trips />
             </div>
           </Suspense>

@@ -16,7 +16,7 @@ export default async function Trip({ trip }: { trip: any }) {
                     title='Ajouter une destination'
                     icon='plus'
                     textCenter={true}
-                    className='mt-10 mb-10 shadow-createtripbutton bg-jaune border-beige w-3/5 m-auto'>
+                    className='mt-10 mb-10 shadow-createtripbutton bg-jaune border-beige md:w-3/5 w-11/12 m-auto'>
                     Ajouter une destination
                 </TripButton>
             </AddDestinationForm>

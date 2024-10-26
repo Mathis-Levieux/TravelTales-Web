@@ -28,7 +28,7 @@ export default function FormMemberInvitation({ tripId }: { tripId: number }) {
     const [message, setMessage] = useState<string>('');
 
     const form = useForm<z.infer<typeof FormSchema>>({
-        mode: 'all',
+        mode: 'onSubmit',
         resolver: zodResolver(FormSchema),
         defaultValues: {
             tripId: tripId,
@@ -46,12 +46,12 @@ export default function FormMemberInvitation({ tripId }: { tripId: number }) {
     return (
         <>
             {message && <p className="text-black mt-4 text-center">{message}</p>}
-            <div className="flex items-center gap-5 justify-center mt-16 mb-8">
+            <div className="md:mx-0 mx-1 flex items-center gap-5 justify-center md:mt-16 mt-8 md:mb-8 mb-4">
                 <Form {...form}>
                     <RoundIcon icon={<FaShareAlt className="text-bleutext text-3xl me-1" />} className="border-8 border-bleufooter h-16 w-16" />
                     <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className={`font-semibold rounded-full p-2 flex items-center opacity-85 bg-bleufooter w-2/3 `}
+                        className={`font-semibold rounded-full p-2 flex items-center opacity-85 bg-bleufooter md:w-2/3 w-4/5`}
                     >
                         <div className="bg-white rounded-l-full flex w-full py-3 ml-1 relative">
                             <FormField
@@ -61,7 +61,7 @@ export default function FormMemberInvitation({ tripId }: { tripId: number }) {
                                     <FormItem className="relative w-full">
                                         <FormControl>
                                             <Input
-                                                className="rounded-full text-marronfonce rounded-l-full focus-visible:ring-0 placeholder:font-bold text-2xl font-bold shadow-input w-full"
+                                                className="rounded-full text-marronfonce rounded-l-full focus-visible:ring-0 placeholder:font-bold md:text-2xl text-base font-bold shadow-input w-full"
                                                 placeholder="Entrez l'email"
                                                 {...field}
                                             />
