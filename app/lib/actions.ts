@@ -54,7 +54,6 @@ export async function handleRegister(data: {
 
   try {
     const isEmailAlreadyTaken = await isEmailTaken(email);
-
     if (isEmailAlreadyTaken) {
       return {
         error: 'Email already taken',

@@ -8,6 +8,7 @@ import { getAccessToken, getRefreshToken } from './app/lib/actions';
 import { verifyToken } from './app/lib/utils';
 
 const API_URL = process.env.API_URL;
+const WEB_APP_URL = process.env.WEB_APP_URL;
 
 export async function middleware(req: NextRequest) {
   if (
@@ -18,7 +19,7 @@ export async function middleware(req: NextRequest) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
     if (accessToken && refreshToken) {
-      return NextResponse.redirect(`http://localhost:3000/home`);
+      return NextResponse.redirect(`${WEB_APP_URL}/home`);
     }
     return NextResponse.next();
   }
@@ -32,7 +33,7 @@ export async function middleware(req: NextRequest) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
     if (!accessToken || !refreshToken) {
-      const response = NextResponse.redirect('http://localhost:3000/login');
+      const response = NextResponse.redirect(`${WEB_APP_URL}/login`);
       response.cookies.delete('accessToken');
       response.cookies.delete('refreshToken');
       return response;
@@ -52,7 +53,7 @@ export async function middleware(req: NextRequest) {
         });
 
         if (!res.ok) { // Si le rafraîchissement échoue, on redirige l'utilisateur vers la page de connexion
-          const response = NextResponse.redirect('http://localhost:3000/login');
+          const response = NextResponse.redirect(`${WEB_APP_URL}/login`);
           response.cookies.delete('accessToken');
           response.cookies.delete('refreshToken');
           return response;
@@ -79,7 +80,7 @@ export async function middleware(req: NextRequest) {
         applySetCookie(req, response);
         return response;
       } catch (error) { // Si le fetch échoue (API probablement down), on redirige l'utilisateur vers la page de connexion
-        const response = NextResponse.redirect('http://localhost:3000/login');
+        const response = NextResponse.redirect(`${WEB_APP_URL}/login`);
         response.cookies.delete('accessToken');
         response.cookies.delete('refreshToken');
         return response;
