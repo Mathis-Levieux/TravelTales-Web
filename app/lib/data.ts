@@ -98,7 +98,8 @@ export async function getTrip(id: string): Promise<Trip | null> {
 
   } catch (err) {
     console.error(err);
-    throw new Error('Une erreur est survenue lors de la récupération des données du voyage. Veuillez réessayer plus tard.');
+    throw new Error(`Une erreur est survenue lors de la récupération 
+      des données du voyage. Veuillez réessayer plus tard.`);
   }
 }
 

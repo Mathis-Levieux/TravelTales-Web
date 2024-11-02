@@ -8,8 +8,23 @@ const inter = Inter({ subsets: ['latin'] });
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  applicationName: 'TravelTales',
   title: 'TravelTales',
-  description: 'TravelTales is a platform where you can plan your trips.',
+  description: 'TravelTales est une application de planification de voyages simple et intuitive.',
+  keywords: ['travel', 'trip', 'planner', 'itinerary', 'voyage'],
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+    googleBot: "index, follow"
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    siteName: 'TravelTales',
+  }
 };
 
 export default function RootLayout({
