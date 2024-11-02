@@ -23,8 +23,8 @@ export default async function TripDestinations({ destinations }: { destinations:
 
 
             return (
-                <div className="flex flex-col justify-center items-center">
-                    <div key={destination.id} className="flex flex-col w-11/12">
+                <div key={destination.id} className="flex flex-col justify-center items-center">
+                    <div className="flex flex-col w-11/12">
 
 
                         {/* Destination Header */}

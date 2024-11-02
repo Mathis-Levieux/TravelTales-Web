@@ -67,6 +67,7 @@ export async function middleware(req: NextRequest) {
           path: '/',
           sameSite: 'strict',
           secure: true,
+          httpOnly: true,
         });
         response.cookies.set('refreshToken', newRefreshToken, {
           maxAge: 60 * 60 * 24 * 30,

@@ -143,8 +143,9 @@ export async function saveAccessToken(accessToken: string) {
   cookies().set('accessToken', accessToken, {
     maxAge: 60 * 60 * 24 * 30,
     path: '/',
-    sameSite: 'none',
+    sameSite: 'strict',
     secure: true,
+    httpOnly: true,
   });
 }
 
@@ -152,7 +153,7 @@ export async function saveRefreshToken(refreshToken: string) {
   cookies().set('refreshToken', refreshToken, {
     maxAge: 60 * 60 * 24 * 30,
     path: '/',
-    sameSite: 'none',
+    sameSite: 'strict',
     secure: true,
     httpOnly: true,
   });
