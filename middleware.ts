@@ -28,7 +28,9 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.pathname !== '/login' &&
     req.nextUrl.pathname !== '/register' &&
     req.nextUrl.pathname !== '/' &&
-    req.nextUrl.pathname !== '/download'
+    req.nextUrl.pathname !== '/download' &&
+    req.nextUrl.pathname !== '/legal' &&
+    req.nextUrl.pathname !== '/privacy'
   ) {
     const accessToken = await getAccessToken();
     const refreshToken = await getRefreshToken();
